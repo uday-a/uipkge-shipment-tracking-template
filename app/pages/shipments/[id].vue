@@ -71,7 +71,7 @@ const stateClass = (s: EventState) =>
     </Card>
   </div>
 
-  <div v-else class="space-y-3 p-3 md:p-4">
+  <div v-else class="space-y-5 p-4 md:p-6">
     <Button variant="ghost" size="sm" class="text-muted-foreground -ml-2" as-child>
       <NuxtLink to="/shipments"><ArrowLeft class="mr-2 size-4" />Back to shipments</NuxtLink>
     </Button>

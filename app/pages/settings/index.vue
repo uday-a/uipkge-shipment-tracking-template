@@ -115,7 +115,7 @@ function createApiKey() {
 </script>
 
 <template>
-  <div class="space-y-3 p-3 md:p-4">
+  <div class="space-y-5 p-4 md:p-6">
     <header class="space-y-1">
       <h1 class="text-xl font-bold tracking-tight">Settings</h1>
       <p class="text-muted-foreground text-xs">

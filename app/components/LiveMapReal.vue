@@ -15,7 +15,7 @@ import type { Tone } from '~/mocks/shipments'
 import { STATUS_LABELS } from '~/mocks/shipments'
 
 const props = defineProps<{ trips: ResolvedTrip[]; selectedId: string | null }>()
-const emit = defineEmits<{ (e: 'select', id: string): void }>()
+const emit = defineEmits<{ (e: 'select', id: string): void; (e: 'unavailable'): void }>()
 
 const { theme } = useTheme()
 
@@ -124,7 +124,23 @@ onMounted(async () => {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
   }).addTo(map)
+
+  // Graceful fallback: if the basemap tiles can't load (offline / blocked
+  // network), tell the page so it can swap in the vector map — the view
+  // never shows a grey void.
+  let tileErrors = 0
+  let loaded = false
+  tileLayer.on('load', () => { loaded = true })
+  tileLayer.on('tileerror', () => {
+    tileErrors += 1
+    if (tileErrors >= 6 && !loaded) emit('unavailable')
+  })
+  setTimeout(() => { if (!loaded && tileErrors > 0) emit('unavailable') }, 6000)
+
   draw()
+  // Leaflet renders grey if it sized before the flex container settled.
+  requestAnimationFrame(() => map && map.invalidateSize())
+  setTimeout(() => map && map.invalidateSize(), 250)
 })
 
 watch(() => props.selectedId, applySelection)

@@ -93,7 +93,7 @@ const filters: FilterDefinition[] = [
 </script>
 
 <template>
-  <div class="space-y-3 p-3 md:p-4">
+  <div class="space-y-5 p-4 md:p-6">
     <header>
       <h1 class="text-xl font-bold tracking-tight">Customers</h1>
       <p class="text-muted-foreground text-xs">{{ CUSTOMERS.length }} accounts shipping with ShipTrack.</p>

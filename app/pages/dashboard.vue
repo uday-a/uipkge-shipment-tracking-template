@@ -104,7 +104,7 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
 </script>
 
 <template>
-  <div class="space-y-3 p-3 md:p-4">
+  <div class="space-y-5 p-4 md:p-6">
     <!-- Header -->
     <header class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
       <div>
@@ -149,7 +149,7 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
     </KpiGrid>
 
     <!-- Volume trend + status mix -->
-    <div class="grid gap-3 lg:grid-cols-12">
+    <div class="grid gap-4 lg:grid-cols-12">
       <Card class="lg:col-span-8 flex flex-col">
         <CardHeader class="pb-2">
           <CardTitle class="text-base">Shipment volume</CardTitle>
@@ -205,7 +205,7 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
     </div>
 
     <!-- Carrier scorecard + region split -->
-    <div class="grid gap-3 lg:grid-cols-12">
+    <div class="grid gap-4 lg:grid-cols-12">
       <Card class="lg:col-span-7">
         <CardHeader class="pb-2">
           <CardTitle class="text-base">Carrier scorecard</CardTitle>
@@ -247,7 +247,7 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
     </div>
 
     <!-- Activity + exceptions / quick actions -->
-    <div class="grid gap-3 lg:grid-cols-12">
+    <div class="grid gap-4 lg:grid-cols-12">
       <Card class="lg:col-span-8 flex flex-col">
         <CardHeader class="pb-2">
           <CardTitle class="text-base">Recent activity</CardTitle>

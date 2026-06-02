@@ -67,11 +67,11 @@ const displayValue = computed(() => {
   <Card>
     <CardContent class="p-5">
       <div class="flex items-center justify-between gap-3">
-        <p class="text-muted-foreground text-xs font-medium">{{ label }}</p>
+        <p class="text-muted-foreground text-xs font-medium uppercase tracking-wide">{{ label }}</p>
         <component :is="icon" v-if="icon" class="text-muted-foreground/60 size-4 shrink-0" />
       </div>
-      <p class="mt-2.5 text-[1.75rem] font-semibold leading-none tracking-tight tabular-nums">{{ displayValue }}</p>
-      <div v-if="delta || hint" class="mt-2.5 flex items-center gap-2 text-xs">
+      <p class="mt-3 text-3xl font-semibold leading-none tracking-tight tabular-nums">{{ displayValue }}</p>
+      <div v-if="delta || hint" class="mt-3 flex items-center gap-2 text-xs">
         <span
           v-if="delta"
           :class="['inline-flex items-center gap-0.5 font-medium tabular-nums', delta.positive ? 'text-success' : 'text-destructive']"

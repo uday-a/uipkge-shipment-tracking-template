@@ -323,6 +323,21 @@
   border-radius: 9999px;
 }
 
+/* Type scale — section titles sit a notch below page titles; display type
+   gets tighter tracking (Inter benefits from it). */
+[data-slot="card-title"] {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+[data-slot="card-description"] {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+h1, h2 {
+  letter-spacing: -0.021em;
+}
+
 /* Sidebar — pill items with a tonal active-indicator (M3 navigation). */
 [data-slot="sidebar-menu-button"],
 [data-slot="sidebar-menu-sub-button"] {

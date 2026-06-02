@@ -189,7 +189,7 @@ function onBulkNotify(r: any[]) {
 </script>
 
 <template>
-  <div class="space-y-3 p-3 md:p-4">
+  <div class="space-y-5 p-4 md:p-6">
     <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h1 class="text-xl font-bold tracking-tight">Shipments</h1>

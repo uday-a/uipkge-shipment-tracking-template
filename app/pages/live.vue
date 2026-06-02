@@ -30,6 +30,10 @@ function select(id: string) {
   selectedId.value = selectedId.value === id ? null : id
 }
 
+// When OpenStreetMap tiles can't load (offline / blocked network) the real
+// map reports back and we fall back to the stylized vector map.
+const tilesUnavailable = ref(false)
+
 const drivers = computed(() => [...DRIVERS].sort((a, b) => (a.status === 'on-route' ? -1 : 1)))
 const vehicles = computed(() => VEHICLES.filter((v) => v.status === 'active'))
 </script>
@@ -153,7 +157,8 @@ const vehicles = computed(() => VEHICLES.filter((v) => v.status === 'active'))
     <!-- Map: real OpenStreetMap (Leaflet) on the client, vector fallback for SSR/offline -->
     <div class="relative min-h-[420px] flex-1">
       <ClientOnly>
-        <LiveMapReal :trips="trips" :selected-id="selectedId" @select="select" />
+        <LiveMapReal v-if="!tilesUnavailable" :trips="trips" :selected-id="selectedId" @select="select" @unavailable="tilesUnavailable = true" />
+        <LiveMap v-else :trips="trips" :selected-id="selectedId" @select="select" />
         <template #fallback>
           <LiveMap :trips="trips" :selected-id="selectedId" @select="select" />
         </template>
