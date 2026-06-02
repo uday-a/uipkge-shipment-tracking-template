@@ -65,7 +65,7 @@ function backToDashboard() {
 </script>
 
 <template>
-  <div class="min-h-screen grid place-items-center bg-gradient-to-br from-background via-muted/30 to-background p-6">
+  <div class="bg-muted/40 grid min-h-screen place-items-center p-6">
     <div class="w-full max-w-xl space-y-8 text-center">
       <!-- Big status number sets the page apart from inline empty-states.
            tabular-nums keeps 404/500/etc. visually aligned at this scale. -->

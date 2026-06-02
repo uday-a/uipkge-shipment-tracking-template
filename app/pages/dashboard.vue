@@ -117,7 +117,7 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
       </div>
       <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto">
         <Badge variant="outline" class="gap-1.5 px-2 py-0.5 text-xs">
-          <span class="bg-success size-1.5 animate-pulse rounded-full" aria-hidden="true" />
+          <span class="bg-success size-1.5 rounded-full" aria-hidden="true" />
           {{ live.active }} active · {{ live.exceptions }} need attention
         </Badge>
         <Button v-if="isDispatcher" size="sm" as-child>

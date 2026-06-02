@@ -7,12 +7,14 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Material You–flavoured theme layered over the @uipkge registry.
- * Tokens below retune the palette toward a tonal indigo system; the
- * "Material theme layer" at the bottom of this file restyles the
- * registry primitives (elevation, pill geometry, state layers) via their
- * `data-slot` hooks — the vendored components in `app/components/ui/**`
- * are never edited in place.
+ * Material Design 3 theme over the @uipkge registry.
+ *
+ * The palette follows M3 colour *roles* (surface containers, primary +
+ * primary-container, outline/outline-variant) seeded from an indigo
+ * primary. The "M3 component layer" at the bottom restyles the registry
+ * primitives via their `data-slot` hooks — tonal surfaces carry the
+ * hierarchy (not drop shadows), tabs use an underline indicator, nav uses
+ * a pill active-indicator. Vendored components are never edited in place.
  */
 
 @theme inline {
@@ -20,13 +22,12 @@
   --font-display: 'Anybody', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 
-  /* Material-ish radius scale — components keep using rounded-sm/md/lg/xl,
-     they just resolve larger + softer now. */
-  --radius-sm: calc(var(--radius) - 0.3rem);
-  --radius-md: calc(var(--radius) - 0.1rem);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 0.45rem);
-  --radius-2xl: calc(var(--radius) + 0.85rem);
+  /* M3 shape scale */
+  --radius-sm: calc(var(--radius) - 0.375rem); /* ~6px  extra-small */
+  --radius-md: calc(var(--radius) - 0.25rem);  /* ~8px  small */
+  --radius-lg: var(--radius);                   /* 12px  medium */
+  --radius-xl: calc(var(--radius) + 0.25rem);   /* 16px  large */
+  --radius-2xl: calc(var(--radius) + 1rem);     /* 28px  extra-large */
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -36,6 +37,8 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -66,111 +69,112 @@
 }
 
 /*
- ---break---
+ ---break--- LIGHT
  */
 
 :root {
-  --radius: 0.85rem;
+  --radius: 0.75rem;
 
-  --background: oklch(0.978 0.006 286);
-  --foreground: oklch(0.21 0.02 285);
+  /* Surface roles: container tones carry hierarchy without shadows. */
+  --background: oklch(0.984 0.004 286);          /* surface */
+  --foreground: oklch(0.22 0.02 285);            /* on-surface */
+  --card: oklch(0.967 0.006 286);                /* surface-container */
+  --card-foreground: oklch(0.22 0.02 285);
+  --popover: oklch(0.995 0.002 286);             /* surface-container-high (elevated) */
+  --popover-foreground: oklch(0.22 0.02 285);
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.02 285);
-
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.02 285);
-
-  --primary: oklch(0.515 0.196 277);
+  --primary: oklch(0.505 0.176 277);
   --primary-foreground: oklch(0.99 0.003 286);
+  --primary-container: oklch(0.905 0.055 280);
+  --on-primary-container: oklch(0.33 0.115 278);
 
-  --secondary: oklch(0.95 0.022 286);
-  --secondary-foreground: oklch(0.33 0.07 280);
+  --secondary: oklch(0.925 0.018 285);           /* secondary-container (neutral-tonal) */
+  --secondary-foreground: oklch(0.32 0.03 285);
 
-  --muted: oklch(0.962 0.009 286);
-  --muted-foreground: oklch(0.505 0.022 285);
+  --muted: oklch(0.93 0.008 286);                /* surface-variant */
+  --muted-foreground: oklch(0.475 0.018 285);    /* on-surface-variant */
 
-  --accent: oklch(0.93 0.035 283);
-  --accent-foreground: oklch(0.34 0.10 279);
+  --accent: oklch(0.93 0.012 286);               /* hover state surface */
+  --accent-foreground: oklch(0.26 0.02 285);
 
-  --destructive: oklch(0.585 0.22 25);
+  --destructive: oklch(0.55 0.21 27);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.905 0.012 286);
-  --input: oklch(0.905 0.012 286);
-  --ring: oklch(0.515 0.196 277);
+  --border: oklch(0.885 0.008 286);              /* outline-variant */
+  --input: oklch(0.875 0.009 286);
+  --ring: oklch(0.505 0.176 277);
 
-  --chart-1: oklch(0.55 0.20 277);
-  --chart-2: oklch(0.70 0.13 195);
-  --chart-3: oklch(0.75 0.16 70);
-  --chart-4: oklch(0.62 0.24 322);
-  --chart-5: oklch(0.64 0.22 25);
+  --chart-1: oklch(0.525 0.17 277);
+  --chart-2: oklch(0.62 0.10 200);
+  --chart-3: oklch(0.70 0.115 70);
+  --chart-4: oklch(0.55 0.145 330);
+  --chart-5: oklch(0.60 0.13 28);
 
-  --sidebar: oklch(0.965 0.012 286);
-  --sidebar-foreground: oklch(0.30 0.03 285);
-  --sidebar-primary: oklch(0.515 0.196 277);
+  --sidebar: oklch(0.955 0.008 286);
+  --sidebar-foreground: oklch(0.32 0.025 285);
+  --sidebar-primary: oklch(0.505 0.176 277);
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.91 0.045 282);
-  --sidebar-accent-foreground: oklch(0.36 0.12 279);
-  --sidebar-border: oklch(0.90 0.014 286);
-  --sidebar-ring: oklch(0.515 0.196 277);
+  --sidebar-accent: oklch(0.905 0.055 280);      /* nav active-indicator = primary-container */
+  --sidebar-accent-foreground: oklch(0.33 0.115 278);
+  --sidebar-border: oklch(0.89 0.009 286);
+  --sidebar-ring: oklch(0.505 0.176 277);
 
-  --success: oklch(0.62 0.16 150);
-  --warning: oklch(0.74 0.15 75);
-  --info: oklch(0.55 0.18 250);
+  --success: oklch(0.58 0.13 150);
+  --warning: oklch(0.68 0.13 75);
+  --info: oklch(0.54 0.15 250);
 }
 
 /*
- ---break---
+ ---break--- DARK
  */
 
 .dark {
-  --background: oklch(0.165 0.013 285);
-  --foreground: oklch(0.96 0.005 286);
+  --background: oklch(0.172 0.008 285);          /* surface */
+  --foreground: oklch(0.95 0.005 286);
+  --card: oklch(0.215 0.011 285);                /* surface-container (lighter in dark) */
+  --card-foreground: oklch(0.95 0.005 286);
+  --popover: oklch(0.245 0.013 285);
+  --popover-foreground: oklch(0.95 0.005 286);
 
-  --card: oklch(0.205 0.016 285);
-  --card-foreground: oklch(0.96 0.005 286);
+  --primary: oklch(0.79 0.115 282);
+  --primary-foreground: oklch(0.19 0.04 283);
+  --primary-container: oklch(0.36 0.10 280);
+  --on-primary-container: oklch(0.89 0.06 281);
 
-  --popover: oklch(0.215 0.017 285);
-  --popover-foreground: oklch(0.96 0.005 286);
+  --secondary: oklch(0.29 0.018 285);
+  --secondary-foreground: oklch(0.92 0.01 286);
 
-  --primary: oklch(0.705 0.155 281);
-  --primary-foreground: oklch(0.17 0.03 283);
+  --muted: oklch(0.26 0.014 285);
+  --muted-foreground: oklch(0.71 0.018 286);
 
-  --secondary: oklch(0.30 0.03 285);
-  --secondary-foreground: oklch(0.95 0.01 286);
+  --accent: oklch(0.30 0.018 285);
+  --accent-foreground: oklch(0.93 0.01 286);
 
-  --muted: oklch(0.27 0.022 285);
-  --muted-foreground: oklch(0.72 0.02 286);
-
-  --accent: oklch(0.33 0.05 282);
-  --accent-foreground: oklch(0.92 0.03 285);
-
-  --destructive: oklch(0.70 0.19 22);
+  --destructive: oklch(0.70 0.18 25);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.705 0.155 281);
+  --border: oklch(1 0 0 / 11%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.79 0.115 282);
 
-  --chart-1: oklch(0.68 0.17 281);
-  --chart-2: oklch(0.72 0.13 192);
-  --chart-3: oklch(0.78 0.16 72);
-  --chart-4: oklch(0.70 0.20 322);
-  --chart-5: oklch(0.70 0.19 22);
+  --chart-1: oklch(0.72 0.135 282);
+  --chart-2: oklch(0.70 0.10 196);
+  --chart-3: oklch(0.76 0.13 74);
+  --chart-4: oklch(0.68 0.15 330);
+  --chart-5: oklch(0.68 0.14 26);
 
-  --sidebar: oklch(0.185 0.015 285);
-  --sidebar-foreground: oklch(0.92 0.01 286);
-  --sidebar-primary: oklch(0.705 0.155 281);
-  --sidebar-primary-foreground: oklch(0.17 0.03 283);
-  --sidebar-accent: oklch(0.31 0.05 282);
-  --sidebar-accent-foreground: oklch(0.93 0.03 285);
-  --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.705 0.155 281);
+  --sidebar: oklch(0.20 0.01 285);
+  --sidebar-foreground: oklch(0.90 0.01 286);
+  --sidebar-primary: oklch(0.79 0.115 282);
+  --sidebar-primary-foreground: oklch(0.19 0.04 283);
+  --sidebar-accent: oklch(0.36 0.10 280);
+  --sidebar-accent-foreground: oklch(0.89 0.06 281);
+  --sidebar-border: oklch(1 0 0 / 11%);
+  --sidebar-ring: oklch(0.79 0.115 282);
 
-  --success: oklch(0.72 0.17 150);
-  --warning: oklch(0.80 0.16 78);
-  --info: oklch(0.70 0.18 255);
+  --success: oklch(0.72 0.15 152);
+  --warning: oklch(0.80 0.15 80);
+  --info: oklch(0.72 0.15 255);
 }
 
 /*
@@ -191,7 +195,7 @@
 
   html {
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in oklch, var(--muted-foreground) 35%, transparent) transparent;
+    scrollbar-color: color-mix(in oklch, var(--muted-foreground) 30%, transparent) transparent;
   }
   *::-webkit-scrollbar {
     width: 10px;
@@ -201,70 +205,66 @@
     background: transparent;
   }
   *::-webkit-scrollbar-thumb {
-    background-color: color-mix(in oklch, var(--muted-foreground) 30%, transparent);
+    background-color: color-mix(in oklch, var(--muted-foreground) 26%, transparent);
     border-radius: 9999px;
     border: 2px solid transparent;
     background-clip: padding-box;
   }
   *::-webkit-scrollbar-thumb:hover {
-    background-color: color-mix(in oklch, var(--muted-foreground) 55%, transparent);
+    background-color: color-mix(in oklch, var(--muted-foreground) 50%, transparent);
   }
 }
 
-/* ─────────────────────────── Material theme layer ───────────────────────────
-   Restyles @uipkge primitives via their data-slot hooks. These rules are
-   intentionally unlayered so they win over Tailwind's utility layer for the
-   handful of properties they touch (radius, elevation, fills, state layers).
-   Everything else still flows through the component classes + tokens above. */
+/* ───────────────────────────── M3 component layer ───────────────────────────
+   Tonal surfaces carry the hierarchy, so cards are flat (outline only). Only
+   genuinely-floating surfaces (menus, dialogs, the FAB) get elevation. Rules
+   are unlayered so they win for the handful of properties they set. */
 
 :root {
-  --elev-1: 0 1px 2px oklch(0.21 0.02 285 / 0.07), 0 2px 6px -1px oklch(0.21 0.02 285 / 0.06);
-  --elev-2: 0 2px 6px -1px oklch(0.21 0.02 285 / 0.10), 0 8px 20px -6px oklch(0.21 0.02 285 / 0.10);
-  --elev-3: 0 10px 30px -8px oklch(0.21 0.02 285 / 0.18), 0 20px 48px -16px oklch(0.21 0.02 285 / 0.16);
+  --elev-1: 0 1px 2px oklch(0.2 0.02 285 / 0.10);
+  --elev-2: 0 2px 6px -1px oklch(0.2 0.02 285 / 0.14), 0 1px 2px oklch(0.2 0.02 285 / 0.08);
+  --elev-3: 0 8px 24px -6px oklch(0.2 0.02 285 / 0.20), 0 2px 6px -1px oklch(0.2 0.02 285 / 0.10);
 }
 .dark {
-  --elev-1: 0 1px 2px oklch(0 0 0 / 0.40), 0 2px 6px -1px oklch(0 0 0 / 0.35);
-  --elev-2: 0 3px 10px -2px oklch(0 0 0 / 0.50), 0 10px 24px -8px oklch(0 0 0 / 0.45);
-  --elev-3: 0 12px 34px -10px oklch(0 0 0 / 0.62), 0 22px 56px -16px oklch(0 0 0 / 0.55);
+  --elev-1: 0 1px 2px oklch(0 0 0 / 0.4);
+  --elev-2: 0 3px 8px -2px oklch(0 0 0 / 0.5), 0 1px 2px oklch(0 0 0 / 0.4);
+  --elev-3: 0 10px 28px -8px oklch(0 0 0 / 0.6), 0 2px 6px -1px oklch(0 0 0 / 0.45);
 }
 
-/* Cards — elevated surfaces with a soft border + gentle hover raise. */
+/* Cards — flat tonal containers (no shadow), hairline outline. */
 [data-slot="card"] {
-  border-color: color-mix(in oklch, var(--border) 55%, transparent);
-  box-shadow: var(--elev-1);
-  transition: box-shadow 0.28s cubic-bezier(0.2, 0, 0, 1), transform 0.28s cubic-bezier(0.2, 0, 0, 1);
-}
-[data-slot="card"]:hover {
-  box-shadow: var(--elev-2);
+  box-shadow: none;
+  border-color: var(--border);
 }
 
-/* Buttons — full pill geometry + tactile press. */
+/* Buttons — full pill geometry + subtle press. */
 [data-slot="button"] {
   border-radius: 9999px;
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.12s ease, border-color 0.2s ease;
+  transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.1s ease, border-color 0.18s ease;
 }
 [data-slot="button"]:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 
-/* Floating surfaces ride the top elevation level. */
+/* Floating surfaces get real elevation. */
 [data-slot="dropdown-menu-content"],
 [data-slot="popover-content"],
+[data-slot="select-content"],
+[data-slot="command-dialog"] {
+  box-shadow: var(--elev-2);
+}
 [data-slot="dialog-content"],
-[data-slot="sheet-content"],
-[data-slot="tooltip-content"],
-[data-slot="command-dialog"],
-[data-slot="select-content"] {
+[data-slot="sheet-content"] {
   box-shadow: var(--elev-3);
 }
 
-/* Inputs — filled, softly rounded fields with a primary focus ring. */
+/* Text fields — M3 outlined: transparent fill, hairline outline, primary focus. */
 [data-slot="input"],
 [data-slot="select-trigger"],
 [data-slot="textarea"] {
   border-radius: var(--radius-md);
-  background-color: color-mix(in oklch, var(--muted) 50%, var(--card));
-  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  background-color: transparent;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 [data-slot="input"]:focus,
 [data-slot="input"]:focus-visible,
@@ -272,50 +272,56 @@
 [data-slot="select-trigger"]:focus-visible,
 [data-slot="textarea"]:focus,
 [data-slot="textarea"]:focus-visible {
-  background-color: var(--card);
   border-color: var(--ring);
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 20%, transparent);
+  box-shadow: inset 0 0 0 1px var(--ring);
 }
 
-/* Tabs — Material segmented control. */
+/* Tabs — M3 primary tabs: text triggers with an underline active indicator. */
 [data-slot="tabs-list"] {
-  border-radius: 9999px;
-  background-color: color-mix(in oklch, var(--muted) 75%, transparent);
-  padding: 0.25rem;
+  background-color: transparent;
+  border-radius: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+  gap: 0.25rem;
+  height: auto;
 }
 [data-slot="tabs-trigger"] {
-  border-radius: 9999px;
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--muted-foreground);
+  padding-bottom: 0.6rem;
+  margin-bottom: -1px;
+  transition: color 0.18s ease, box-shadow 0.18s ease;
+}
+[data-slot="tabs-trigger"]:hover {
+  color: var(--foreground);
 }
 [data-slot="tabs-trigger"][data-state="active"] {
-  background-color: var(--card);
   color: var(--primary);
-  box-shadow: var(--elev-1);
+  box-shadow: inset 0 -2px 0 0 var(--primary);
 }
 
-/* Tables — rounded container + crisp uppercase heads. */
-[data-slot="table-container"] {
-  border-radius: var(--radius-lg);
-}
+/* Tables — quiet uppercase heads. */
 [data-slot="table-head"] {
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   font-size: 0.6875rem;
+  color: var(--muted-foreground);
 }
 [data-slot="table-row"] {
-  transition: background-color 0.15s ease;
+  transition: background-color 0.12s ease;
 }
 
-/* Pills everywhere they belong. */
 [data-slot="badge"],
 [data-slot="progress"],
 [data-slot="progress-indicator"] {
   border-radius: 9999px;
 }
 
-/* Sidebar — Material navigation: full-pill items with a tonal active state. */
+/* Sidebar — pill items with a tonal active-indicator (M3 navigation). */
 [data-slot="sidebar-menu-button"],
 [data-slot="sidebar-menu-sub-button"] {
   border-radius: 9999px;
-  transition: background-color 0.18s ease, color 0.18s ease;
+  transition: background-color 0.16s ease, color 0.16s ease;
 }

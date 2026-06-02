@@ -55,7 +55,7 @@ const personas: Array<{ key: Persona; label: string; tagline: string }> = [
 </script>
 
 <template>
-  <div class="min-h-screen grid place-items-center bg-gradient-to-br from-background via-muted/30 to-background p-4">
+  <div class="bg-muted/40 grid min-h-screen place-items-center p-4">
     <div class="w-full max-w-md space-y-4">
       <Card class="rounded-2xl border-2 shadow-xl">
         <CardContent class="space-y-6 p-6 sm:p-8">

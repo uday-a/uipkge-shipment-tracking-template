@@ -32,6 +32,7 @@ export const NAV: NavSection[] = [
     label: 'Operations',
     items: [
       { label: 'Shipments', to: '/shipments', icon: 'Package' },
+      { label: 'Live tracking', to: '/live', icon: 'Radar', requires: 'dispatcher' },
       { label: 'New shipment', to: '/shipments/new', icon: 'PackagePlus', requires: 'dispatcher' },
       { label: 'Track a package', to: '/tracking', icon: 'Search' },
     ],
