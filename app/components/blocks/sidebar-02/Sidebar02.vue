@@ -57,7 +57,7 @@ const ME = {
   <Sidebar collapsible="icon">
     <SidebarHeader>
       <NuxtLink to="/dashboard" class="flex items-center gap-2.5 px-2 py-1.5 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center">
-        <span class="bg-primary text-primary-foreground flex size-7 shrink-0 items-center justify-center rounded-lg">
+        <span class="bg-primary text-primary-foreground flex size-8 shrink-0 items-center justify-center rounded-xl shadow-sm">
           <Truck class="size-4" />
         </span>
         <div class="flex flex-col leading-tight min-w-0 group-data-[collapsible=icon]:hidden">
@@ -87,7 +87,7 @@ const ME = {
                 :is-active="route.path === item.to"
                 as-child
                 :tooltip="item.label"
-                class="relative data-[active=true]:bg-muted/80 data-[active=true]:font-semibold data-[active=true]:before:absolute data-[active=true]:before:left-0 data-[active=true]:before:top-1.5 data-[active=true]:before:bottom-1.5 data-[active=true]:before:w-0.5 data-[active=true]:before:rounded-r-full data-[active=true]:before:bg-primary"
+                class="data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[active=true]:font-semibold data-[active=true]:shadow-sm"
               >
                 <NuxtLink :to="item.to">
                   <component :is="iconFor(item.icon)" v-if="iconFor(item.icon)" class="size-4 shrink-0" />

@@ -7,103 +7,62 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * @uipkge/tailwind token set lands here once Phase 0 runs
- *   `npx shadcn-vue@latest add @uipkge/init -y`
- *
- * Until then we ship a minimal default so the dev server boots.
- */
-
-/*
- ---break---
+ * Material You–flavoured theme layered over the @uipkge registry.
+ * Tokens below retune the palette toward a tonal indigo system; the
+ * "Material theme layer" at the bottom of this file restyles the
+ * registry primitives (elevation, pill geometry, state layers) via their
+ * `data-slot` hooks — the vendored components in `app/components/ui/**`
+ * are never edited in place.
  */
 
 @theme inline {
-
   --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-
   --font-display: 'Anybody', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
-
   --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 
-  --radius-sm: var(--radius);
-
-  --radius-md: var(--radius);
-
+  /* Material-ish radius scale — components keep using rounded-sm/md/lg/xl,
+     they just resolve larger + softer now. */
+  --radius-sm: calc(var(--radius) - 0.3rem);
+  --radius-md: calc(var(--radius) - 0.1rem);
   --radius-lg: var(--radius);
-
-  --radius-xl: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.45rem);
+  --radius-2xl: calc(var(--radius) + 0.85rem);
 
   --color-background: var(--background);
-
   --color-foreground: var(--foreground);
-
   --color-card: var(--card);
-
   --color-card-foreground: var(--card-foreground);
-
   --color-popover: var(--popover);
-
   --color-popover-foreground: var(--popover-foreground);
-
   --color-primary: var(--primary);
-
   --color-primary-foreground: var(--primary-foreground);
-
   --color-secondary: var(--secondary);
-
   --color-secondary-foreground: var(--secondary-foreground);
-
   --color-muted: var(--muted);
-
   --color-muted-foreground: var(--muted-foreground);
-
   --color-accent: var(--accent);
-
   --color-accent-foreground: var(--accent-foreground);
-
   --color-destructive: var(--destructive);
-
   --color-destructive-foreground: var(--destructive-foreground);
-
   --color-success: var(--success);
-
   --color-warning: var(--warning);
-
   --color-info: var(--info);
-
   --color-border: var(--border);
-
   --color-input: var(--input);
-
   --color-ring: var(--ring);
-
   --color-chart-1: var(--chart-1);
-
   --color-chart-2: var(--chart-2);
-
   --color-chart-3: var(--chart-3);
-
   --color-chart-4: var(--chart-4);
-
   --color-chart-5: var(--chart-5);
-
   --color-sidebar: var(--sidebar);
-
   --color-sidebar-foreground: var(--sidebar-foreground);
-
   --color-sidebar-primary: var(--sidebar-primary);
-
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-
   --color-sidebar-accent: var(--sidebar-accent);
-
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-
   --color-sidebar-border: var(--sidebar-border);
-
   --color-sidebar-ring: var(--sidebar-ring);
-
-  --radius: var(----radius);
 }
 
 /*
@@ -111,78 +70,54 @@
  */
 
 :root {
+  --radius: 0.85rem;
 
-  --radius: 0.225rem;
-
-  --background: oklch(1 0 0);
-
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.978 0.006 286);
+  --foreground: oklch(0.21 0.02 285);
 
   --card: oklch(1 0 0);
-
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.21 0.02 285);
 
   --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.21 0.02 285);
 
-  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.515 0.196 277);
+  --primary-foreground: oklch(0.99 0.003 286);
 
-  --primary: oklch(0.205 0 0);
+  --secondary: oklch(0.95 0.022 286);
+  --secondary-foreground: oklch(0.33 0.07 280);
 
-  --primary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.962 0.009 286);
+  --muted-foreground: oklch(0.505 0.022 285);
 
-  --secondary: oklch(0.97 0 0);
+  --accent: oklch(0.93 0.035 283);
+  --accent-foreground: oklch(0.34 0.10 279);
 
-  --secondary-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.585 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
 
-  --muted: oklch(0.97 0 0);
+  --border: oklch(0.905 0.012 286);
+  --input: oklch(0.905 0.012 286);
+  --ring: oklch(0.515 0.196 277);
 
-  --muted-foreground: oklch(0.556 0 0);
+  --chart-1: oklch(0.55 0.20 277);
+  --chart-2: oklch(0.70 0.13 195);
+  --chart-3: oklch(0.75 0.16 70);
+  --chart-4: oklch(0.62 0.24 322);
+  --chart-5: oklch(0.64 0.22 25);
 
-  --accent: oklch(0.97 0 0);
+  --sidebar: oklch(0.965 0.012 286);
+  --sidebar-foreground: oklch(0.30 0.03 285);
+  --sidebar-primary: oklch(0.515 0.196 277);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.91 0.045 282);
+  --sidebar-accent-foreground: oklch(0.36 0.12 279);
+  --sidebar-border: oklch(0.90 0.014 286);
+  --sidebar-ring: oklch(0.515 0.196 277);
 
-  --accent-foreground: oklch(0.205 0 0);
-
-  --destructive: oklch(0.577 0.245 27.325);
-
-  --destructive-foreground: oklch(0.985 0 0);
-
-  --border: oklch(0.922 0 0);
-
-  --input: oklch(0.922 0 0);
-
-  --ring: oklch(0.708 0 0);
-
-  --chart-1: oklch(0.646 0.222 41.116);
-
-  --chart-2: oklch(0.6 0.118 184.704);
-
-  --chart-3: oklch(0.398 0.07 227.392);
-
-  --chart-4: oklch(0.828 0.189 84.429);
-
-  --chart-5: oklch(0.769 0.188 70.08);
-
-  --sidebar: oklch(0.985 0 0);
-
-  --sidebar-foreground: oklch(0.145 0 0);
-
-  --sidebar-primary: oklch(0.205 0 0);
-
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-
-  --sidebar-accent: oklch(0.97 0 0);
-
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-
-  --sidebar-border: oklch(0.922 0 0);
-
-  --sidebar-ring: oklch(0.708 0 0);
-
-  --success: oklch(0.55 0.18 145);
-
-  --warning: oklch(0.7 0.16 75);
-
-  --info: oklch(0.55 0.22 260);
+  --success: oklch(0.62 0.16 150);
+  --warning: oklch(0.74 0.15 75);
+  --info: oklch(0.55 0.18 250);
 }
 
 /*
@@ -190,76 +125,52 @@
  */
 
 .dark {
+  --background: oklch(0.165 0.013 285);
+  --foreground: oklch(0.96 0.005 286);
 
-  --background: oklch(0.145 0 0);
+  --card: oklch(0.205 0.016 285);
+  --card-foreground: oklch(0.96 0.005 286);
 
-  --foreground: oklch(0.985 0 0);
+  --popover: oklch(0.215 0.017 285);
+  --popover-foreground: oklch(0.96 0.005 286);
 
-  --card: oklch(0.205 0 0);
+  --primary: oklch(0.705 0.155 281);
+  --primary-foreground: oklch(0.17 0.03 283);
 
-  --card-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.30 0.03 285);
+  --secondary-foreground: oklch(0.95 0.01 286);
 
-  --popover: oklch(0.205 0 0);
+  --muted: oklch(0.27 0.022 285);
+  --muted-foreground: oklch(0.72 0.02 286);
 
-  --popover-foreground: oklch(0.985 0 0);
+  --accent: oklch(0.33 0.05 282);
+  --accent-foreground: oklch(0.92 0.03 285);
 
-  --primary: oklch(0.922 0 0);
+  --destructive: oklch(0.70 0.19 22);
+  --destructive-foreground: oklch(0.99 0 0);
 
-  --primary-foreground: oklch(0.205 0 0);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.705 0.155 281);
 
-  --secondary: oklch(0.34 0 0);
+  --chart-1: oklch(0.68 0.17 281);
+  --chart-2: oklch(0.72 0.13 192);
+  --chart-3: oklch(0.78 0.16 72);
+  --chart-4: oklch(0.70 0.20 322);
+  --chart-5: oklch(0.70 0.19 22);
 
-  --secondary-foreground: oklch(0.985 0 0);
+  --sidebar: oklch(0.185 0.015 285);
+  --sidebar-foreground: oklch(0.92 0.01 286);
+  --sidebar-primary: oklch(0.705 0.155 281);
+  --sidebar-primary-foreground: oklch(0.17 0.03 283);
+  --sidebar-accent: oklch(0.31 0.05 282);
+  --sidebar-accent-foreground: oklch(0.93 0.03 285);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.705 0.155 281);
 
-  --muted: oklch(0.3 0 0);
-
-  --muted-foreground: oklch(0.74 0 0);
-
-  --accent: oklch(0.32 0 0);
-
-  --accent-foreground: oklch(0.985 0 0);
-
-  --destructive: oklch(0.704 0.191 22.216);
-
-  --destructive-foreground: oklch(0.985 0 0);
-
-  --border: oklch(1 0 0 / 10%);
-
-  --input: oklch(1 0 0 / 15%);
-
-  --ring: oklch(0.556 0 0);
-
-  --chart-1: oklch(0.488 0.243 264.376);
-
-  --chart-2: oklch(0.696 0.17 162.48);
-
-  --chart-3: oklch(0.769 0.188 70.08);
-
-  --chart-4: oklch(0.627 0.265 303.9);
-
-  --chart-5: oklch(0.645 0.246 16.439);
-
-  --sidebar: oklch(0.205 0 0);
-
-  --sidebar-foreground: oklch(0.985 0 0);
-
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-
-  --sidebar-accent: oklch(0.269 0 0);
-
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-
-  --sidebar-border: oklch(1 0 0 / 10%);
-
-  --sidebar-ring: oklch(0.556 0 0);
-
-  --success: oklch(0.7 0.18 145);
-
-  --warning: oklch(0.78 0.17 75);
-
-  --info: oklch(0.7 0.2 260);
+  --success: oklch(0.72 0.17 150);
+  --warning: oklch(0.80 0.16 78);
+  --info: oklch(0.70 0.18 255);
 }
 
 /*
@@ -274,16 +185,10 @@
     @apply bg-background text-foreground;
   }
 
-  /* Reserve scrollbar gutter so the page doesn't shift horizontally
-     when a modal/dialog/popover hides the body scrollbar, or when
-     content height grows/shrinks past the viewport threshold. */
   html {
     scrollbar-gutter: stable;
   }
 
-  /* Thin overlay-style page scrollbar (webkit + firefox). Reserves
-     space via `scrollbar-gutter` above; this just styles the thumb so
-     it reads as a discreet overlay instead of the OS-heavy default. */
   html {
     scrollbar-width: thin;
     scrollbar-color: color-mix(in oklch, var(--muted-foreground) 35%, transparent) transparent;
@@ -304,4 +209,113 @@
   *::-webkit-scrollbar-thumb:hover {
     background-color: color-mix(in oklch, var(--muted-foreground) 55%, transparent);
   }
+}
+
+/* ─────────────────────────── Material theme layer ───────────────────────────
+   Restyles @uipkge primitives via their data-slot hooks. These rules are
+   intentionally unlayered so they win over Tailwind's utility layer for the
+   handful of properties they touch (radius, elevation, fills, state layers).
+   Everything else still flows through the component classes + tokens above. */
+
+:root {
+  --elev-1: 0 1px 2px oklch(0.21 0.02 285 / 0.07), 0 2px 6px -1px oklch(0.21 0.02 285 / 0.06);
+  --elev-2: 0 2px 6px -1px oklch(0.21 0.02 285 / 0.10), 0 8px 20px -6px oklch(0.21 0.02 285 / 0.10);
+  --elev-3: 0 10px 30px -8px oklch(0.21 0.02 285 / 0.18), 0 20px 48px -16px oklch(0.21 0.02 285 / 0.16);
+}
+.dark {
+  --elev-1: 0 1px 2px oklch(0 0 0 / 0.40), 0 2px 6px -1px oklch(0 0 0 / 0.35);
+  --elev-2: 0 3px 10px -2px oklch(0 0 0 / 0.50), 0 10px 24px -8px oklch(0 0 0 / 0.45);
+  --elev-3: 0 12px 34px -10px oklch(0 0 0 / 0.62), 0 22px 56px -16px oklch(0 0 0 / 0.55);
+}
+
+/* Cards — elevated surfaces with a soft border + gentle hover raise. */
+[data-slot="card"] {
+  border-color: color-mix(in oklch, var(--border) 55%, transparent);
+  box-shadow: var(--elev-1);
+  transition: box-shadow 0.28s cubic-bezier(0.2, 0, 0, 1), transform 0.28s cubic-bezier(0.2, 0, 0, 1);
+}
+[data-slot="card"]:hover {
+  box-shadow: var(--elev-2);
+}
+
+/* Buttons — full pill geometry + tactile press. */
+[data-slot="button"] {
+  border-radius: 9999px;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.12s ease, border-color 0.2s ease;
+}
+[data-slot="button"]:active {
+  transform: scale(0.96);
+}
+
+/* Floating surfaces ride the top elevation level. */
+[data-slot="dropdown-menu-content"],
+[data-slot="popover-content"],
+[data-slot="dialog-content"],
+[data-slot="sheet-content"],
+[data-slot="tooltip-content"],
+[data-slot="command-dialog"],
+[data-slot="select-content"] {
+  box-shadow: var(--elev-3);
+}
+
+/* Inputs — filled, softly rounded fields with a primary focus ring. */
+[data-slot="input"],
+[data-slot="select-trigger"],
+[data-slot="textarea"] {
+  border-radius: var(--radius-md);
+  background-color: color-mix(in oklch, var(--muted) 50%, var(--card));
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+[data-slot="input"]:focus,
+[data-slot="input"]:focus-visible,
+[data-slot="select-trigger"]:focus,
+[data-slot="select-trigger"]:focus-visible,
+[data-slot="textarea"]:focus,
+[data-slot="textarea"]:focus-visible {
+  background-color: var(--card);
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring) 20%, transparent);
+}
+
+/* Tabs — Material segmented control. */
+[data-slot="tabs-list"] {
+  border-radius: 9999px;
+  background-color: color-mix(in oklch, var(--muted) 75%, transparent);
+  padding: 0.25rem;
+}
+[data-slot="tabs-trigger"] {
+  border-radius: 9999px;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+[data-slot="tabs-trigger"][data-state="active"] {
+  background-color: var(--card);
+  color: var(--primary);
+  box-shadow: var(--elev-1);
+}
+
+/* Tables — rounded container + crisp uppercase heads. */
+[data-slot="table-container"] {
+  border-radius: var(--radius-lg);
+}
+[data-slot="table-head"] {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.6875rem;
+}
+[data-slot="table-row"] {
+  transition: background-color 0.15s ease;
+}
+
+/* Pills everywhere they belong. */
+[data-slot="badge"],
+[data-slot="progress"],
+[data-slot="progress-indicator"] {
+  border-radius: 9999px;
+}
+
+/* Sidebar — Material navigation: full-pill items with a tonal active state. */
+[data-slot="sidebar-menu-button"],
+[data-slot="sidebar-menu-sub-button"] {
+  border-radius: 9999px;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }

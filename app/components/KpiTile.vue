@@ -136,9 +136,9 @@ const sparkSummary = computed(() => {
         </div>
         <div
           v-if="icon"
-          :class="['flex size-9 shrink-0 items-center justify-center rounded-lg', iconChipClass]"
+          :class="['flex size-10 shrink-0 items-center justify-center rounded-2xl', iconChipClass]"
         >
-          <component :is="icon" class="size-4" />
+          <component :is="icon" class="size-[18px]" />
         </div>
       </div>
 
