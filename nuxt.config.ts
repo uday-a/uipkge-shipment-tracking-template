@@ -3,7 +3,13 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
-  css: ['~/assets/css/main.css', 'leaflet/dist/leaflet.css'],
+  css: [
+    '@fontsource-variable/inter',
+    '@fontsource/dm-mono/400.css',
+    '@fontsource/dm-mono/500.css',
+    '~/assets/css/main.css',
+    'leaflet/dist/leaflet.css',
+  ],
   components: [
     // Allow `<AppTopbar />` etc. without the folder prefix. The Nuxt 4
     // default (`pathPrefix: true`) would have required `<NavAppTopbar />`,

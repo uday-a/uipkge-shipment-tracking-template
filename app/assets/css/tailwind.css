@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Anybody:wght@600;700;800&display=swap');
+/* Fonts are now self-hosted via @fontsource (see nuxt.config css) so they
+   work offline; the old Google Fonts @import is removed. This file is not
+   imported by the app (main.css is) — kept for registry reference. */
 @import 'tailwindcss';
 @import 'tw-animate-css';
 

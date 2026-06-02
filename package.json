@@ -11,6 +11,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource/dm-mono": "^5.2.7",
     "@internationalized/date": "^3.12.1",
     "@tanstack/vue-table": "^8.21.3",
     "@vueuse/core": "^14.3.0",
