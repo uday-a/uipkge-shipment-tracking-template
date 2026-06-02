@@ -1,0 +1,38 @@
+<script setup lang="ts">
+import type { HTMLAttributes } from 'vue'
+import { computed } from 'vue'
+import { cn } from '@/lib/utils'
+import { avatarFallbackVariants } from './avatar.variants'
+
+// Inlined unions: SFC compiler can't extract runtime props from
+// indexed-access types.
+const props = withDefaults(
+  defineProps<{
+    class?: HTMLAttributes['class']
+    size?: 'xs' | 'sm' | 'default' | 'lg' | 'xl' | '2xl'
+    color?: 'default' | 'primary' | 'secondary' | 'destructive' | 'success' | 'warning' | 'info' | 'error' | 'muted'
+    text?: string
+  }>(),
+  {
+    size: 'default',
+    color: 'default',
+  }
+)
+
+const emit = defineEmits<{
+  click: [event: MouseEvent]
+}>()
+
+function handleClick(event: MouseEvent) {
+  emit('click', event)
+}
+
+const rootClasses = computed(() => cn(avatarFallbackVariants({ size: props.size, color: props.color }), props.class))
+</script>
+
+<template>
+  <span :class="rootClasses" data-uipkge data-slot="avatar-fallback" @click="handleClick">
+    <template v-if="text">{{ text }}</template>
+    <slot v-else />
+  </span>
+</template>

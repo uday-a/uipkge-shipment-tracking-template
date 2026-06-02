@@ -1,0 +1,35 @@
+# Nuxt
+.nuxt
+.output
+dist
+.data
+
+# Node
+node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Editor
+.idea
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Local Claude
+.claude/settings.local.json
+.playwright-mcp/
+
+# AI working docs (internal, not shipped)
+ai_docs/
