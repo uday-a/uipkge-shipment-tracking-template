@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { OverlayScroll } from '@/components/ui/overlay-scroll'
 import LiveMap from '@/components/LiveMap.vue'
+import LiveMapReal from '@/components/LiveMapReal.vue'
 import { toneBadge, shortDate } from '@/lib/utils'
 
 import { resolvedTrips } from '~/mocks/live'
@@ -149,9 +150,14 @@ const vehicles = computed(() => VEHICLES.filter((v) => v.status === 'active'))
       </Tabs>
     </aside>
 
-    <!-- Map -->
+    <!-- Map: real OpenStreetMap (Leaflet) on the client, vector fallback for SSR/offline -->
     <div class="relative min-h-[420px] flex-1">
-      <LiveMap :trips="trips" :selected-id="selectedId" @select="select" />
+      <ClientOnly>
+        <LiveMapReal :trips="trips" :selected-id="selectedId" @select="select" />
+        <template #fallback>
+          <LiveMap :trips="trips" :selected-id="selectedId" @select="select" />
+        </template>
+      </ClientOnly>
     </div>
   </div>
 </template>
