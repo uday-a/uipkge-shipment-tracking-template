@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       htmlAttrs: { lang: 'en' },
       title: 'ShipTrack — Shipment Tracking template on Vue 3 + Nuxt 4',

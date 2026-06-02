@@ -19,6 +19,7 @@ import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { KpiGrid } from '@/components/ui/kpi-grid'
 import KpiTile from '@/components/KpiTile.vue'
+import JourneyMap from '@/components/JourneyMap.vue'
 import { toast } from 'vue-sonner'
 import { toneBadge, toneDot, shortDate } from '@/lib/utils'
 
@@ -103,21 +104,30 @@ const stateClass = (s: EventState) =>
           </div>
         </div>
 
-        <!-- Route progress bar -->
-        <div class="mt-5">
-          <div class="text-muted-foreground mb-1.5 flex items-center justify-between text-xs">
-            <span>{{ shipment.originCode }}</span>
-            <span class="text-foreground font-medium">{{ shipment.progress }}% · {{ shipment.lastLocation }}</span>
-            <span>{{ shipment.destinationCode }}</span>
-          </div>
-          <div class="bg-muted relative h-2 w-full overflow-hidden rounded-full">
-            <div class="bg-primary h-full rounded-full transition-all" :style="`width:${shipment.progress}%`" />
-          </div>
-          <p class="text-muted-foreground mt-1.5 text-xs">
-            ETA <span class="text-foreground font-medium">{{ shortDate(shipment.estimatedDelivery) }}</span>
-            <template v-if="shipment.actualDelivery"> · delivered {{ shortDate(shipment.actualDelivery) }}</template>
-          </p>
-        </div>
+        <p class="text-muted-foreground mt-4 text-xs">
+          Last scan <span class="text-foreground font-medium">{{ shipment.lastLocation }}</span> ·
+          ETA <span class="text-foreground font-medium">{{ shortDate(shipment.estimatedDelivery) }}</span>
+          <template v-if="shipment.actualDelivery"> · delivered {{ shortDate(shipment.actualDelivery) }}</template>
+        </p>
+      </CardContent>
+    </Card>
+
+    <!-- Live journey -->
+    <Card>
+      <CardHeader class="pb-2">
+        <CardTitle class="text-base">Live journey</CardTitle>
+        <CardDescription>Hover a stop for its scan time</CardDescription>
+      </CardHeader>
+      <CardContent class="pt-1">
+        <JourneyMap
+          v-if="detail"
+          :stops="detail.stops"
+          :progress="shipment.progress"
+          :origin-label="shipment.origin"
+          :destination-label="shipment.destination"
+          :status-label="STATUS_LABELS[shipment.status]"
+          :delivered="shipment.status === 'delivered'"
+        />
       </CardContent>
     </Card>
 

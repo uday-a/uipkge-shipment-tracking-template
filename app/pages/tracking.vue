@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { EmptyState } from '@/components/ui/empty-state'
+import JourneyMap from '@/components/JourneyMap.vue'
 import { toneBadge, toneDot, shortDate } from '@/lib/utils'
 
 import { findShipment, STATUS_LABELS, STATUS_TONE, SHIPMENTS } from '~/mocks/shipments'
@@ -114,17 +115,16 @@ const stateClass = (s: EventState) =>
             </div>
           </div>
 
-          <!-- Progress -->
-          <div>
-            <div class="text-muted-foreground mb-1.5 flex items-center justify-between text-xs">
-              <span>{{ shipment.originCode }}</span>
-              <span class="text-foreground font-medium">{{ shipment.lastLocation }}</span>
-              <span>{{ shipment.destinationCode }}</span>
-            </div>
-            <div class="bg-muted h-2 w-full overflow-hidden rounded-full">
-              <div class="bg-primary h-full rounded-full" :style="`width:${shipment.progress}%`" />
-            </div>
-          </div>
+          <!-- Live journey -->
+          <JourneyMap
+            v-if="detail"
+            :stops="detail.stops"
+            :progress="shipment.progress"
+            :origin-label="shipment.origin"
+            :destination-label="shipment.destination"
+            :status-label="STATUS_LABELS[shipment.status]"
+            :delivered="shipment.status === 'delivered'"
+          />
 
           <!-- Timeline -->
           <div>
