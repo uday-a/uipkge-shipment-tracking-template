@@ -25,6 +25,8 @@
     "nuxt": "^4.4.4",
     "reka-ui": "^2.9.7",
     "tailwind-merge": "^2.6.1",
+    "topojson-client": "^3.1.0",
+    "us-atlas": "^3.0.1",
     "vue": "^3.5.33",
     "vue-echarts": "^8.0.1",
     "vue-router": "^5.0.6",
