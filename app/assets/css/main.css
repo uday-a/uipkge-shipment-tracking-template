@@ -338,3 +338,38 @@ h1, h2 {
   border-radius: 9999px;
   transition: background-color 0.16s ease, color 0.16s ease;
 }
+
+/* Mapbox GL chrome — match the control-tower dark surface tokens. */
+.mapboxgl-ctrl-group {
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--elev-2);
+}
+.mapboxgl-ctrl-group button {
+  color: var(--foreground);
+}
+.mapboxgl-ctrl-group button + button {
+  border-top-color: var(--border);
+}
+.mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
+  filter: invert(1) opacity(0.7);
+}
+.mapboxgl-ctrl-attrib {
+  background: color-mix(in oklab, var(--card) 80%, transparent);
+  color: var(--muted-foreground);
+}
+.mapboxgl-ctrl-attrib a { color: var(--muted-foreground); }
+
+/* Graphite popups for the truck hover card. */
+.fleet-popup .mapboxgl-popup-content {
+  background: rgb(15, 16, 21);
+  border: 1px solid rgb(42, 44, 52);
+  color: #e6e7ec;
+  box-shadow: var(--elev-3);
+  border-radius: var(--radius);
+  padding: 6px 10px;
+}
+.fleet-popup .mapboxgl-popup-tip {
+  border-top-color: rgb(42, 44, 52);
+  border-bottom-color: rgb(42, 44, 52);
+}

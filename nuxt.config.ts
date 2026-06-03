@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     '@fontsource/dm-mono/400.css',
     '@fontsource/dm-mono/500.css',
     '~/assets/css/main.css',
+    '~/assets/css/live-map.css',
     'leaflet/dist/leaflet.css',
   ],
   components: [

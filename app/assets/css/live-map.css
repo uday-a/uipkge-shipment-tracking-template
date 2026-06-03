@@ -1,0 +1,86 @@
+/**
+ * Live-map marker styles. Global (not scoped): Mapbox moves marker elements out
+ * of the component subtree into its own .mapboxgl-marker containers, so scoped
+ * `data-v-*` selectors would never match. Prefixed `lm-` to avoid collisions.
+ * Pills use semantic tokens so they track the theme.
+ */
+.lm-marker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.lm-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  border: 2.5px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.lm-puck {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 3px 10px rgba(0, 0, 0, 0.45);
+}
+.lm-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: #fff;
+  border-width: 2.5px;
+  border-style: solid;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.lm-node-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+}
+.lm-stop {
+  width: 11px;
+  height: 11px;
+  border-radius: 9999px;
+  background: #fff;
+  border-width: 2.5px;
+  border-style: solid;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+.lm-pin {
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4));
+}
+.lm-label {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 6px;
+  white-space: nowrap;
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+  box-shadow: var(--elev-2);
+  pointer-events: none;
+}
+.lm-label-sm {
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+/* Destination pin: the tip is the anchor, so push the label above the pin. */
+.lm-marker-pin .lm-label {
+  bottom: 100%;
+  margin-bottom: 2px;
+}
