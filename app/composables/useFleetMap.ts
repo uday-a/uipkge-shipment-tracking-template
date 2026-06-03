@@ -200,8 +200,6 @@ export function useFleetMap(opts: { trips: Ref<ResolvedTrip[]>; selectedId: Ref<
 
   function fitFleet() {
     if (!map) return
-    const el = map.getContainer()
-    if (!el || el.clientWidth === 0 || el.clientHeight === 0) return
     const b = new mapboxgl.LngLatBounds()
     let has = false
     for (const t of opts.trips.value) for (const c of t.coords) { b.extend(toLngLat([c])[0]!); has = true }
@@ -212,8 +210,6 @@ export function useFleetMap(opts: { trips: Ref<ResolvedTrip[]>; selectedId: Ref<
     const sel = opts.selectedId.value
     const t = sel ? opts.trips.value.find((tr) => tr.shipment.id === sel) : null
     if (!t || !map) return
-    const el = map.getContainer()
-    if (!el || el.clientWidth === 0 || el.clientHeight === 0) return
     const b = new mapboxgl.LngLatBounds()
     for (const c of t.coords) b.extend(toLngLat([c])[0]!)
     // right:380 keeps the route clear of the 340px inspector drawer + margin.
@@ -231,17 +227,10 @@ export function useFleetMap(opts: { trips: Ref<ResolvedTrip[]>; selectedId: Ref<
     map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-right')
     const init = () => {
       mapReady.value = true
-      // Defensive: ensure the container has non-zero dimensions before any
-      // camera operation — fitBounds with a 0×0 container corrupts the transform.
-      requestAnimationFrame(() => {
-        const el = map.getContainer()
-        if (el && (el.clientWidth === 0 || el.clientHeight === 0)) {
-          map.resize()
-        }
-        applyBasemapStyle()
-        drawRoutes()
-        fitFleet()
-      })
+      try { (map as any).setProjection('mercator') } catch { /* older API */ }
+      applyBasemapStyle()
+      drawRoutes()
+      fitFleet()
     }
     if (map.loaded()) init()
     else map.on('load', init)

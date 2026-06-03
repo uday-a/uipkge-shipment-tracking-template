@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import {
   BadgeCheck,
   Bell,
@@ -44,6 +43,8 @@ const props = defineProps<{
     email: string
   }
 }>()
+
+import { initials } from '~/lib/utils'
 
 const { isMobile } = useSidebar()
 

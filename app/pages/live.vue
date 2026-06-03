@@ -39,10 +39,7 @@ function onHover(id: string | null) {
 const TONE_BG: Record<Tone, string> = {
   success: 'var(--success)', info: 'var(--info)', warning: 'var(--warning)', destructive: 'var(--destructive)', muted: 'var(--muted-foreground)',
 }
-function initials(name?: string): string {
-  if (!name) return '—'
-  return name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()
-}
+
 
 // Deterministic telemetry for the inspector (SSR-safe — no clock/random).
 const COMPASS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']

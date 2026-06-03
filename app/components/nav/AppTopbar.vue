@@ -3,7 +3,7 @@
  * Top bar: sidebar toggle + breadcrumb + global command palette +
  * exceptions bell + user menu (with persona switcher).
  */
-import { Bell, Settings, LogOut } from 'lucide-vue-next'
+import { Bell, Settings, LogOut, Monitor, Moon, Sun } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -23,10 +23,9 @@ import { navForPersona } from '~/lib/nav'
 import type { CommandPaletteGroup, CommandPaletteItem } from '~/components/blocks/CommandPalette.vue'
 
 const { current: persona, set: setPersona } = usePersona()
+const { theme, setTheme } = useTheme()
 
-// Open exceptions (delays + holds) drive the bell badge — the operational
-// equivalent of "things that need attention". Real consumers swap to a
-// notifications API.
+// Open exceptions (delays + holds) drive the bell badge.
 const exceptionCount = computed(() => SHIPMENTS.filter(isException).length)
 
 // Cmd-K palette groups: persona-filtered nav tree → CommandPalette shape.
@@ -107,6 +106,25 @@ const paletteGroups = computed<CommandPaletteGroup[]>(() =>
             <Settings class="size-3.5" />Settings
           </NuxtLink>
         </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel class="text-muted-foreground text-xs font-semibold uppercase tracking-widest">
+          Theme
+        </DropdownMenuLabel>
+        <DropdownMenuRadioGroup
+          :model-value="theme"
+          @update:model-value="(v) => setTheme(v as 'light' | 'dark' | 'system')"
+        >
+          <DropdownMenuRadioItem value="light">
+            <Sun class="size-3.5" />Light
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="dark">
+            <Moon class="size-3.5" />Dark
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="system">
+            <Monitor class="size-3.5" />System
+          </DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+        <DropdownMenuSeparator />
         <DropdownMenuItem disabled class="flex items-center gap-2">
           <LogOut class="size-3.5" />Sign out
         </DropdownMenuItem>
