@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, type Component } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, type Component } from 'vue'
 import { LayoutDashboard, FileText, Inbox, Settings, Users, KanbanSquare, Search } from 'lucide-vue-next'
 import {
   CommandDialog,
@@ -83,12 +83,15 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
-const triggerShortcut = computed(() => {
-  if (typeof navigator === 'undefined') return '⌘K'
-  return /Mac|iPhone|iPad/i.test(navigator.platform) ? '⌘K' : 'Ctrl K'
-})
+// Start with the SSR-safe default so the first client render matches the
+// server markup, then swap to the platform-specific hint after mount —
+// resolving the hydration text mismatch (⌘K vs Ctrl K) on non-Mac clients.
+const triggerShortcut = ref('⌘K')
 
-onMounted(() => window.addEventListener('keydown', onKeydown))
+onMounted(() => {
+  triggerShortcut.value = /Mac|iPhone|iPad/i.test(navigator.platform) ? '⌘K' : 'Ctrl K'
+  window.addEventListener('keydown', onKeydown)
+})
 onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
 defineExpose({ show, hide, toggle })
