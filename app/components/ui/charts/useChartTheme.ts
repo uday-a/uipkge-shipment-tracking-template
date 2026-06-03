@@ -80,15 +80,15 @@ function resolveVar(name: string, fallback: string): string {
   return toHex(v)
 }
 
-// SSR / pre-hydration fallback palette. Hex values picked to roughly
-// match the shadcn Neutral defaults in `tailwind.css` so the first paint
-// doesn't flicker.
+// SSR / pre-hydration fallback palette. Hex values mirror the Harbor
+// chart ramp (teal → sand + 1 amber accent) so the first paint matches the
+// resolved `--chart-*` tokens and doesn't flicker into a different palette.
 const CHART_FALLBACK = [
-  '#f59e0b',
-  '#14b8a6',
-  '#3b82f6',
-  '#f97316',
-  '#eab308',
+  '#2a8f88',
+  '#5fb3a8',
+  '#cbb78a',
+  '#e08a00',
+  '#2f5d63',
 ]
 
 export const chartColors: ComputedRef<string[]> = computed(() => {
@@ -158,14 +158,14 @@ export function mergeOptionBlock<T extends Record<string, any>>(
   return out
 }
 
-// Default gauge stoplight: teal (safe) -> amber (warning) -> red (danger).
-// Pulled off saturated green and onto teal so the gauge ties back to the
-// dashboard palette; red is kept as the universal "limit reached" cue.
-// GaugeChart consumes this via its `thresholds` prop default; consumers
-// pass their own array to override. Static because gauges have semantic
-// meaning (green safe / red danger) that we deliberately don't theme-flip.
+// Default gauge stoplight: petrol teal (safe) -> amber (warning) -> red
+// (danger). Tied to the Harbor palette so the gauge reads as part of the
+// dashboard; red is kept as the universal "limit reached" cue. GaugeChart
+// consumes this via its `thresholds` prop default; consumers pass their own
+// array to override. Static because gauges have semantic meaning (safe ->
+// danger) that we deliberately don't theme-flip.
 export const gaugeThresholds: [number, string][] = [
-  [0.6, '#14b8a6'],
-  [0.85, '#f59e0b'],
-  [1, '#dc2626'],
+  [0.6, '#2a8f88'],
+  [0.85, '#c28a00'],
+  [1, '#c0392b'],
 ]

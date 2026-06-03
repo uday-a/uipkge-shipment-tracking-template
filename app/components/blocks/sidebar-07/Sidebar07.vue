@@ -87,7 +87,7 @@ const ME = { name: 'Avery Quinn', email: 'avery.quinn@shiptrack.dev' }
                 <Truck class="size-4 group-data-[collapsible=icon]:size-3.5" />
               </span>
               <div class="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-                <span class="truncate font-bold tracking-tight">ShipTrack</span>
+                <span class="font-display truncate font-semibold tracking-tight">ShipTrack</span>
                 <span class="text-muted-foreground truncate text-xs tracking-wide">Logistics workspace</span>
               </div>
             </NuxtLink>
@@ -128,14 +128,14 @@ const ME = { name: 'Avery Quinn', email: 'avery.quinn@shiptrack.dev' }
                 :is-active="route.path === item.to"
                 as-child
                 :tooltip="item.label"
-                class="data-[active=true]:!bg-success/15 data-[active=true]:!text-foreground data-[active=true]:font-semibold"
+                class="data-[active=true]:!bg-sidebar-accent data-[active=true]:!text-sidebar-accent-foreground data-[active=true]:font-medium"
               >
                 <NuxtLink :to="item.to">
                   <component :is="iconFor(item.icon)" v-if="iconFor(item.icon)" class="size-4 shrink-0" />
                   <span>{{ item.label }}</span>
                 </NuxtLink>
               </SidebarMenuButton>
-              <SidebarMenuBadge v-if="item.to && NAV_BADGE[item.to]" class="bg-success/20 text-success">
+              <SidebarMenuBadge v-if="item.to && NAV_BADGE[item.to]" class="bg-primary/12 text-primary">
                 {{ NAV_BADGE[item.to] }}
               </SidebarMenuBadge>
             </SidebarMenuItem>
@@ -168,7 +168,7 @@ const ME = { name: 'Avery Quinn', email: 'avery.quinn@shiptrack.dev' }
           <Bell class="size-4" />
           <span
             v-if="exceptionCount > 0"
-            class="bg-destructive text-destructive-foreground ring-sidebar pointer-events-none absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold tabular-nums ring-2"
+            class="bg-destructive text-destructive-foreground ring-sidebar pointer-events-none absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold tabular-nums ring-2"
           >
             {{ exceptionCount > 9 ? '9+' : exceptionCount }}
           </span>

@@ -57,7 +57,7 @@ const personas: Array<{ key: Persona; label: string; tagline: string }> = [
 <template>
   <div class="bg-muted/40 grid min-h-screen place-items-center p-4">
     <div class="w-full max-w-md space-y-4">
-      <Card class="rounded-2xl border-2 shadow-xl">
+      <Card class="rounded-2xl">
         <CardContent class="space-y-6 p-6 sm:p-8">
           <div class="space-y-3">
             <div class="flex items-center gap-2">
@@ -70,7 +70,7 @@ const personas: Array<{ key: Persona; label: string; tagline: string }> = [
               </div>
             </div>
             <div class="space-y-1 pt-2">
-              <h1 class="text-2xl font-bold tracking-tight">Welcome back</h1>
+              <h1 class="text-2xl font-semibold tracking-tight">Welcome back</h1>
               <p class="text-muted-foreground text-sm">Sign in to your ShipTrack control tower.</p>
             </div>
           </div>

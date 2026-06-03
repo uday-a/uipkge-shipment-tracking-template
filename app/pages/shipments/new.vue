@@ -67,7 +67,7 @@ function submit() {
     </Button>
 
     <header>
-      <h1 class="text-xl font-bold tracking-tight">New shipment</h1>
+      <h1 class="text-xl font-semibold tracking-tight">New shipment</h1>
       <p class="text-muted-foreground text-xs">Book a pickup and generate a tracking number.</p>
     </header>
 

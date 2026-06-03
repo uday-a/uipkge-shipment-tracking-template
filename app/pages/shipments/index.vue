@@ -192,7 +192,7 @@ function onBulkNotify(r: any[]) {
   <div class="space-y-5 p-4 md:p-6">
     <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 class="text-xl font-bold tracking-tight">Shipments</h1>
+        <h1 class="text-xl font-semibold tracking-tight">Shipments</h1>
         <p class="text-muted-foreground text-xs">
           {{ SHIPMENTS.length }} shipments in the ledger · {{ totals.active }} active.
         </p>

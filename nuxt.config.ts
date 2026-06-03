@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   },
   css: [
     '@fontsource-variable/inter',
+    '@fontsource-variable/geist',
     '@fontsource/dm-mono/400.css',
     '@fontsource/dm-mono/500.css',
     '~/assets/css/main.css',

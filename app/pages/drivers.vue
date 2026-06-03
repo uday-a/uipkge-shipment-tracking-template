@@ -39,7 +39,7 @@ const totals = computed(() => ({
   <div class="space-y-5 p-4 md:p-6">
     <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 class="text-xl font-bold tracking-tight">Drivers</h1>
+        <h1 class="text-xl font-semibold tracking-tight">Drivers</h1>
         <p class="text-muted-foreground text-xs">{{ DRIVERS.length }} drivers · {{ totals.onRoute }} on route.</p>
       </div>
       <div class="relative w-full sm:w-64">
@@ -71,15 +71,15 @@ const totals = computed(() => ({
 
           <div class="grid grid-cols-3 gap-2 text-center">
             <div class="bg-muted/50 rounded-lg py-1.5">
-              <p class="text-sm font-bold tabular-nums">{{ d.deliveriesToday }}</p>
+              <p class="text-sm font-semibold tabular-nums">{{ d.deliveriesToday }}</p>
               <p class="text-muted-foreground text-xs">Today</p>
             </div>
             <div class="bg-muted/50 rounded-lg py-1.5">
-              <p class="text-sm font-bold tabular-nums">{{ driverActiveLoad(d.name) }}</p>
+              <p class="text-sm font-semibold tabular-nums">{{ driverActiveLoad(d.name) }}</p>
               <p class="text-muted-foreground text-xs">Active</p>
             </div>
             <div class="bg-muted/50 rounded-lg py-1.5">
-              <p class="inline-flex items-center gap-0.5 text-sm font-bold tabular-nums">
+              <p class="inline-flex items-center gap-0.5 text-sm font-semibold tabular-nums">
                 <Star class="fill-warning text-warning size-3" />{{ d.rating }}
               </p>
               <p class="text-muted-foreground text-xs">Rating</p>

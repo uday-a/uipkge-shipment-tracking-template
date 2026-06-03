@@ -32,7 +32,7 @@ const TONE_VAR: Record<Tone, string> = {
   success: '--success', info: '--info', warning: '--warning', destructive: '--destructive', muted: '--muted-foreground',
 }
 function cssVar(name: string): string {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#6366f1'
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#0e6e69'
 }
 const toneColor = (t: Tone) => cssVar(TONE_VAR[t])
 

@@ -107,7 +107,7 @@ const filters: FilterDefinition[] = [
 <template>
   <div class="space-y-5 p-4 md:p-6">
     <header>
-      <h1 class="text-xl font-bold tracking-tight">Fleet</h1>
+      <h1 class="text-xl font-semibold tracking-tight">Fleet</h1>
       <p class="text-muted-foreground text-xs">{{ VEHICLES.length }} vehicles · {{ totals.onRoute }} on route now.</p>
     </header>
 

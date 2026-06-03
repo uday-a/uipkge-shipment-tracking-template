@@ -79,12 +79,12 @@ export function useFleetMap(opts: { trips: Ref<ResolvedTrip[]>; selectedId: Ref<
     const hit = colorCache.get(name)
     if (hit) return hit
     const probe = document.createElement('span')
-    probe.style.color = `var(${name}, #6366f1)`
+    probe.style.color = `var(${name}, #0e6e69)`
     probe.style.display = 'none'
     document.body.appendChild(probe)
     const computed = getComputedStyle(probe).color
     probe.remove()
-    let resolved = computed || '#6366f1'
+    let resolved = computed || '#0e6e69'
     if (!paintCtx) paintCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true })
     if (paintCtx) {
       try {
@@ -99,7 +99,7 @@ export function useFleetMap(opts: { trips: Ref<ResolvedTrip[]>; selectedId: Ref<
     return resolved
   }
   const toneColor = (t: Tone) => cssVar(TONE_VAR[t])
-  const casingColor = () => (isDark() ? 'rgb(12,13,17)' : 'rgb(255,255,255)')
+  const casingColor = () => (isDark() ? 'rgb(14,16,16)' : 'rgb(255,255,255)')
   const neutralColor = () => cssVar('--muted-foreground')
 
   const mapStyle = computed(() => (isDark() ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11'))
@@ -108,8 +108,8 @@ export function useFleetMap(opts: { trips: Ref<ResolvedTrip[]>; selectedId: Ref<
   function applyBasemapStyle() {
     if (!map) return
     const P = isDark()
-      ? { land: 'rgb(23,24,29)', water: 'rgb(17,18,22)', use: 'rgb(31,32,38)', road: 'rgb(50,52,60)', label: 'rgb(150,152,165)', halo: 'rgb(23,24,29)', admin: 'rgb(50,52,60)' }
-      : { land: 'rgb(246,247,249)', water: 'rgb(226,230,235)', use: 'rgb(238,240,243)', road: 'rgb(221,224,229)', label: 'rgb(120,124,134)', halo: 'rgb(246,247,249)', admin: 'rgb(213,216,221)' }
+      ? { land: 'rgb(22,26,26)', water: 'rgb(16,19,19)', use: 'rgb(30,34,34)', road: 'rgb(48,54,54)', label: 'rgb(150,154,152)', halo: 'rgb(22,26,26)', admin: 'rgb(48,54,54)' }
+      : { land: 'rgb(247,246,243)', water: 'rgb(225,229,230)', use: 'rgb(240,240,236)', road: 'rgb(223,224,220)', label: 'rgb(120,123,128)', halo: 'rgb(247,246,243)', admin: 'rgb(214,215,211)' }
     const styleLayers = map.getStyle()?.layers ?? []
     for (const l of styleLayers) {
       const id: string = l.id

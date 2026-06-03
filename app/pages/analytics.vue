@@ -47,7 +47,7 @@ const maxLane = computed(() => Math.max(...TOP_LANES.map((l) => l.shipments)))
 <template>
   <div class="space-y-5 p-4 md:p-6">
     <header>
-      <h1 class="text-xl font-bold tracking-tight">Analytics</h1>
+      <h1 class="text-xl font-semibold tracking-tight">Analytics</h1>
       <p class="text-muted-foreground text-xs">Network performance over the trailing 12 months.</p>
     </header>
 

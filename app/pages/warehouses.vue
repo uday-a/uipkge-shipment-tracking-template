@@ -29,7 +29,7 @@ const totals = computed(() => ({
 <template>
   <div class="space-y-5 p-4 md:p-6">
     <header>
-      <h1 class="text-xl font-bold tracking-tight">Warehouses</h1>
+      <h1 class="text-xl font-semibold tracking-tight">Warehouses</h1>
       <p class="text-muted-foreground text-xs">{{ WAREHOUSES.length }} distribution centers across the network.</p>
     </header>
 
@@ -61,15 +61,15 @@ const totals = computed(() => ({
           </div>
           <div class="grid grid-cols-3 gap-2 text-center text-xs">
             <div>
-              <p class="text-sm font-bold tabular-nums">{{ w.inboundToday }}</p>
+              <p class="text-sm font-semibold tabular-nums">{{ w.inboundToday }}</p>
               <p class="text-muted-foreground">In</p>
             </div>
             <div>
-              <p class="text-sm font-bold tabular-nums">{{ w.outboundToday }}</p>
+              <p class="text-sm font-semibold tabular-nums">{{ w.outboundToday }}</p>
               <p class="text-muted-foreground">Out</p>
             </div>
             <div>
-              <p class="inline-flex items-center gap-0.5 text-sm font-bold tabular-nums">
+              <p class="inline-flex items-center gap-0.5 text-sm font-semibold tabular-nums">
                 <Users class="size-3" />{{ w.staff }}
               </p>
               <p class="text-muted-foreground">Staff</p>

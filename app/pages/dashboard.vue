@@ -108,7 +108,7 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
     <!-- Header -->
     <header class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h1 class="text-2xl font-bold tracking-tight">
+        <h1 class="text-2xl font-semibold tracking-tight">
           Control tower
         </h1>
         <p class="text-muted-foreground text-xs">
@@ -189,7 +189,7 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
               <template #fallback><Skeleton class="h-[200px] w-full" /></template>
             </ClientOnly>
             <div v-if="ready" class="pointer-events-none absolute inset-x-0 top-[78px] text-center">
-              <p class="text-2xl font-bold tabular-nums leading-none">{{ statusTotal.toLocaleString() }}</p>
+              <p class="text-2xl font-semibold tabular-nums leading-none">{{ statusTotal.toLocaleString() }}</p>
               <p class="text-muted-foreground text-xs">shipments</p>
             </div>
           </div>

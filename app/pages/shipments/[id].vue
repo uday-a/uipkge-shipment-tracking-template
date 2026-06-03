@@ -82,7 +82,7 @@ const stateClass = (s: EventState) =>
         <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div class="min-w-0 space-y-2">
             <div class="flex flex-wrap items-center gap-2">
-              <h1 class="text-2xl font-bold tracking-tight">{{ shipment.id }}</h1>
+              <h1 class="text-2xl font-semibold tracking-tight">{{ shipment.id }}</h1>
               <Badge :variant="toneBadge(STATUS_TONE[shipment.status])">
                 <span :class="`size-1.5 rounded-full ${toneDot(STATUS_TONE[shipment.status])}`" aria-hidden="true" />
                 {{ STATUS_LABELS[shipment.status] }}

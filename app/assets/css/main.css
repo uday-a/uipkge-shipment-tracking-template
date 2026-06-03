@@ -7,19 +7,23 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Material Design 3 theme over the @uipkge registry.
+ * "Harbor" theme over the @uipkge registry.
  *
- * The palette follows M3 colour *roles* (surface containers, primary +
- * primary-container, outline/outline-variant) seeded from an indigo
- * primary. The "M3 component layer" at the bottom restyles the registry
- * primitives via their `data-slot` hooks — tonal surfaces carry the
- * hierarchy (not drop shadows), tabs use an underline indicator, nav uses
- * a pill active-indicator. Vendored components are never edited in place.
+ * A logistics palette: a petrol-teal primary on a warm-neutral canvas,
+ * with amber (`--accent-brand`) reserved for sparing highlights. Status
+ * stays semantic (green/amber/red); charts run a teal→sand mono ramp + 1
+ * amber accent (no rainbow). It still follows M3 colour *roles* (surface
+ * containers, primary + primary-container, outline/outline-variant). The
+ * "M3 component layer" at the bottom restyles the registry primitives via
+ * their `data-slot` hooks — tonal surfaces carry the hierarchy (not drop
+ * shadows), tabs use an underline indicator. Headings render in Geist,
+ * body in Inter, numerals in DM Mono. Vendored components are never edited
+ * in place.
  */
 
 @theme inline {
   --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-display: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 
 
@@ -39,6 +43,8 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-brand: var(--accent-brand);
+  --color-accent-brand-foreground: var(--accent-brand-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
@@ -67,55 +73,58 @@
  */
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0.625rem;
 
   /* Surface roles: container tones carry hierarchy without shadows. */
-  --background: oklch(0.984 0.004 286);          /* surface */
-  --foreground: oklch(0.22 0.02 285);            /* on-surface */
-  --card: oklch(0.967 0.006 286);                /* surface-container */
-  --card-foreground: oklch(0.22 0.02 285);
-  --popover: oklch(0.995 0.002 286);             /* surface-container-high (elevated) */
-  --popover-foreground: oklch(0.22 0.02 285);
+  --background: oklch(0.985 0.004 95);           /* warm off-white surface */
+  --foreground: oklch(0.235 0.006 175);          /* on-surface (ink) */
+  --card: oklch(1 0 0);                           /* surface-container */
+  --card-foreground: oklch(0.235 0.006 175);
+  --popover: oklch(1 0 0);                         /* surface-container-high (elevated) */
+  --popover-foreground: oklch(0.235 0.006 175);
 
-  --primary: oklch(0.505 0.176 277);
-  --primary-foreground: oklch(0.99 0.003 286);
-  --primary-container: oklch(0.905 0.055 280);
-  --on-primary-container: oklch(0.33 0.115 278);
+  --primary: oklch(0.515 0.082 184);             /* petrol teal */
+  --primary-foreground: oklch(0.99 0.006 95);
+  --primary-container: oklch(0.905 0.045 185);
+  --on-primary-container: oklch(0.34 0.06 187);
 
-  --secondary: oklch(0.925 0.018 285);           /* secondary-container (neutral-tonal) */
-  --secondary-foreground: oklch(0.32 0.03 285);
+  --secondary: oklch(0.95 0.006 95);             /* secondary-container (neutral-tonal) */
+  --secondary-foreground: oklch(0.32 0.012 180);
 
-  --muted: oklch(0.93 0.008 286);                /* surface-variant */
-  --muted-foreground: oklch(0.475 0.018 285);    /* on-surface-variant */
+  --muted: oklch(0.955 0.005 95);                /* surface-variant */
+  --muted-foreground: oklch(0.49 0.013 185);     /* on-surface-variant (AA on canvas) */
 
-  --accent: oklch(0.93 0.012 286);               /* hover state surface */
-  --accent-foreground: oklch(0.26 0.02 285);
+  --accent: oklch(0.95 0.006 95);                /* hover state surface (neutral warm) */
+  --accent-foreground: oklch(0.26 0.01 180);
 
-  --destructive: oklch(0.55 0.21 27);
+  --accent-brand: oklch(0.74 0.155 65);          /* amber — sparing highlights only */
+  --accent-brand-foreground: oklch(0.99 0.01 95);
+
+  --destructive: oklch(0.55 0.19 28);            /* clear red, held off amber */
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.885 0.008 286);              /* outline-variant */
-  --input: oklch(0.875 0.009 286);
-  --ring: oklch(0.505 0.176 277);
+  --border: oklch(0.905 0.006 95);               /* warm outline-variant */
+  --input: oklch(0.895 0.007 95);
+  --ring: oklch(0.515 0.082 184);
 
-  --chart-1: oklch(0.525 0.17 277);
-  --chart-2: oklch(0.62 0.10 200);
-  --chart-3: oklch(0.70 0.115 70);
-  --chart-4: oklch(0.55 0.145 330);
-  --chart-5: oklch(0.60 0.13 28);
+  --chart-1: oklch(0.55 0.085 185);              /* petrol teal */
+  --chart-2: oklch(0.67 0.07 172);               /* sage-teal */
+  --chart-3: oklch(0.76 0.055 95);               /* sand */
+  --chart-4: oklch(0.72 0.145 65);               /* amber accent */
+  --chart-5: oklch(0.42 0.05 205);               /* deep slate-teal */
 
-  --sidebar: oklch(0.955 0.008 286);
-  --sidebar-foreground: oklch(0.32 0.025 285);
-  --sidebar-primary: oklch(0.505 0.176 277);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.905 0.055 280);      /* nav active-indicator = primary-container */
-  --sidebar-accent-foreground: oklch(0.33 0.115 278);
-  --sidebar-border: oklch(0.89 0.009 286);
-  --sidebar-ring: oklch(0.505 0.176 277);
+  --sidebar: oklch(0.975 0.005 95);
+  --sidebar-foreground: oklch(0.32 0.01 180);
+  --sidebar-primary: oklch(0.515 0.082 184);
+  --sidebar-primary-foreground: oklch(0.99 0.006 95);
+  --sidebar-accent: oklch(0.92 0.04 185);        /* nav active-indicator = teal tint */
+  --sidebar-accent-foreground: oklch(0.34 0.06 187);
+  --sidebar-border: oklch(0.91 0.006 95);
+  --sidebar-ring: oklch(0.515 0.082 184);
 
-  --success: oklch(0.58 0.13 150);
-  --warning: oklch(0.68 0.13 75);
-  --info: oklch(0.54 0.15 250);
+  --success: oklch(0.56 0.11 158);
+  --warning: oklch(0.66 0.13 80);
+  --info: oklch(0.55 0.10 230);
 }
 
 /*
@@ -123,52 +132,55 @@
  */
 
 .dark {
-  --background: oklch(0.172 0.008 285);          /* surface */
-  --foreground: oklch(0.95 0.005 286);
-  --card: oklch(0.215 0.011 285);                /* surface-container (lighter in dark) */
-  --card-foreground: oklch(0.95 0.005 286);
-  --popover: oklch(0.245 0.013 285);
-  --popover-foreground: oklch(0.95 0.005 286);
+  --background: oklch(0.18 0.006 180);           /* ink surface */
+  --foreground: oklch(0.93 0.005 95);
+  --card: oklch(0.215 0.007 182);                /* surface-container (lifted in dark) */
+  --card-foreground: oklch(0.93 0.005 95);
+  --popover: oklch(0.245 0.008 182);
+  --popover-foreground: oklch(0.93 0.005 95);
 
-  --primary: oklch(0.79 0.115 282);
-  --primary-foreground: oklch(0.19 0.04 283);
-  --primary-container: oklch(0.36 0.10 280);
-  --on-primary-container: oklch(0.89 0.06 281);
+  --primary: oklch(0.74 0.085 184);              /* lifted petrol teal */
+  --primary-foreground: oklch(0.20 0.03 190);
+  --primary-container: oklch(0.36 0.055 188);
+  --on-primary-container: oklch(0.88 0.05 186);
 
-  --secondary: oklch(0.29 0.018 285);
-  --secondary-foreground: oklch(0.92 0.01 286);
+  --secondary: oklch(0.28 0.008 182);
+  --secondary-foreground: oklch(0.92 0.008 95);
 
-  --muted: oklch(0.26 0.014 285);
-  --muted-foreground: oklch(0.71 0.018 286);
+  --muted: oklch(0.255 0.007 182);
+  --muted-foreground: oklch(0.71 0.013 185);
 
-  --accent: oklch(0.30 0.018 285);
-  --accent-foreground: oklch(0.93 0.01 286);
+  --accent: oklch(0.30 0.008 182);
+  --accent-foreground: oklch(0.93 0.008 95);
+
+  --accent-brand: oklch(0.78 0.13 68);           /* amber holds in dark */
+  --accent-brand-foreground: oklch(0.20 0.03 70);
 
   --destructive: oklch(0.70 0.18 25);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(1 0 0 / 11%);
-  --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.79 0.115 282);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 13%);
+  --ring: oklch(0.74 0.085 184);
 
-  --chart-1: oklch(0.72 0.135 282);
-  --chart-2: oklch(0.70 0.10 196);
-  --chart-3: oklch(0.76 0.13 74);
-  --chart-4: oklch(0.68 0.15 330);
-  --chart-5: oklch(0.68 0.14 26);
+  --chart-1: oklch(0.72 0.09 185);               /* petrol teal */
+  --chart-2: oklch(0.78 0.07 172);               /* sage-teal */
+  --chart-3: oklch(0.80 0.06 95);                /* sand */
+  --chart-4: oklch(0.78 0.13 66);                /* amber accent */
+  --chart-5: oklch(0.60 0.06 200);               /* deep slate-teal */
 
-  --sidebar: oklch(0.20 0.01 285);
-  --sidebar-foreground: oklch(0.90 0.01 286);
-  --sidebar-primary: oklch(0.79 0.115 282);
-  --sidebar-primary-foreground: oklch(0.19 0.04 283);
-  --sidebar-accent: oklch(0.36 0.10 280);
-  --sidebar-accent-foreground: oklch(0.89 0.06 281);
-  --sidebar-border: oklch(1 0 0 / 11%);
-  --sidebar-ring: oklch(0.79 0.115 282);
+  --sidebar: oklch(0.205 0.007 182);
+  --sidebar-foreground: oklch(0.90 0.008 95);
+  --sidebar-primary: oklch(0.74 0.085 184);
+  --sidebar-primary-foreground: oklch(0.20 0.03 190);
+  --sidebar-accent: oklch(0.36 0.055 188);
+  --sidebar-accent-foreground: oklch(0.88 0.05 186);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.74 0.085 184);
 
-  --success: oklch(0.72 0.15 152);
-  --warning: oklch(0.80 0.15 80);
-  --info: oklch(0.72 0.15 255);
+  --success: oklch(0.70 0.13 158);
+  --warning: oklch(0.80 0.13 82);
+  --info: oklch(0.70 0.11 232);
 }
 
 /*
@@ -235,9 +247,9 @@
   border-color: var(--border);
 }
 
-/* Buttons — full pill geometry + subtle press. */
+/* Buttons — crisp rounded-rect geometry (not pills) + subtle press. */
 [data-slot="button"] {
-  border-radius: 9999px;
+  border-radius: var(--radius);
   transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.1s ease, border-color 0.18s ease;
 }
 [data-slot="button"]:active {
@@ -317,8 +329,12 @@
   border-radius: 9999px;
 }
 
-/* Type scale — section titles sit a notch below page titles; display type
-   gets tighter tracking (Inter benefits from it). */
+/* Type scale — headings render in Geist (display) with tight tracking;
+   section titles sit a notch below page titles. Body/UI stays Inter. */
+h1, h2, h3,
+[data-slot="card-title"] {
+  font-family: var(--font-display);
+}
 [data-slot="card-title"] {
   font-size: 0.9375rem;
   line-height: 1.4;
@@ -331,12 +347,16 @@
 h1, h2 {
   letter-spacing: -0.021em;
 }
+h3 {
+  letter-spacing: -0.015em;
+}
 
-/* Sidebar — pill items with a tonal active-indicator (M3 navigation). */
+/* Sidebar — crisp items with a solid tonal active-indicator (no stripe;
+   the tint fill is set in Sidebar07.vue). */
 [data-slot="sidebar-menu-button"],
 [data-slot="sidebar-menu-sub-button"] {
-  border-radius: 9999px;
-  transition: background-color 0.16s ease, color 0.16s ease;
+  border-radius: var(--radius);
+  transition: background-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
 }
 
 /* Mapbox GL chrome — match the control-tower dark surface tokens. */
@@ -360,16 +380,16 @@ h1, h2 {
 }
 .mapboxgl-ctrl-attrib a { color: var(--muted-foreground); }
 
-/* Graphite popups for the truck hover card. */
+/* Warm-ink popups for the truck hover card (matches the dark map surface). */
 .fleet-popup .mapboxgl-popup-content {
-  background: rgb(15, 16, 21);
-  border: 1px solid rgb(42, 44, 52);
-  color: #e6e7ec;
+  background: rgb(20, 23, 23);
+  border: 1px solid rgb(44, 50, 50);
+  color: #e3e7e6;
   box-shadow: var(--elev-3);
   border-radius: var(--radius);
   padding: 6px 10px;
 }
 .fleet-popup .mapboxgl-popup-tip {
-  border-top-color: rgb(42, 44, 52);
-  border-bottom-color: rgb(42, 44, 52);
+  border-top-color: rgb(44, 50, 50);
+  border-bottom-color: rgb(44, 50, 50);
 }

@@ -90,13 +90,13 @@
   /* Chart palette held as hex (not OKLCH) so ECharts' canvas renderer
    * can hex-concat opacity (`color + '40'`) for gradient fills. Browsers
    * keep `oklch(...)` strings unchanged through canvas.fillStyle and
-   * getComputedStyle, breaking those concat sites. Light mode: warm
-   * orange / teal / deep blue / amber / yellow. */
-  --chart-1: #e76e50;
-  --chart-2: #2a9d90;
-  --chart-3: #264653;
-  --chart-4: #e9c468;
-  --chart-5: #f4a261;
+   * getComputedStyle, breaking those concat sites. Harbor ramp: teal /
+   * sage / sand / amber / slate-teal (no rainbow). */
+  --chart-1: #2a8f88;
+  --chart-2: #5fb3a8;
+  --chart-3: #cbb78a;
+  --chart-4: #e08a00;
+  --chart-5: #2f5d63;
 
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -134,12 +134,12 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  /* Dark mode chart palette: blue / green / orange / violet / pink. */
-  --chart-1: #3b82f6;
-  --chart-2: #22c55e;
-  --chart-3: #f97316;
-  --chart-4: #a855f7;
-  --chart-5: #ec4899;
+  /* Dark mode Harbor ramp: teal / sage / sand / amber / slate-teal. */
+  --chart-1: #3fb5ad;
+  --chart-2: #6fc3b8;
+  --chart-3: #d8c79a;
+  --chart-4: #e8a020;
+  --chart-5: #4a7d83;
 
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);

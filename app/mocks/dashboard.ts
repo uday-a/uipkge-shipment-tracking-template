@@ -83,14 +83,16 @@ export interface StatusSlice {
   color: string
 }
 
-// Aggregate status mix across the whole active operation.
+// Aggregate status mix across the whole active operation. Colours follow the
+// Harbor ramp: teal/sand for neutral in-progress states, semantic
+// amber/red/green for delayed / exception / delivered.
 export const STATUS_SPLIT: StatusSlice[] = [
-  { name: 'In transit', value: 412, color: '#3b82f6' },
-  { name: 'Out for delivery', value: 168, color: '#06b6d4' },
-  { name: 'Pending pickup', value: 294, color: '#a855f7' },
-  { name: 'Delayed', value: 96, color: '#f59e0b' },
-  { name: 'Exception', value: 38, color: '#f43f5e' },
-  { name: 'Delivered today', value: 276, color: '#10b981' },
+  { name: 'In transit', value: 412, color: '#2a8f88' },
+  { name: 'Out for delivery', value: 168, color: '#5fb3a8' },
+  { name: 'Pending pickup', value: 294, color: '#cbb78a' },
+  { name: 'Delayed', value: 96, color: '#c28a00' },
+  { name: 'Exception', value: 38, color: '#c0392b' },
+  { name: 'Delivered today', value: 276, color: '#2e8b57' },
 ]
 
 export interface CarrierPerf {

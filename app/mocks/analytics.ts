@@ -33,12 +33,13 @@ export interface ServiceMix {
   color: string
 }
 
+// Harbor categorical ramp: teal → sage → deep slate-teal → sand → amber.
 export const SERVICE_MIX: ServiceMix[] = [
-  { name: 'Standard', value: 2140, color: '#3b82f6' },
-  { name: 'Express', value: 1280, color: '#06b6d4' },
-  { name: 'Freight', value: 940, color: '#a855f7' },
-  { name: 'Overnight', value: 420, color: '#10b981' },
-  { name: 'Same-day', value: 240, color: '#f59e0b' },
+  { name: 'Standard', value: 2140, color: '#2a8f88' },
+  { name: 'Express', value: 1280, color: '#5fb3a8' },
+  { name: 'Freight', value: 940, color: '#2f5d63' },
+  { name: 'Overnight', value: 420, color: '#cbb78a' },
+  { name: 'Same-day', value: 240, color: '#e08a00' },
 ]
 
 export interface ExceptionReason {

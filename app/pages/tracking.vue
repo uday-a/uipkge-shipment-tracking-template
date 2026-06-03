@@ -63,7 +63,7 @@ const stateClass = (s: EventState) =>
 <template>
   <div class="mx-auto max-w-3xl space-y-4 p-3 md:p-6">
     <div class="space-y-1 text-center">
-      <h1 class="text-2xl font-bold tracking-tight">Track a package</h1>
+      <h1 class="text-2xl font-semibold tracking-tight">Track a package</h1>
       <p class="text-muted-foreground text-sm">Enter a tracking number or shipment ID to see live status.</p>
     </div>
 
@@ -111,7 +111,7 @@ const stateClass = (s: EventState) =>
             </div>
             <div class="text-right">
               <p class="text-muted-foreground text-xs">Estimated delivery</p>
-              <p class="text-lg font-bold">{{ shortDate(shipment.estimatedDelivery) }}</p>
+              <p class="text-lg font-semibold tabular-nums">{{ shortDate(shipment.estimatedDelivery) }}</p>
             </div>
           </div>
 
