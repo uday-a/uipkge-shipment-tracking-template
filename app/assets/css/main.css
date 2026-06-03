@@ -73,7 +73,7 @@
  */
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.3rem;
 
   /* Surface roles: container tones carry hierarchy without shadows. */
   --background: oklch(0.985 0.004 95);           /* warm off-white surface */
