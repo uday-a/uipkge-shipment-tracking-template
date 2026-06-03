@@ -135,7 +135,12 @@ const hLines = Array.from({ length: 8 }, (_, i) => (i + 1) * 78)
         @mouseleave="hoveredId = null"
       >
         <span
-          class="bg-card flex items-center justify-center rounded-full ring-[3px] transition-transform"
+          v-if="props.selectedId === r.id"
+          class="absolute left-1/2 top-1/2 size-9 -translate-x-1/2 -translate-y-1/2 animate-ping rounded-full"
+          :style="{ background: r.color, opacity: 0.35 }"
+        />
+        <span
+          class="bg-card relative flex items-center justify-center rounded-full ring-[3px] transition-transform"
           :class="props.selectedId === r.id ? 'size-10 scale-100' : 'size-9 hover:scale-110'"
           :style="{ '--tw-ring-color': r.color, boxShadow: 'var(--elev-2)' }"
         >

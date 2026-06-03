@@ -5,8 +5,6 @@
  */
 import { Bell, Settings, LogOut } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
-import { SidebarTrigger } from '@/components/ui/sidebar'
-import { Separator } from '@/components/ui/separator'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -48,8 +46,6 @@ const paletteGroups = computed<CommandPaletteGroup[]>(() =>
 
 <template>
   <header class="bg-background/95 sticky top-0 z-30 flex h-14 shrink-0 items-center gap-3 border-b px-3 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-    <SidebarTrigger />
-    <Separator orientation="vertical" class="h-5" />
     <div class="flex-1 min-w-0">
       <AppBreadcrumb />
     </div>

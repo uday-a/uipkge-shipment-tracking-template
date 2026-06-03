@@ -35,8 +35,38 @@ const TONE_VAR: Record<Tone, string> = {
   success: '--success', info: '--info', warning: '--warning', destructive: '--destructive', muted: '--muted-foreground',
 }
 
+// Mapbox GL can't parse oklch() (our tokens are OKLCH), so resolve each
+// custom property to an rgb()/hex string via a canvas. Cached per token;
+// cleared on theme switch (tokens differ between light/dark).
+const colorCache = new Map<string, string>()
+let paintCtx: CanvasRenderingContext2D | null = null
 function cssVar(name: string): string {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#6366f1'
+  const hit = colorCache.get(name)
+  if (hit) return hit
+  // Resolve the token (handles var() chains) to a concrete CSS colour…
+  const probe = document.createElement('span')
+  probe.style.color = `var(${name}, #6366f1)`
+  probe.style.display = 'none'
+  document.body.appendChild(probe)
+  const computed = getComputedStyle(probe).color
+  probe.remove()
+  // …then read an actual sRGB pixel — Chromium keeps oklch() in both
+  // getComputedStyle and canvas.fillStyle, but getImageData is always rgb.
+  let resolved = computed || '#6366f1'
+  if (!paintCtx) paintCtx = document.createElement('canvas').getContext('2d', { willReadFrequently: true })
+  if (paintCtx) {
+    try {
+      paintCtx.clearRect(0, 0, 1, 1)
+      paintCtx.fillStyle = computed
+      paintCtx.fillRect(0, 0, 1, 1)
+      const [r, g, b, a] = paintCtx.getImageData(0, 0, 1, 1).data
+      resolved = a === 255 ? `rgb(${r}, ${g}, ${b})` : `rgba(${r}, ${g}, ${b}, ${(a! / 255).toFixed(3)})`
+    } catch {
+      /* keep computed */
+    }
+  }
+  colorCache.set(name, resolved)
+  return resolved
 }
 const toneColor = (t: Tone) => cssVar(TONE_VAR[t])
 
@@ -80,7 +110,19 @@ function createTruckElement(color: string, active: boolean): HTMLElement {
   div.style.justifyContent = 'center'
   div.style.cursor = 'pointer'
   div.style.transition = 'all 0.15s'
+  div.style.position = 'relative'
   div.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>`
+  // Pulse ring — hidden until the trip is selected (toggled in applySelection).
+  const ring = document.createElement('div')
+  ring.className = 'animate-ping'
+  ring.dataset.ping = '1'
+  ring.style.position = 'absolute'
+  ring.style.inset = '-3px'
+  ring.style.borderRadius = '9999px'
+  ring.style.background = color
+  ring.style.opacity = '0'
+  ring.style.zIndex = '-1'
+  div.appendChild(ring)
   return div
 }
 
@@ -213,7 +255,11 @@ function applySelection() {
     if (map!.getLayer(lyr.travelledLayer)) map!.setPaintProperty(lyr.travelledLayer, 'line-opacity', op)
     if (map!.getLayer(lyr.remainingLayer)) map!.setPaintProperty(lyr.remainingLayer, 'line-opacity', remainingOp)
     const truckEl = lyr.truckMarker.getElement()
-    if (truckEl) truckEl.style.opacity = dim ? '0.4' : '1'
+    if (truckEl) {
+      truckEl.style.opacity = dim ? '0.4' : '1'
+      const ring = truckEl.querySelector('[data-ping]') as HTMLElement | null
+      if (ring) ring.style.opacity = sel === id ? '0.4' : '0'
+    }
     const originEl = lyr.originMarker.getElement()
     if (originEl) originEl.style.opacity = dim ? '0.3' : '1'
   })
@@ -230,6 +276,7 @@ function initMap() {
   map = new mapboxgl.Map({
     container: el.value,
     style: mapStyle(isDark),
+    projection: 'mercator',
     center: [-98.35, 39.5],
     zoom: 4,
     attributionControl: true,
@@ -250,6 +297,7 @@ watch(() => props.trips, drawAll, { deep: true })
 
 watch(theme, (newTheme) => {
   if (!map || !mapboxgl) return
+  colorCache.clear() // tokens differ between light/dark — re-resolve on redraw
   map.setStyle(mapStyle(newTheme === 'dark'))
 })
 
