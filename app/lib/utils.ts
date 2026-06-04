@@ -45,3 +45,9 @@ export function shortDate(iso?: string): string {
   return `${MONTHS_SHORT[m - 1]} ${d}, ${y}`
 }
 
+/** "Avery Quinn" → "AQ". */
+export function initials(name?: string): string {
+  if (!name) return '—'
+  return name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()
+}
+

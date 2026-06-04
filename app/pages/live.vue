@@ -41,6 +41,12 @@ const TONE_BG: Record<Tone, string> = {
 }
 
 
+/** "Avery Quinn" → "AQ". */
+function initials(name?: string): string {
+  if (!name) return '—'
+  return name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()
+}
+
 // Deterministic telemetry for the inspector (SSR-safe — no clock/random).
 const COMPASS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
 function headingOf(t: ResolvedTrip): string {
