@@ -22,7 +22,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-  SidebarTrigger,
 } from '@/components/ui/sidebar'
 import { navForPersona } from '~/lib/nav'
 import { LIVE_TRIPS } from '~/mocks/live'
@@ -97,9 +96,7 @@ const NAV_BADGE: Record<string, number> = { '/live': LIVE_TRIPS.length }
       </SidebarGroup>
     </SidebarContent>
 
-    <SidebarFooter class="pb-2">
-      <SidebarTrigger class="text-muted-foreground hover:bg-sidebar-accent hover:text-foreground mx-auto size-8 rounded-md" />
-    </SidebarFooter>
+    <SidebarFooter class="pb-2" />
 
     <SidebarRail />
   </Sidebar>

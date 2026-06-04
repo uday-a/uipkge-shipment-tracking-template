@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import type { Persona } from '~/composables/usePersona'
 import { PERSONA_LABELS } from '~/composables/usePersona'
@@ -24,6 +25,12 @@ import type { CommandPaletteGroup, CommandPaletteItem } from '~/components/block
 
 const { current: persona, set: setPersona } = usePersona()
 const { theme, setTheme } = useTheme()
+
+const cycleTheme = () => {
+  const order: Array<'light' | 'dark' | 'system'> = ['light', 'dark', 'system']
+  const next = order[(order.indexOf(theme.value) + 1) % order.length]
+  setTheme(next)
+}
 
 // Open exceptions (delays + holds) drive the bell badge.
 const exceptionCount = computed(() => SHIPMENTS.filter(isException).length)
@@ -45,6 +52,8 @@ const paletteGroups = computed<CommandPaletteGroup[]>(() =>
 
 <template>
   <header class="bg-background/95 sticky top-0 z-30 flex h-14 shrink-0 items-center gap-3 border-b px-3 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <SidebarTrigger class="size-9 shrink-0" />
+
     <div class="flex-1 min-w-0">
       <AppBreadcrumb />
     </div>
@@ -63,6 +72,19 @@ const paletteGroups = computed<CommandPaletteGroup[]>(() =>
         {{ exceptionCount > 9 ? '9+' : exceptionCount }}
       </span>
     </NuxtLink>
+
+    <!-- Theme toggle: cycles light → dark → system -->
+    <Button
+      variant="ghost"
+      size="icon"
+      class="size-9"
+      :aria-label="`Theme: ${theme}`"
+      @click="cycleTheme()"
+    >
+      <Sun v-if="theme === 'light'" class="size-4" />
+      <Moon v-else-if="theme === 'dark'" class="size-4" />
+      <Monitor v-else class="size-4" />
+    </Button>
 
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
@@ -106,24 +128,6 @@ const paletteGroups = computed<CommandPaletteGroup[]>(() =>
             <Settings class="size-3.5" />Settings
           </NuxtLink>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuLabel class="text-muted-foreground text-xs font-semibold uppercase tracking-widest">
-          Theme
-        </DropdownMenuLabel>
-        <DropdownMenuRadioGroup
-          :model-value="theme"
-          @update:model-value="(v) => setTheme(v as 'light' | 'dark' | 'system')"
-        >
-          <DropdownMenuRadioItem value="light">
-            <Sun class="size-3.5" />Light
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="dark">
-            <Moon class="size-3.5" />Dark
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="system">
-            <Monitor class="size-3.5" />System
-          </DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem disabled class="flex items-center gap-2">
           <LogOut class="size-3.5" />Sign out
