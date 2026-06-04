@@ -32,6 +32,23 @@ const route = useRoute()
 
 const sections = computed(() => navForPersona(persona.value))
 
+// Active row = the longest nav `to` that the current path equals or sits under,
+// so detail routes (/shipments/SHP-1024) light the parent ("Shipments") while a
+// more specific sibling (/shipments/new) still wins on its own route.
+const activeTo = computed(() => {
+  const path = route.path
+  let best = ''
+  for (const section of sections.value) {
+    for (const item of section.items) {
+      if (!item.to) continue
+      if ((path === item.to || path.startsWith(`${item.to}/`)) && item.to.length > best.length) {
+        best = item.to
+      }
+    }
+  }
+  return best
+})
+
 function iconFor(name?: string) {
   if (!name) return null
   return (icons as Record<string, any>)[name] ?? null
@@ -81,12 +98,12 @@ const NAV_BADGE: Record<string, number> = {
           <SidebarMenu>
             <SidebarMenuItem v-for="item in section.items" :key="item.to">
               <SidebarMenuButton
-                :is-active="route.path === item.to"
+                :is-active="item.to === activeTo"
                 as-child
                 :tooltip="item.label"
                 class="data-[active=true]:!bg-sidebar-accent data-[active=true]:!text-sidebar-accent-foreground data-[active=true]:font-medium"
               >
-                <NuxtLink :to="item.to">
+                <NuxtLink :to="item.to" :aria-current="item.to === activeTo ? 'page' : undefined">
                   <component :is="iconFor(item.icon)" v-if="iconFor(item.icon)" class="size-4 shrink-0" />
                   <span>{{ item.label }}</span>
                 </NuxtLink>

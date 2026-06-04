@@ -66,7 +66,7 @@ const maxLane = computed(() => Math.max(...TOP_LANES.map((l) => l.shipments)))
         </CardHeader>
         <CardContent class="flex-1">
           <ClientOnly>
-            <AreaChart v-if="ready" :data="volumeData" x-field="month" y-field="Shipments" :height="260" />
+            <AreaChart v-if="ready" role="img" aria-label="Area chart: shipments handled per month" :data="volumeData" x-field="month" y-field="Shipments" :height="260" />
             <Skeleton v-else class="h-[260px] w-full" />
             <template #fallback><Skeleton class="h-[260px] w-full" /></template>
           </ClientOnly>
@@ -80,7 +80,7 @@ const maxLane = computed(() => Math.max(...TOP_LANES.map((l) => l.shipments)))
         </CardHeader>
         <CardContent class="flex-1">
           <ClientOnly>
-            <PieChart v-if="ready" :data="SERVICE_MIX" :donut="true" :option="serviceOption" :height="200" />
+            <PieChart v-if="ready" role="img" aria-label="Donut chart: service mix by volume" :data="SERVICE_MIX" :donut="true" :option="serviceOption" :height="200" />
             <Skeleton v-else class="h-[200px] w-full" />
             <template #fallback><Skeleton class="h-[200px] w-full" /></template>
           </ClientOnly>
@@ -103,7 +103,7 @@ const maxLane = computed(() => Math.max(...TOP_LANES.map((l) => l.shipments)))
         </CardHeader>
         <CardContent class="flex-1">
           <ClientOnly>
-            <AreaChart v-if="ready" :data="onTimeData" x-field="month" y-field="On-time %" :option="onTimeOption" :height="220" />
+            <AreaChart v-if="ready" role="img" aria-label="Area chart: percentage of shipments delivered on schedule by month" :data="onTimeData" x-field="month" y-field="On-time %" :option="onTimeOption" :height="220" />
             <Skeleton v-else class="h-[220px] w-full" />
             <template #fallback><Skeleton class="h-[220px] w-full" /></template>
           </ClientOnly>
@@ -117,7 +117,7 @@ const maxLane = computed(() => Math.max(...TOP_LANES.map((l) => l.shipments)))
         </CardHeader>
         <CardContent class="flex-1">
           <ClientOnly>
-            <BarChart v-if="ready" :data="exceptionData" x-field="reason" y-field="Count" :height="220" />
+            <BarChart v-if="ready" role="img" aria-label="Bar chart: exception counts by reason over the last 90 days" :data="exceptionData" x-field="reason" y-field="Count" :height="220" />
             <Skeleton v-else class="h-[220px] w-full" />
             <template #fallback><Skeleton class="h-[220px] w-full" /></template>
           </ClientOnly>
@@ -153,7 +153,7 @@ const maxLane = computed(() => Math.max(...TOP_LANES.map((l) => l.shipments)))
         </CardHeader>
         <CardContent class="flex-1">
           <ClientOnly>
-            <BarChart v-if="ready" :data="weeklyData" x-field="day" :y-field="['Inbound', 'Outbound']" :height="220" />
+            <BarChart v-if="ready" role="img" aria-label="Bar chart: weekly inbound versus outbound volume" :data="weeklyData" x-field="day" :y-field="['Inbound', 'Outbound']" :height="220" />
             <Skeleton v-else class="h-[220px] w-full" />
             <template #fallback><Skeleton class="h-[220px] w-full" /></template>
           </ClientOnly>

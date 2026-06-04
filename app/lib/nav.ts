@@ -27,7 +27,7 @@ export const NAV: NavSection[] = [
   {
     label: 'Overview',
     items: [
-      { label: 'Control tower', to: '/control-tower', icon: 'TowerControl' },
+      { label: 'Control tower', to: '/control-tower', icon: 'TowerControl', requires: 'dispatcher' },
       { label: 'Dashboard', to: '/dashboard', icon: 'LayoutDashboard' },
     ],
   },

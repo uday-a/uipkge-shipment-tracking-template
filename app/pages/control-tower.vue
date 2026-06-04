@@ -40,6 +40,7 @@ import {
   type Shipment, type Priority, type ShipmentStatus,
 } from '~/mocks/shipments'
 
+definePageMeta({ middleware: 'require-dispatcher' })
 useHead({ title: 'Control tower · ShipTrack' })
 
 const ready = useDataReady(450)
@@ -168,10 +169,14 @@ function activityTime(iso: string): string {
                 @click="navigateTo(`/shipments/${s.id}`)"
               >
                 <TableCell>
-                  <div class="flex flex-col leading-tight">
+                  <NuxtLink
+                    :to="`/shipments/${s.id}`"
+                    class="focus-visible:ring-ring flex flex-col rounded-sm leading-tight outline-none focus-visible:ring-2"
+                    @click.stop
+                  >
                     <span class="font-medium">{{ s.id }}</span>
                     <span class="text-muted-foreground font-mono text-xs">{{ s.customer }}</span>
-                  </div>
+                  </NuxtLink>
                 </TableCell>
                 <TableCell>
                   <Badge :variant="toneBadge(STATUS_TONE[s.status])" class="gap-1.5">

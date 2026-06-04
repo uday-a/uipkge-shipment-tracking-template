@@ -6,7 +6,7 @@
  * is forced dark (a control tower reads dark); hovering a rail card lights its
  * lane, selecting opens the inspector and flies the map. Dispatcher-gated.
  */
-import { ref, computed } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { Target, MapPin, Truck, Star, X } from 'lucide-vue-next'
 
 import { Badge } from '@/components/ui/badge'
@@ -28,12 +28,32 @@ useHead({ title: 'Live tracking · ShipTrack' })
 const trips = resolvedTrips() // already exception-first
 const selectedId = ref<string | null>(null)
 const mapRef = ref<{ hover?: (id: string | null) => void } | null>(null)
+// Inspector drawer: focusable panel + remembered trigger, so opening moves
+// focus in and closing (X or Esc) returns it to the trip card the user came from.
+const inspectorRef = ref<HTMLElement | null>(null)
+let triggerEl: HTMLElement | null = null
 function select(id: string) {
-  selectedId.value = selectedId.value === id ? null : id
+  const next = selectedId.value === id ? null : id
+  if (next && !import.meta.server) triggerEl = (document.activeElement as HTMLElement) ?? null
+  selectedId.value = next
+}
+function closeInspector() {
+  selectedId.value = null
 }
 function onHover(id: string | null) {
   mapRef.value?.hover?.(id)
 }
+
+watch(selectedId, async (val, old) => {
+  if (import.meta.server) return
+  if (val) {
+    await nextTick()
+    inspectorRef.value?.focus()
+  } else if (old) {
+    triggerEl?.focus?.()
+    triggerEl = null
+  }
+})
 
 /** Tone → CSS variable, for tinting rail accents + progress fills inline. */
 const TONE_BG: Record<Tone, string> = {
@@ -130,11 +150,13 @@ const vehicles = computed(() => VEHICLES.filter((v) => v.status === 'active'))
                 v-for="t in trips"
                 :key="t.shipment.id"
                 type="button"
-                class="block w-full rounded-lg border px-3 py-2.5 text-left transition-colors"
+                class="focus-visible:ring-ring block w-full rounded-lg border px-3 py-2.5 text-left transition-colors outline-none focus-visible:ring-2"
                 :class="selectedId === t.shipment.id ? 'border-foreground/25 bg-accent' : 'bg-card hover:bg-accent/50'"
                 @click="select(t.shipment.id)"
                 @mouseenter="onHover(t.shipment.id)"
                 @mouseleave="onHover(null)"
+                @focus="onHover(t.shipment.id)"
+                @blur="onHover(null)"
               >
                 <div class="flex items-center justify-between gap-2">
                   <span class="font-mono text-[13px] font-medium">{{ t.shipment.id }}</span>
@@ -244,13 +266,18 @@ const vehicles = computed(() => VEHICLES.filter((v) => v.status === 'active'))
         >
           <div
             v-if="selected"
-            class="bg-popover text-popover-foreground absolute bottom-0 right-0 top-0 w-[340px] overflow-hidden border-l"
+            ref="inspectorRef"
+            role="dialog"
+            tabindex="-1"
+            :aria-label="`Trip ${selected.shipment.id} details`"
+            class="bg-popover text-popover-foreground absolute bottom-0 right-0 top-0 w-[340px] overflow-hidden border-l outline-none"
             style="box-shadow: var(--elev-3)"
+            @keydown.esc="closeInspector"
           >
             <div class="p-5">
               <div class="flex items-center justify-between gap-2">
                 <span class="font-mono text-sm font-medium">{{ selected.shipment.id }}</span>
-                <button type="button" class="text-muted-foreground hover:text-foreground -mr-1.5 rounded-md p-1" aria-label="Close" @click="selectedId = null"><X class="size-4" /></button>
+                <button type="button" class="text-muted-foreground hover:text-foreground focus-visible:ring-ring -mr-1.5 rounded-md p-1 outline-none focus-visible:ring-2" aria-label="Close" @click="closeInspector"><X class="size-4" /></button>
               </div>
 
               <!-- ETA hero -->

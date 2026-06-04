@@ -80,36 +80,42 @@ function submit() {
         </CardHeader>
         <CardContent class="grid gap-3 p-4 pt-0 md:grid-cols-2">
           <div class="space-y-2">
-            <Label>Customer <span class="text-destructive">*</span></Label>
+            <Label for="customer">Customer <span class="text-destructive">*</span></Label>
             <Select v-model="form.customerId">
-              <SelectTrigger :class="errors.customerId ? 'border-destructive' : ''"><SelectValue placeholder="Select an account" /></SelectTrigger>
+              <SelectTrigger
+                id="customer"
+                :aria-invalid="errors.customerId || undefined"
+                :aria-describedby="errors.customerId ? 'customer-error' : undefined"
+                :class="errors.customerId ? 'border-destructive' : ''"
+              ><SelectValue placeholder="Select an account" /></SelectTrigger>
               <SelectContent>
                 <SelectItem v-for="c in CUSTOMERS" :key="c.id" :value="c.id">{{ c.name }}</SelectItem>
               </SelectContent>
             </Select>
+            <p v-if="errors.customerId" id="customer-error" class="text-destructive text-xs">Select an account.</p>
           </div>
           <div class="space-y-2">
-            <Label>Carrier</Label>
+            <Label for="carrier">Carrier</Label>
             <Select v-model="form.carrier">
-              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectTrigger id="carrier"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem v-for="c in CARRIERS" :key="c" :value="c">{{ c }}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div class="space-y-2">
-            <Label>Service level</Label>
+            <Label for="service">Service level</Label>
             <Select v-model="form.service">
-              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectTrigger id="service"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem v-for="s in SERVICE_LEVELS" :key="s" :value="s">{{ SERVICE_LABELS[s] }}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div class="space-y-2">
-            <Label>Priority</Label>
+            <Label for="priority">Priority</Label>
             <Select v-model="form.priority">
-              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectTrigger id="priority"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem v-for="p in PRIORITIES" :key="p" :value="p">{{ PRIORITY_LABELS[p] }}</SelectItem>
               </SelectContent>
@@ -127,11 +133,13 @@ function submit() {
         <CardContent class="grid gap-3 p-4 pt-0 md:grid-cols-2">
           <div class="space-y-2">
             <Label for="origin">Origin <span class="text-destructive">*</span></Label>
-            <Input id="origin" v-model="form.origin" placeholder="e.g. Los Angeles, CA" :class="errors.origin ? 'border-destructive' : ''" />
+            <Input id="origin" v-model="form.origin" placeholder="e.g. Los Angeles, CA" :aria-invalid="errors.origin || undefined" :aria-describedby="errors.origin ? 'origin-error' : undefined" :class="errors.origin ? 'border-destructive' : ''" />
+            <p v-if="errors.origin" id="origin-error" class="text-destructive text-xs">Enter a pickup location.</p>
           </div>
           <div class="space-y-2">
             <Label for="dest">Destination <span class="text-destructive">*</span></Label>
-            <Input id="dest" v-model="form.destination" placeholder="e.g. Chicago, IL" :class="errors.destination ? 'border-destructive' : ''" />
+            <Input id="dest" v-model="form.destination" placeholder="e.g. Chicago, IL" :aria-invalid="errors.destination || undefined" :aria-describedby="errors.destination ? 'dest-error' : undefined" :class="errors.destination ? 'border-destructive' : ''" />
+            <p v-if="errors.destination" id="dest-error" class="text-destructive text-xs">Enter a delivery location.</p>
           </div>
         </CardContent>
       </Card>
@@ -146,11 +154,13 @@ function submit() {
           <div class="grid gap-3 md:grid-cols-3">
             <div class="space-y-2">
               <Label for="weight">Weight (kg) <span class="text-destructive">*</span></Label>
-              <Input id="weight" v-model="form.weightKg" type="number" min="0" placeholder="0" :class="errors.weightKg ? 'border-destructive' : ''" />
+              <Input id="weight" v-model="form.weightKg" type="number" min="0" placeholder="0" :aria-invalid="errors.weightKg || undefined" :aria-describedby="errors.weightKg ? 'weight-error' : undefined" :class="errors.weightKg ? 'border-destructive' : ''" />
+              <p v-if="errors.weightKg" id="weight-error" class="text-destructive text-xs">Enter the weight.</p>
             </div>
             <div class="space-y-2">
               <Label for="pieces">Pieces <span class="text-destructive">*</span></Label>
-              <Input id="pieces" v-model="form.pieces" type="number" min="1" placeholder="1" :class="errors.pieces ? 'border-destructive' : ''" />
+              <Input id="pieces" v-model="form.pieces" type="number" min="1" placeholder="1" :aria-invalid="errors.pieces || undefined" :aria-describedby="errors.pieces ? 'pieces-error' : undefined" :class="errors.pieces ? 'border-destructive' : ''" />
+              <p v-if="errors.pieces" id="pieces-error" class="text-destructive text-xs">Enter the number of pieces.</p>
             </div>
             <div class="space-y-2">
               <Label for="value">Declared value (USD)</Label>
@@ -159,7 +169,8 @@ function submit() {
           </div>
           <div class="space-y-2">
             <Label for="contents">Contents <span class="text-destructive">*</span></Label>
-            <Input id="contents" v-model="form.contents" placeholder="e.g. Consumer electronics" :class="errors.contents ? 'border-destructive' : ''" />
+            <Input id="contents" v-model="form.contents" placeholder="e.g. Consumer electronics" :aria-invalid="errors.contents || undefined" :aria-describedby="errors.contents ? 'contents-error' : undefined" :class="errors.contents ? 'border-destructive' : ''" />
+            <p v-if="errors.contents" id="contents-error" class="text-destructive text-xs">Describe the contents.</p>
           </div>
           <div class="space-y-2">
             <Label for="notes">Handling notes</Label>

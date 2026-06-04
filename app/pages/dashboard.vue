@@ -159,6 +159,8 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
           <ClientOnly>
             <AreaChart
               v-if="ready"
+              role="img"
+              aria-label="Area chart: booked versus delivered shipment volume over the trailing 12 months"
               :data="volumeData"
               x-field="month"
               :y-field="['Shipments', 'Delivered']"
@@ -180,6 +182,8 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
             <ClientOnly>
               <PieChart
                 v-if="ready"
+                role="img"
+                aria-label="Donut chart: shipment status mix across the active network"
                 :data="STATUS_SPLIT"
                 :donut="true"
                 :option="statusOption"
@@ -234,6 +238,8 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
           <ClientOnly>
             <BarChart
               v-if="ready"
+              role="img"
+              aria-label="Bar chart: deliveries by region today"
               :data="regionData"
               x-field="region"
               y-field="Deliveries"
