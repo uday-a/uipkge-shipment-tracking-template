@@ -67,7 +67,7 @@ const paletteGroups = computed<CommandPaletteGroup[]>(() =>
       </Button>
       <span
         v-if="exceptionCount > 0"
-        class="bg-destructive text-destructive-foreground pointer-events-none absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-xs font-bold tabular-nums ring-2 ring-background"
+        class="bg-destructive text-destructive-foreground pointer-events-none absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-xs font-semibold tabular-nums ring-2 ring-background"
       >
         {{ exceptionCount > 9 ? '9+' : exceptionCount }}
       </span>

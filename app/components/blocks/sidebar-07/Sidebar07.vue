@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/sidebar'
 import { navForPersona } from '~/lib/nav'
 import { LIVE_TRIPS } from '~/mocks/live'
+import { SHIPMENTS, isException } from '~/mocks/shipments'
 
 const { current: persona } = usePersona()
 const route = useRoute()
@@ -38,7 +39,10 @@ function iconFor(name?: string) {
 
 // Live count badges on nav rows — deterministic from the mock ledger, so
 // server + client render identically (no hydration drift).
-const NAV_BADGE: Record<string, number> = { '/live': LIVE_TRIPS.length }
+const NAV_BADGE: Record<string, number> = {
+  '/live': LIVE_TRIPS.length,
+  '/control-tower': SHIPMENTS.filter(isException).length,
+}
 
 
 </script>

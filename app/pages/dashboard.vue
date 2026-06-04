@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Operations dashboard — the control-tower home for the current persona.
+ * Operations overview — the trends + performance home for the current persona.
  *
  * Top to bottom: greeting + quick actions, KPI band, volume trend +
  * status mix, carrier scorecard + regional split, then the live activity
@@ -109,10 +109,10 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
     <header class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
       <div>
         <h1 class="text-2xl font-semibold tracking-tight">
-          Control tower
+          Operations overview
         </h1>
         <p class="text-muted-foreground text-xs">
-          Live network status for {{ headerDate }}.
+          Network trends and performance · {{ headerDate }}.
         </p>
       </div>
       <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto">

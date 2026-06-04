@@ -26,7 +26,10 @@ export interface NavSection {
 export const NAV: NavSection[] = [
   {
     label: 'Overview',
-    items: [{ label: 'Dashboard', to: '/dashboard', icon: 'LayoutDashboard' }],
+    items: [
+      { label: 'Control tower', to: '/control-tower', icon: 'TowerControl' },
+      { label: 'Dashboard', to: '/dashboard', icon: 'LayoutDashboard' },
+    ],
   },
   {
     label: 'Operations',

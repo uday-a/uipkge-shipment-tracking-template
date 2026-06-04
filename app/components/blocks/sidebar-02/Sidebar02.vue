@@ -61,7 +61,7 @@ const ME = {
           <Truck class="size-4" />
         </span>
         <div class="flex flex-col leading-tight min-w-0 group-data-[collapsible=icon]:hidden">
-          <span class="text-sm font-bold tracking-tight">ShipTrack</span>
+          <span class="text-sm font-semibold tracking-tight">ShipTrack</span>
           <span class="text-muted-foreground text-xs tracking-wide">Powered by uipkge</span>
         </div>
       </NuxtLink>
