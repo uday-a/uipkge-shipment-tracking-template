@@ -224,14 +224,9 @@ export function useFleetMap(opts: { trips: Ref<ResolvedTrip[]>; selectedId: Ref<
 
   function onMapCreated(mapInstance: mapboxgl.Map) {
     map = mapInstance
+    try { (map as any).setProjection('mercator') } catch { /* older API */ }
     map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-right')
-    const init = () => {
-      mapReady.value = true
-      try { (map as any).setProjection('mercator') } catch { /* older API */ }
-      applyBasemapStyle()
-      drawRoutes()
-      fitFleet()
-    }
+    const init = () => { mapReady.value = true; applyBasemapStyle(); drawRoutes(); fitFleet() }
     if (map.loaded()) init()
     else map.on('load', init)
     map.on('style.load', () => { if (mapReady.value) { applyBasemapStyle(); drawRoutes() } })
