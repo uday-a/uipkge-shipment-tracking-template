@@ -10,6 +10,7 @@
  */
 import type { Shipment, ShipmentStatus } from './shipments'
 import { findShipment, STATUS_LABELS } from './shipments'
+import { findConsumer } from './consumers'
 
 export type EventState = 'done' | 'current' | 'pending'
 
@@ -20,6 +21,8 @@ export interface TrackingEvent {
   time: string // ISO datetime, UTC
   state: EventState
   note?: string
+  /** True for not-yet-reached steps: `time` is a planned ETA, not a real scan. */
+  planned?: boolean
 }
 
 export interface PackageLine {
@@ -40,6 +43,8 @@ export interface RouteStop {
   name: string
   eta: string
   state: EventState
+  /** True when this stop hasn't been reached: `eta` is planned, not actual. */
+  planned?: boolean
 }
 
 export interface ShipmentDetail {
@@ -92,20 +97,29 @@ function receiver(s: Shipment): string {
 function buildEvents(s: Shipment): TrackingEvent[] {
   const reached = REACHED[s.status]
   const delivered = s.actualDelivery ?? s.estimatedDelivery
+  const lastMile = s.leg === 'last-mile'
+  // For last-mile the recipient is a real consumer (id mirrored on consumerId).
+  const consumer = lastMile && s.consumerId ? findConsumer(s.consumerId) : undefined
+  const destPlace = consumer ? `${consumer.address}, ${consumer.city}` : s.destination
+  // Only borrow the live scan for the "In transit" rung once the move has
+  // actually departed (reached >= 3); otherwise synthesise a planned waypoint
+  // so a not-yet-shipped movement doesn't show a past-dated origin-queue scan.
+  const departed = reached >= 3
   const ladder: Omit<TrackingEvent, 'state'>[] = [
-    { id: 'e0', label: 'Order received', location: `${s.origin} — ${s.originCode} hub`, time: at(s.createdDate, 9, 12), note: `Label ${s.trackingNumber} generated` },
-    { id: 'e1', label: 'Picked up', location: `${s.origin} origin DC`, time: at(s.shipDate, 12, 30) },
-    { id: 'e2', label: 'Departed origin facility', location: `${s.origin} — ${s.originCode}`, time: at(s.shipDate, 16, 5) },
-    { id: 'e3', label: 'In transit', location: s.lastLocation, time: s.lastUpdate },
-    { id: 'e4', label: 'Arrived at destination hub', location: `${s.destination} — ${s.destinationCode} hub`, time: at(delivered, 6, 40) },
-    { id: 'e5', label: 'Out for delivery', location: `${s.destination} delivery zone`, time: at(delivered, 8, 15) },
-    { id: 'e6', label: 'Delivered', location: s.destination, time: at(delivered, 11, 25), note: s.status === 'delivered' ? `Signed by ${receiver(s)}` : undefined },
+    { id: 'e0', label: 'Order received', location: lastMile ? s.origin : `${s.origin} — ${s.originCode} hub`, time: at(s.createdDate, 9, 12), note: `Label ${s.trackingNumber} generated` },
+    { id: 'e1', label: 'Picked up', location: lastMile ? s.origin : `${s.origin} origin DC`, time: at(s.shipDate, 12, 30) },
+    { id: 'e2', label: lastMile ? 'Departed distribution center' : 'Departed origin facility', location: lastMile ? s.origin : `${s.origin} — ${s.originCode}`, time: at(s.shipDate, 16, 5) },
+    { id: 'e3', label: 'In transit', location: departed ? s.lastLocation : (lastMile ? `${s.destinationCode} delivery route` : `${s.destinationCode} line-haul`), time: departed ? s.lastUpdate : at(s.shipDate, 18, 0) },
+    { id: 'e4', label: lastMile ? 'Arrived in delivery area' : 'Arrived at destination hub', location: lastMile ? consumer?.city ?? s.destination : `${s.destination} — ${s.destinationCode} hub`, time: at(delivered, 6, 40) },
+    { id: 'e5', label: 'Out for delivery', location: lastMile ? destPlace : `${s.destination} delivery zone`, time: at(delivered, 8, 15) },
+    { id: 'e6', label: 'Delivered', location: destPlace, time: at(delivered, 11, 25), note: s.status === 'delivered' ? `Signed by ${consumer?.name ?? receiver(s)}` : undefined },
   ]
 
   const events = ladder.map((e, i): TrackingEvent => {
     let state: EventState = i < reached ? 'done' : i === reached ? 'current' : 'pending'
     if (s.status === 'delivered') state = 'done'
-    return { ...e, state }
+    // Future steps carry a planned ETA, not a real scan time.
+    return { ...e, state, planned: state === 'pending' }
   })
 
   // Layer status-specific annotations onto the current milestone.
@@ -116,7 +130,8 @@ function buildEvents(s: Shipment): TrackingEvent[] {
       cur.label = 'Exception reported'
       cur.note = s.lastLocation.split('—')[1]?.trim() ?? 'Held for resolution'
     }
-    if (s.status === 'pending') cur.note = 'Awaiting carrier pickup'
+    // Don't clobber an authored note (e0 carries the label-generated note).
+    if (s.status === 'pending') cur.note = cur.note ? `${cur.note} · Awaiting carrier pickup` : 'Awaiting carrier pickup'
   }
 
   if (s.status === 'returned') {
@@ -161,18 +176,36 @@ function buildDocuments(s: Shipment): ShipmentDocument[] {
 function buildStops(s: Shipment): RouteStop[] {
   const reached = REACHED[s.status]
   const delivered = s.actualDelivery ?? s.estimatedDelivery
-  const stops: { name: string; eta: string; ladder: number }[] = [
-    { name: `${s.origin} origin DC`, eta: at(s.shipDate, 12, 30), ladder: 1 },
-    { name: `${s.originCode} sortation hub`, eta: at(s.shipDate, 16, 5), ladder: 2 },
-    { name: s.lastLocation, eta: s.lastUpdate, ladder: 3 },
-    { name: `${s.destinationCode} destination hub`, eta: at(delivered, 6, 40), ladder: 4 },
-    { name: s.destination, eta: at(delivered, 11, 25), ladder: 6 },
-  ]
-  const base: RouteStop[] = stops.map((st) => ({
-    name: st.name,
-    eta: st.eta,
-    state: st.ladder <= reached ? 'done' : 'pending',
-  }))
+  const lastMile = s.leg === 'last-mile'
+  const consumer = lastMile && s.consumerId ? findConsumer(s.consumerId) : undefined
+  const departed = reached >= 3
+  // Only show the live position as the in-transit waypoint once the move has
+  // departed; otherwise synthesise a planned waypoint so the ladder stays
+  // chronological (lastUpdate can predate shipDate for a pending pickup).
+  const transitName = departed
+    ? s.lastLocation
+    : (lastMile ? `${s.destinationCode} delivery route` : `${s.destinationCode} line-haul`)
+  const transitEta = departed ? s.lastUpdate : at(s.shipDate, 18, 0)
+
+  // Last-mile is a short DC → route → consumer hop; transfer is the full
+  // warehouse → sortation → hub → destination lane.
+  const stops: { name: string; eta: string; ladder: number }[] = lastMile
+    ? [
+        { name: s.origin, eta: at(s.shipDate, 12, 30), ladder: 2 },
+        { name: transitName, eta: transitEta, ladder: 3 },
+        { name: consumer ? `${consumer.name} — ${consumer.address}` : s.destination, eta: at(delivered, 11, 25), ladder: 6 },
+      ]
+    : [
+        { name: `${s.origin} origin DC`, eta: at(s.shipDate, 12, 30), ladder: 1 },
+        { name: `${s.originCode} sortation hub`, eta: at(s.shipDate, 16, 5), ladder: 2 },
+        { name: transitName, eta: transitEta, ladder: 3 },
+        { name: `${s.destinationCode} destination hub`, eta: at(delivered, 6, 40), ladder: 4 },
+        { name: s.destination, eta: at(delivered, 11, 25), ladder: 6 },
+      ]
+  const base: RouteStop[] = stops.map((st) => {
+    const done = st.ladder <= reached
+    return { name: st.name, eta: st.eta, state: done ? 'done' : 'pending', planned: !done }
+  })
   // Promote the first pending stop to "current" (unless fully delivered).
   if (s.status !== 'delivered') {
     const firstPending = base.findIndex((x) => x.state === 'pending')

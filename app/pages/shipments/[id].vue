@@ -28,7 +28,7 @@ import {
   PRIORITY_TONE, formatMoney, formatWeight,
 } from '~/mocks/shipments'
 import { getShipmentDetail, type EventState } from '~/mocks/shipment-detail'
-import { findCustomer } from '~/mocks/customers'
+import { findConsumer } from '~/mocks/consumers'
 
 const route = useRoute()
 const { isDispatcher } = usePersona()
@@ -36,7 +36,11 @@ const id = computed(() => String(route.params.id))
 
 const shipment = computed(() => findShipment(id.value))
 const detail = computed(() => (shipment.value ? getShipmentDetail(shipment.value.id) : undefined))
-const customer = computed(() => (shipment.value ? findCustomer(shipment.value.customerId) : undefined))
+// For last-mile the recipient is a real consumer (real name / address / city);
+// fall back to the destId-based lookup for any other leg.
+const consumer = computed(() =>
+  shipment.value ? findConsumer(shipment.value.consumerId ?? shipment.value.customerId) : undefined,
+)
 
 useHead(() => ({ title: shipment.value ? `${shipment.value.id} · Zepp` : `Shipment · Zepp` }))
 
@@ -46,6 +50,19 @@ function fmtDateTime(iso: string): string {
   const hh = String(d.getUTCHours()).padStart(2, '0')
   const mm = String(d.getUTCMinutes()).padStart(2, '0')
   return `${months[d.getUTCMonth()]} ${d.getUTCDate()} · ${hh}:${mm} UTC`
+}
+
+// Not-yet-reached steps carry a *planned* ETA, not a real scan — render the
+// date (no clock time) as a "Scheduled" estimate so it doesn't read as
+// fabricated history. The ETA is a full ISO datetime, so format date-only here
+// rather than via shortDate (which only parses yyyy-mm-dd).
+function fmtPlannedDate(iso: string): string {
+  const d = new Date(iso)
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  return `${months[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`
+}
+function fmtStamp(iso: string, planned?: boolean): string {
+  return planned ? `Scheduled · ${fmtPlannedDate(iso)}` : fmtDateTime(iso)
 }
 
 function copyTracking() {
@@ -118,7 +135,7 @@ const stateClass = (s: EventState) =>
         <CardTitle class="text-base">Live journey</CardTitle>
         <CardDescription>Hover a stop for its scan time</CardDescription>
       </CardHeader>
-      <CardContent class="pt-1">
+      <CardContent class="space-y-3 pt-1">
         <JourneyMap
           v-if="detail"
           :stops="detail.stops"
@@ -128,6 +145,18 @@ const stateClass = (s: EventState) =>
           :status-label="STATUS_LABELS[shipment.status]"
           :delivered="shipment.status === 'delivered'"
         />
+        <div>
+          <div class="text-muted-foreground mb-1 flex items-center justify-between text-xs">
+            <span>Route progress</span>
+            <span class="tabular-nums">{{ shipment.progress }}%</span>
+          </div>
+          <div class="bg-muted h-1.5 w-full overflow-hidden rounded-full">
+            <div
+              :class="['h-full rounded-full transition-[width] duration-500', shipment.status === 'delivered' ? 'bg-success' : 'bg-primary']"
+              :style="{ width: `${shipment.progress}%` }"
+            />
+          </div>
+        </div>
       </CardContent>
     </Card>
 
@@ -165,7 +194,7 @@ const stateClass = (s: EventState) =>
                   <div class="-mt-0.5 min-w-0 flex-1 pb-1">
                     <div class="flex flex-wrap items-center justify-between gap-x-3">
                       <p :class="['text-sm font-medium', e.state === 'pending' ? 'text-muted-foreground' : '']">{{ e.label }}</p>
-                      <p class="text-muted-foreground text-xs tabular-nums">{{ fmtDateTime(e.time) }}</p>
+                      <p class="text-muted-foreground text-xs tabular-nums">{{ fmtStamp(e.time, e.planned) }}</p>
                     </div>
                     <p class="text-muted-foreground flex items-center gap-1 text-xs">
                       <MapPin class="size-3 shrink-0" />{{ e.location }}
@@ -225,9 +254,12 @@ const stateClass = (s: EventState) =>
           <CardHeader class="pb-2"><CardTitle class="text-base">Details</CardTitle></CardHeader>
           <CardContent class="space-y-2.5 text-sm">
             <div class="flex items-center justify-between gap-2">
-              <span class="text-muted-foreground flex items-center gap-1.5"><Building2 class="size-3.5" />Customer</span>
-              <NuxtLink v-if="customer" :to="`/customers`" class="font-medium hover:underline">{{ shipment.customer }}</NuxtLink>
+              <span class="text-muted-foreground flex items-center gap-1.5"><Building2 class="size-3.5" />{{ shipment.leg === 'last-mile' ? 'Recipient' : 'Customer' }}</span>
+              <NuxtLink v-if="consumer" :to="`/customers`" class="font-medium hover:underline">{{ shipment.customer }}</NuxtLink>
               <span v-else class="font-medium">{{ shipment.customer }}</span>
+            </div>
+            <div v-if="shipment.leg === 'last-mile' && consumer" class="text-muted-foreground flex items-center gap-1.5 text-xs">
+              <MapPin class="size-3.5 shrink-0" />{{ consumer.address }} · {{ consumer.city }}
             </div>
             <Separator />
             <div class="flex items-center justify-between gap-2">
@@ -265,7 +297,7 @@ const stateClass = (s: EventState) =>
         <Card>
           <CardHeader class="pb-2">
             <CardTitle class="text-base">Route stops</CardTitle>
-            <CardDescription>{{ shipment.route ?? 'Direct lane' }}</CardDescription>
+            <CardDescription>{{ shipment.route ?? (shipment.leg === 'last-mile' ? `${shipment.origin} → ${consumer?.name ?? shipment.destination}` : 'Direct lane') }}</CardDescription>
           </CardHeader>
           <CardContent>
             <ol class="space-y-0">
@@ -279,7 +311,7 @@ const stateClass = (s: EventState) =>
                 </div>
                 <div class="-mt-0.5 min-w-0 flex-1">
                   <p :class="['text-sm', st.state === 'pending' ? 'text-muted-foreground' : 'font-medium']">{{ st.name }}</p>
-                  <p class="text-muted-foreground text-xs tabular-nums">{{ fmtDateTime(st.eta) }}</p>
+                  <p class="text-muted-foreground text-xs tabular-nums">{{ fmtStamp(st.eta, st.planned) }}</p>
                 </div>
               </li>
             </ol>
