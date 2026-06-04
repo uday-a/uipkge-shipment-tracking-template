@@ -19,7 +19,7 @@ import {
 } from '~/mocks/fleet'
 
 definePageMeta({ middleware: 'require-dispatcher' })
-useHead({ title: 'Fleet · ShipTrack' })
+useHead({ title: 'Fleet · Zepp' })
 
 const totals = computed(() => {
   const onRoute = VEHICLES.filter((v) => v.status === 'active').length

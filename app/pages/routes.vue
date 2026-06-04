@@ -16,7 +16,7 @@ import { toneBadge } from '@/lib/utils'
 import { ROUTES, ROUTE_STATUS_LABELS, ROUTE_STATUS_TONE, routeLoad } from '~/mocks/routes'
 
 definePageMeta({ middleware: 'require-dispatcher' })
-useHead({ title: 'Routes · ShipTrack' })
+useHead({ title: 'Routes · Zepp' })
 
 const totals = computed(() => ({
   total: ROUTES.length,

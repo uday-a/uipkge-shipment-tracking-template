@@ -57,6 +57,35 @@
 .lm-pin {
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4));
 }
+/* Import warehouse — filled square hub with a glyph. */
+.lm-hub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 2px 7px rgba(0, 0, 0, 0.45);
+}
+.lm-hub svg {
+  width: 15px;
+  height: 15px;
+}
+/* Distribution center — small outlined square node. */
+.lm-dc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  border-radius: 4px;
+  background: #fff;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.4);
+}
 .lm-label {
   position: absolute;
   bottom: 100%;

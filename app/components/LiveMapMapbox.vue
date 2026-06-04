@@ -16,6 +16,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { useFleetMap, splitByProgress } from '~/composables/useFleetMap'
 import type { ResolvedTrip } from '~/mocks/live'
 import type { Tone } from '~/mocks/shipments'
+import { NETWORK } from '~/mocks/network'
 
 const props = defineProps<{ trips: ResolvedTrip[]; selectedId: string | null }>()
 const emit = defineEmits<{ (e: 'select', id: string): void }>()
@@ -32,6 +33,17 @@ const TONE_CSS: Record<Tone, string> = {
 // prop and break SSR payload serialization).
 const { onMapCreated, hover, mapStyle } = useFleetMap({ trips: toRef(props, 'trips'), selectedId: toRef(props, 'selectedId') })
 defineExpose({ hover })
+
+/** Fixed network facilities — import warehouses + distribution centers. */
+const networkPoints = computed(() =>
+  NETWORK.map((l) => ({
+    id: l.id,
+    type: l.type,
+    label: l.name,
+    code: l.code,
+    lngLat: [l.coords[1], l.coords[0]] as [number, number],
+  })),
+)
 
 /** One marker per trip at its current position (same cut point as the route). */
 const truckPoints = computed(() =>
@@ -66,6 +78,16 @@ const itinerary = computed(() => {
     :attribution-control="false"
     @mb-created="onMapCreated"
   >
+    <!-- Network — fixed import warehouses (labelled hubs) + distribution centers. -->
+    <NetworkMarker
+      v-for="n in networkPoints"
+      :key="n.id"
+      :lng-lat="n.lngLat"
+      :type="n.type"
+      :label="n.label"
+      :code="n.code"
+    />
+
     <!-- Fleet — one marker per trip; hidden when a different trip is selected. -->
     <FleetTruckMarker
       v-for="m in truckPoints"

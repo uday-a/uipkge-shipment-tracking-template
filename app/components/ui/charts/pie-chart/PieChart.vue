@@ -57,8 +57,11 @@ const mergedOption = computed(() => {
       trigger: 'item',
       backgroundColor: chartTooltipBg.value,
       borderColor: chartTooltipBorder.value,
+      borderWidth: 1,
+      padding: [6, 10],
       textStyle: { color: chartTooltipText.value, fontSize: 12 },
       formatter: '{b}: {c} ({d}%)',
+      extraCssText: 'border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,0.18);',
     },
     legend: {
       bottom: 0,

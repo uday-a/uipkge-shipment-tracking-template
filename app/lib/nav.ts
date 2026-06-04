@@ -6,6 +6,10 @@
  *
  * Order here is the order the sidebar renders. Section labels split
  * groups. `requires` restricts a row to a persona level (or higher).
+ *
+ * Zepp Ebikes operations: the tree follows the supply chain —
+ * inbound (China → warehouse) → inventory → fulfilment (WH → DC → consumer)
+ * → network → fleet → customers → insights.
  */
 import type { Persona } from '~/composables/usePersona'
 import { PERSONA_RANK } from '~/composables/usePersona'
@@ -32,12 +36,33 @@ export const NAV: NavSection[] = [
     ],
   },
   {
-    label: 'Operations',
+    label: 'Inbound',
     items: [
-      { label: 'Shipments', to: '/shipments', icon: 'Package' },
+      { label: 'Containers', to: '/containers', icon: 'Ship', requires: 'dispatcher' },
+    ],
+  },
+  {
+    label: 'Inventory',
+    items: [
+      { label: 'Stock', to: '/inventory', icon: 'Boxes', requires: 'dispatcher' },
+      { label: 'Catalog', to: '/catalog', icon: 'Bike', requires: 'dispatcher' },
+    ],
+  },
+  {
+    label: 'Fulfilment',
+    items: [
+      { label: 'Movements', to: '/shipments', icon: 'Package', requires: 'dispatcher' },
       { label: 'Live tracking', to: '/live', icon: 'Radar', requires: 'dispatcher' },
-      { label: 'New shipment', to: '/shipments/new', icon: 'PackagePlus', requires: 'dispatcher' },
-      { label: 'Track a package', to: '/tracking', icon: 'Search' },
+      { label: 'New order', to: '/shipments/new', icon: 'PackagePlus', requires: 'dispatcher' },
+      { label: 'Track my bike', to: '/tracking', icon: 'Search' },
+    ],
+  },
+  {
+    label: 'Network',
+    items: [
+      { label: 'Warehouses', to: '/warehouses', icon: 'Warehouse', requires: 'dispatcher' },
+      { label: 'Distribution centers', to: '/distribution-centers', icon: 'Store', requires: 'dispatcher' },
+      { label: 'Routes', to: '/routes', icon: 'Route', requires: 'dispatcher' },
     ],
   },
   {
@@ -48,15 +73,8 @@ export const NAV: NavSection[] = [
     ],
   },
   {
-    label: 'Network',
-    items: [
-      { label: 'Routes', to: '/routes', icon: 'Route', requires: 'dispatcher' },
-      { label: 'Warehouses', to: '/warehouses', icon: 'Warehouse', requires: 'dispatcher' },
-    ],
-  },
-  {
     label: 'Customers',
-    items: [{ label: 'Accounts', to: '/customers', icon: 'Building2', requires: 'dispatcher' }],
+    items: [{ label: 'Customers', to: '/customers', icon: 'Users', requires: 'dispatcher' }],
   },
   {
     label: 'Insights',

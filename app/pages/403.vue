@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/ui/empty-state'
 import { ShieldOff } from 'lucide-vue-next'
 
-useHead({ title: '403 — Not allowed · ShipTrack' })
+useHead({ title: '403 — Not allowed · Zepp' })
 </script>
 
 <template>

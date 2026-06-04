@@ -23,7 +23,7 @@ import { DRIVERS, DRIVER_STATUS_LABELS, DRIVER_STATUS_TONE } from '~/mocks/drive
 import { VEHICLES, VEHICLE_TYPE_LABELS, VEHICLE_STATUS_LABELS, VEHICLE_STATUS_TONE } from '~/mocks/fleet'
 
 definePageMeta({ middleware: 'require-dispatcher' })
-useHead({ title: 'Live tracking · ShipTrack' })
+useHead({ title: 'Live tracking · Zepp' })
 
 const trips = resolvedTrips() // already exception-first
 const selectedId = ref<string | null>(null)

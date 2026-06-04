@@ -17,7 +17,7 @@
  */
 import { computed } from 'vue'
 import * as icons from 'lucide-vue-next'
-import { Truck } from 'lucide-vue-next'
+import Logo from '@/components/ui/Logo.vue'
 import {
   Sidebar,
   SidebarContent,
@@ -57,11 +57,11 @@ const ME = {
   <Sidebar collapsible="icon">
     <SidebarHeader>
       <NuxtLink to="/dashboard" class="flex items-center gap-2.5 px-2 py-1.5 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center">
-        <span class="bg-primary text-primary-foreground flex size-8 shrink-0 items-center justify-center rounded-xl shadow-sm">
-          <Truck class="size-4" />
+        <span class="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm group-data-[collapsible=icon]:size-9">
+          <Logo class="size-5" />
         </span>
-        <div class="flex flex-col leading-tight min-w-0 group-data-[collapsible=icon]:hidden">
-          <span class="text-sm font-semibold tracking-tight">ShipTrack</span>
+        <div class="flex flex-col min-w-0 leading-tight group-data-[collapsible=icon]:hidden">
+          <span class="font-semibold tracking-tight text-sm">ShipTrack</span>
           <span class="text-muted-foreground text-xs tracking-wide">Powered by uipkge</span>
         </div>
       </NuxtLink>

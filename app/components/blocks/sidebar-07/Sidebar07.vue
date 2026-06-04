@@ -8,7 +8,7 @@
  */
 import { computed } from 'vue'
 import * as icons from 'lucide-vue-next'
-import { Truck } from 'lucide-vue-next'
+import Logo from '@/components/ui/Logo.vue'
 import {
   Sidebar,
   SidebarContent,
@@ -33,7 +33,7 @@ const route = useRoute()
 const sections = computed(() => navForPersona(persona.value))
 
 // Active row = the longest nav `to` that the current path equals or sits under,
-// so detail routes (/shipments/SHP-1024) light the parent ("Shipments") while a
+// so detail routes (/shipments/MOV-L4101) light the parent ("Movements") while a
 // more specific sibling (/shipments/new) still wins on its own route.
 const activeTo = computed(() => {
   const path = route.path
@@ -69,16 +69,16 @@ const NAV_BADGE: Record<string, number> = {
     <SidebarHeader>
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton size="lg" as-child tooltip="ShipTrack" class="group-data-[collapsible=icon]:!justify-center">
+          <SidebarMenuButton size="lg" as-child tooltip="Zepp Ebikes" class="group-data-[collapsible=icon]:!justify-center">
             <NuxtLink to="/dashboard">
               <span
                 class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 shrink-0 items-center justify-center rounded-xl shadow-sm group-data-[collapsible=icon]:size-6"
               >
-                <Truck class="size-4 group-data-[collapsible=icon]:size-3.5" />
+                <Logo class="size-6 group-data-[collapsible=icon]:size-5" />
               </span>
               <div class="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-                <span class="font-display truncate font-semibold tracking-tight">ShipTrack</span>
-                <span class="text-muted-foreground truncate text-xs tracking-wide">Logistics workspace</span>
+                <span class="font-display truncate font-semibold tracking-tight">Zepp Ebikes</span>
+                <span class="text-muted-foreground truncate text-xs tracking-wide">Ebike operations</span>
               </div>
             </NuxtLink>
           </SidebarMenuButton>

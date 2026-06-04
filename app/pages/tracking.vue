@@ -20,7 +20,7 @@ import { toneBadge, toneDot, shortDate } from '@/lib/utils'
 import { findShipment, STATUS_LABELS, STATUS_TONE, SHIPMENTS } from '~/mocks/shipments'
 import { getShipmentDetail, type EventState } from '~/mocks/shipment-detail'
 
-useHead({ title: 'Track a package · ShipTrack' })
+useHead({ title: 'Track my bike · Zepp' })
 
 const route = useRoute()
 const query = ref(String(route.query.ref ?? ''))
@@ -63,8 +63,8 @@ const stateClass = (s: EventState) =>
 <template>
   <div class="mx-auto max-w-3xl space-y-4 p-3 md:p-6">
     <div class="space-y-1 text-center">
-      <h1 class="text-2xl font-semibold tracking-tight">Track a package</h1>
-      <p class="text-muted-foreground text-sm">Enter a tracking number or shipment ID to see live status.</p>
+      <h1 class="text-2xl font-semibold tracking-tight">Track my bike</h1>
+      <p class="text-muted-foreground text-sm">Enter a tracking number or order ID to see live delivery status.</p>
     </div>
 
     <Card>
@@ -72,7 +72,7 @@ const stateClass = (s: EventState) =>
         <form class="flex flex-col gap-2 sm:flex-row" @submit.prevent="track">
           <div class="relative flex-1">
             <Search class="text-muted-foreground absolute left-3 top-1/2 size-4 -translate-y-1/2" aria-hidden="true" />
-            <Input v-model="query" aria-label="Tracking number or shipment ID" placeholder="e.g. ST-2026-4F8A21 or SHP-100412" class="pl-9" />
+            <Input v-model="query" aria-label="Tracking number or order ID" placeholder="e.g. ZP-2026-4F8A21 or MOV-L4101" class="pl-9" />
           </div>
           <Button type="submit"><Search class="mr-2 size-4" />Track</Button>
         </form>

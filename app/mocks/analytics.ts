@@ -37,7 +37,7 @@ export interface ServiceMix {
 export const SERVICE_MIX: ServiceMix[] = [
   { name: 'Standard', value: 2140, color: '#2a8f88' },
   { name: 'Express', value: 1280, color: '#5fb3a8' },
-  { name: 'Freight', value: 940, color: '#2f5d63' },
+  { name: 'Line-haul', value: 940, color: '#2f5d63' },
   { name: 'Overnight', value: 420, color: '#cbb78a' },
   { name: 'Same-day', value: 240, color: '#e08a00' },
 ]
@@ -64,12 +64,12 @@ export interface LanePerf {
 }
 
 export const TOP_LANES: LanePerf[] = [
-  { lane: 'LA → Phoenix', shipments: 412, onTime: 97, avgHrs: 6 },
-  { lane: 'Chicago → Denver', shipments: 388, onTime: 93, avgHrs: 16 },
-  { lane: 'Dallas → Houston', shipments: 366, onTime: 95, avgHrs: 4 },
-  { lane: 'New York → Chicago', shipments: 314, onTime: 90, avgHrs: 13 },
-  { lane: 'Seattle → Portland', shipments: 298, onTime: 98, avgHrs: 3 },
-  { lane: 'Miami → Atlanta', shipments: 256, onTime: 92, avgHrs: 11 },
+  { lane: 'Long Beach → Los Angeles', shipments: 412, onTime: 97, avgHrs: 6 },
+  { lane: 'Newark → New York', shipments: 388, onTime: 95, avgHrs: 5 },
+  { lane: 'Savannah → Atlanta', shipments: 366, onTime: 94, avgHrs: 8 },
+  { lane: 'Long Beach → Phoenix', shipments: 314, onTime: 93, avgHrs: 12 },
+  { lane: 'Newark → Chicago', shipments: 298, onTime: 90, avgHrs: 16 },
+  { lane: 'Long Beach → Seattle', shipments: 256, onTime: 92, avgHrs: 22 },
 ]
 
 export interface DailyVolume {

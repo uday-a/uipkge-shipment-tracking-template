@@ -18,7 +18,7 @@ import { toneBadge } from '@/lib/utils'
 import { DRIVERS, DRIVER_STATUS_LABELS, DRIVER_STATUS_TONE, driverActiveLoad } from '~/mocks/drivers'
 
 definePageMeta({ middleware: 'require-dispatcher' })
-useHead({ title: 'Drivers · ShipTrack' })
+useHead({ title: 'Drivers · Zepp' })
 
 const search = ref('')
 const filtered = computed(() => {

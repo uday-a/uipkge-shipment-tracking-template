@@ -38,7 +38,7 @@ const shipment = computed(() => findShipment(id.value))
 const detail = computed(() => (shipment.value ? getShipmentDetail(shipment.value.id) : undefined))
 const customer = computed(() => (shipment.value ? findCustomer(shipment.value.customerId) : undefined))
 
-useHead(() => ({ title: shipment.value ? `${shipment.value.id} · ShipTrack` : `Shipment · ShipTrack` }))
+useHead(() => ({ title: shipment.value ? `${shipment.value.id} · Zepp` : `Shipment · Zepp` }))
 
 function fmtDateTime(iso: string): string {
   const d = new Date(iso)

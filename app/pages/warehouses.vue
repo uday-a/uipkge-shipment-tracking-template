@@ -16,7 +16,7 @@ import { toneBadge } from '@/lib/utils'
 import { WAREHOUSES, WAREHOUSE_STATUS_LABELS, WAREHOUSE_STATUS_TONE } from '~/mocks/warehouses'
 
 definePageMeta({ middleware: 'require-dispatcher' })
-useHead({ title: 'Warehouses · ShipTrack' })
+useHead({ title: 'Import warehouses · Zepp' })
 
 const totals = computed(() => ({
   count: WAREHOUSES.length,
@@ -29,14 +29,14 @@ const totals = computed(() => ({
 <template>
   <div class="space-y-5 p-4 md:p-6">
     <header>
-      <h1 class="text-xl font-semibold tracking-tight">Warehouses</h1>
-      <p class="text-muted-foreground text-xs">{{ WAREHOUSES.length }} distribution centers across the network.</p>
+      <h1 class="text-xl font-semibold tracking-tight">Import warehouses</h1>
+      <p class="text-muted-foreground text-xs">{{ WAREHOUSES.length }} port-side hubs that receive ocean containers and replenish DCs.</p>
     </header>
 
     <KpiGrid>
-      <KpiTile label="Facilities" :value="totals.count" hint="Hubs + DCs" tone="info" :icon="Warehouse" />
-      <KpiTile label="Inbound today" :value="totals.inbound" hint="Receipts" tone="info" :icon="ArrowDownToLine" />
-      <KpiTile label="Outbound today" :value="totals.outbound" hint="Dispatches" tone="success" :icon="ArrowUpFromLine" />
+      <KpiTile label="Import hubs" :value="totals.count" hint="Near US ports" tone="info" :icon="Warehouse" />
+      <KpiTile label="Bikes in today" :value="totals.inbound" hint="Container receipts" tone="info" :icon="ArrowDownToLine" />
+      <KpiTile label="Bikes out today" :value="totals.outbound" hint="To distribution centers" tone="success" :icon="ArrowUpFromLine" />
       <KpiTile label="Avg capacity" :value="`${totals.avgCap}%`" hint="Utilization" tone="warning" :icon="Warehouse" />
     </KpiGrid>
 

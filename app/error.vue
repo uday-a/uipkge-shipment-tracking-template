@@ -48,7 +48,7 @@ const description = computed(() => {
   return props.error.message || props.error.statusMessage || 'An unexpected error occurred.'
 })
 
-useHead({ title: `${status.value} · ShipTrack` })
+useHead({ title: `${status.value} · Zepp` })
 definePageMeta({ layout: false })
 
 // Server-side errors arrive with a stack; client-side hydration errors

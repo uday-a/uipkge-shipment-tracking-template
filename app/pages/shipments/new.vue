@@ -19,13 +19,13 @@ import { CARRIERS, SERVICE_LEVELS, SERVICE_LABELS, PRIORITIES, PRIORITY_LABELS }
 import { CUSTOMERS } from '~/mocks/customers'
 
 definePageMeta({ middleware: 'require-dispatcher' })
-useHead({ title: 'New shipment · ShipTrack' })
+useHead({ title: 'New shipment · Zepp' })
 
 const form = ref({
   customerId: '',
   service: 'standard',
   priority: 'medium',
-  carrier: 'ShipTrack Fleet',
+  carrier: 'Zepp Linehaul',
   origin: '',
   destination: '',
   weightKg: '' as string | number,

@@ -6,7 +6,8 @@
  * layout so the centred card owns the viewport.
  */
 import { ref } from 'vue'
-import { Mail, Lock, ArrowRight, Sparkles, Truck } from 'lucide-vue-next'
+import { Mail, Lock, ArrowRight, Sparkles } from 'lucide-vue-next'
+import Logo from '@/components/ui/Logo.vue'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -17,12 +18,12 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from 'vue-sonner'
 import type { Persona } from '~/composables/usePersona'
 
-useHead({ title: 'Sign in · ShipTrack' })
+useHead({ title: 'Sign in · Zepp' })
 definePageMeta({ layout: false })
 
 const { set: setPersona } = usePersona()
 
-const email = ref('avery@shiptrack.dev')
+const email = ref('avery@zepp.dev')
 const password = ref('')
 const remember = ref(true)
 
@@ -50,7 +51,7 @@ async function fakeSignUp() {
 const personas: Array<{ key: Persona; label: string; tagline: string }> = [
   { key: 'admin', label: 'Admin', tagline: 'See everything' },
   { key: 'dispatcher', label: 'Dispatcher', tagline: 'Run operations' },
-  { key: 'customer', label: 'Customer', tagline: 'Track my shipments' },
+  { key: 'customer', label: 'Customer', tagline: 'Track my bike' },
 ]
 </script>
 
@@ -61,17 +62,17 @@ const personas: Array<{ key: Persona; label: string; tagline: string }> = [
         <CardContent class="space-y-6 p-6 sm:p-8">
           <div class="space-y-3">
             <div class="flex items-center gap-2">
-              <div class="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-lg">
-                <Truck class="size-5" />
+              <div class="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-lg shadow-sm">
+                <Logo class="size-7" />
               </div>
               <div class="flex flex-col leading-tight">
-                <span class="text-sm font-semibold tracking-tight">ShipTrack</span>
-                <span class="text-muted-foreground text-xs">Shipment tracking · reference template</span>
+                <span class="text-sm font-semibold tracking-tight">Zepp Ebikes</span>
+                <span class="text-muted-foreground text-xs">Ebike operations · reference template</span>
               </div>
             </div>
             <div class="space-y-1 pt-2">
               <h1 class="text-2xl font-semibold tracking-tight">Welcome back</h1>
-              <p class="text-muted-foreground text-sm">Sign in to your ShipTrack control tower.</p>
+              <p class="text-muted-foreground text-sm">Sign in to Zepp operations.</p>
             </div>
           </div>
 

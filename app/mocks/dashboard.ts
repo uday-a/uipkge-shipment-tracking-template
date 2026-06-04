@@ -18,7 +18,7 @@ export interface KpiTile {
 
 export const KPI_TILES: KpiTile[] = [
   {
-    label: 'Active shipments',
+    label: 'Active orders',
     value: '1,284',
     delta: { value: '+8.2%', positive: true },
     spark: [1042, 1071, 1098, 1110, 1135, 1152, 1168, 1190, 1205, 1228, 1256, 1284],
@@ -102,11 +102,11 @@ export interface CarrierPerf {
 }
 
 export const CARRIER_PERFORMANCE: CarrierPerf[] = [
-  { carrier: 'ShipTrack Fleet', onTime: 96, volume: 540 },
-  { carrier: 'Falcon Freight', onTime: 93, volume: 318 },
+  { carrier: 'Zepp Linehaul', onTime: 96, volume: 540 },
+  { carrier: 'Metro Courier', onTime: 93, volume: 318 },
   { carrier: 'RoadRunner Logistics', onTime: 91, volume: 264 },
-  { carrier: 'BlueWave Carriers', onTime: 89, volume: 188 },
-  { carrier: 'Apex Cargo', onTime: 92, volume: 142 },
+  { carrier: 'Pacific Drayage', onTime: 89, volume: 188 },
+  { carrier: 'Sunbelt Freight', onTime: 92, volume: 142 },
 ]
 
 export interface RegionVolume {
@@ -141,18 +141,18 @@ export interface ActivityEntry {
 }
 
 export const ACTIVITY: ActivityEntry[] = [
-  { id: 'a1', type: 'out-for-delivery', timeUtc: '2026-05-28T14:05:00Z', actor: { name: 'Marcus Bell', initials: 'MB' }, text: 'SHP-100412 out for delivery in Phoenix, AZ', meta: 'ETA today' },
-  { id: 'a2', type: 'exception', timeUtc: '2026-05-28T08:15:00Z', actor: { name: 'Priya Nair', initials: 'PN' }, text: 'SHP-100390 held for inspection in Nashville, TN', meta: 'Needs action' },
-  { id: 'a3', type: 'delayed', timeUtc: '2026-05-28T13:20:00Z', actor: { name: 'Devin Walsh', initials: 'DW' }, text: 'SHP-100401 delayed by weather near Hartford, CT', meta: 'Cold-chain' },
-  { id: 'a4', type: 'picked-up', timeUtc: '2026-05-28T13:48:00Z', actor: { name: 'Owen Fischer', initials: 'OF' }, text: 'SHP-100364 picked up at Portland origin DC' },
-  { id: 'a5', type: 'delivered', timeUtc: '2026-05-28T11:25:00Z', actor: { name: 'Leah Park', initials: 'LP' }, text: 'SHP-100333 delivered in San Jose, CA', meta: 'Same-day' },
-  { id: 'a6', type: 'departed', timeUtc: '2026-05-28T11:42:00Z', actor: { name: 'Tasha Okafor', initials: 'TO' }, text: 'SHP-100408 passed Lincoln, NE on the Denver lane' },
-  { id: 'a7', type: 'customs', timeUtc: '2026-05-28T07:10:00Z', actor: { name: 'System', initials: 'sys' }, text: 'SHP-100390 customs paperwork flagged for review' },
-  { id: 'a8', type: 'out-for-delivery', timeUtc: '2026-05-28T13:55:00Z', actor: { name: 'Devin Walsh', initials: 'DW' }, text: 'SHP-100342 last-mile in Manhattan', meta: 'Critical' },
-  { id: 'a9', type: 'delivered', timeUtc: '2026-05-27T19:08:00Z', actor: { name: 'Carlos Mendez', initials: 'CM' }, text: 'SHP-100395 delivered to Sunbelt Grocers, Houston' },
-  { id: 'a10', type: 'picked-up', timeUtc: '2026-05-28T12:30:00Z', actor: { name: 'System', initials: 'sys' }, text: 'SHP-100379 queued for same-day pickup in San Francisco' },
-  { id: 'a11', type: 'delayed', timeUtc: '2026-05-28T09:05:00Z', actor: { name: 'Isabela Cruz', initials: 'IC' }, text: 'SHP-100215 congestion delay near Gary, IN' },
-  { id: 'a12', type: 'departed', timeUtc: '2026-05-28T10:05:00Z', actor: { name: 'Owen Fischer', initials: 'OF' }, text: 'SHP-100385 departed Olympia, WA southbound' },
+  { id: 'a1', type: 'out-for-delivery', timeUtc: '2026-05-28T14:05:00Z', actor: { name: 'Marcus Bell', initials: 'MB' }, text: 'MOV-L4101 out for delivery to Daniel Reyes in Los Angeles', meta: 'ETA today' },
+  { id: 'a2', type: 'exception', timeUtc: '2026-05-28T08:15:00Z', actor: { name: 'Hannah Cole', initials: 'HC' }, text: 'MOV-T2006 transfer to Miami DC — damaged carton flagged in Jacksonville', meta: 'Needs action' },
+  { id: 'a3', type: 'delayed', timeUtc: '2026-05-28T13:20:00Z', actor: { name: 'Owen Fischer', initials: 'OF' }, text: 'MOV-L4103 delayed in Tacoma, WA — Zepp Trail X for Nathan Brooks', meta: 'Last mile' },
+  { id: 'a4', type: 'picked-up', timeUtc: '2026-05-28T13:48:00Z', actor: { name: 'Tasha Okafor', initials: 'TO' }, text: 'MOV-T2003 departed East Coast Import Hub for Chicago DC' },
+  { id: 'a5', type: 'delivered', timeUtc: '2026-05-28T11:25:00Z', actor: { name: 'Hannah Cole', initials: 'HC' }, text: 'MOV-L4111 delivered to Mason Rivera in Miami', meta: 'Express' },
+  { id: 'a6', type: 'customs', timeUtc: '2026-05-28T09:30:00Z', actor: { name: 'System', initials: 'sys' }, text: 'CTR-88150 in customs at Long Beach — 340 bikes aboard Cosco Harmony' },
+  { id: 'a7', type: 'customs', timeUtc: '2026-05-28T08:45:00Z', actor: { name: 'System', initials: 'sys' }, text: 'CTR-77226 customs hold at Port of Newark' },
+  { id: 'a8', type: 'out-for-delivery', timeUtc: '2026-05-28T13:55:00Z', actor: { name: 'Tasha Okafor', initials: 'TO' }, text: 'MOV-L4116 last mile to Mia Thompson in Chicago', meta: 'Express' },
+  { id: 'a9', type: 'delivered', timeUtc: '2026-05-27T19:08:00Z', actor: { name: 'Devin Walsh', initials: 'DW' }, text: 'MOV-T2010 transfer received at Boston DC' },
+  { id: 'a10', type: 'picked-up', timeUtc: '2026-05-28T12:30:00Z', actor: { name: 'System', initials: 'sys' }, text: 'MOV-L4108 queued for pickup at Chicago DC' },
+  { id: 'a11', type: 'delayed', timeUtc: '2026-05-28T09:05:00Z', actor: { name: 'Amara Diallo', initials: 'AD' }, text: 'MOV-L4105 address unverified in Aurora, CO', meta: 'Last mile' },
+  { id: 'a12', type: 'delivered', timeUtc: '2026-05-28T10:05:00Z', actor: { name: 'System', initials: 'sys' }, text: 'CTR-88142 received at West Coast Import Hub — 360 bikes' },
 ]
 
 export interface QuickAction {
@@ -164,8 +164,8 @@ export interface QuickAction {
 }
 
 export const QUICK_ACTIONS: QuickAction[] = [
-  { label: 'Create shipment', description: 'Book a new pickup', icon: 'PackagePlus', to: '/shipments/new', requires: 'dispatcher' },
-  { label: 'Track a package', description: 'Look up by tracking number', icon: 'Search', to: '/tracking' },
+  { label: 'New order', description: 'Book a consumer delivery', icon: 'PackagePlus', to: '/shipments/new', requires: 'dispatcher' },
+  { label: 'Track my bike', description: 'Look up by tracking number', icon: 'Search', to: '/tracking' },
   { label: 'Review exceptions', description: '18 need attention', icon: 'TriangleAlert', to: '/shipments?status=exception', requires: 'dispatcher' },
-  { label: 'Fleet status', description: '20 vehicles online', icon: 'Truck', to: '/fleet', requires: 'dispatcher' },
+  { label: 'Inbound containers', description: 'Ocean freight from China', icon: 'Ship', to: '/containers', requires: 'dispatcher' },
 ]

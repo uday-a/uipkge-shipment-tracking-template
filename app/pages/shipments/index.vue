@@ -32,7 +32,7 @@ import {
   isActive, isException, type Shipment,
 } from '~/mocks/shipments'
 
-useHead({ title: 'Shipments · ShipTrack' })
+useHead({ title: 'Movements · Zepp' })
 
 const { isDispatcher } = usePersona()
 const route = useRoute()
@@ -84,7 +84,7 @@ const columns = computed<ColumnDef<Shipment>[]>(() => {
     },
     {
       accessorKey: 'customer',
-      header: ({ column }) => colHeader(column, 'Customer'),
+      header: ({ column }) => colHeader(column, 'Recipient'),
       cell: ({ row }) => h('span', { class: 'text-sm' }, row.original.customer),
     },
     {
@@ -192,9 +192,9 @@ function onBulkNotify(r: any[]) {
   <div class="space-y-5 p-4 md:p-6">
     <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 class="text-xl font-semibold tracking-tight">Shipments</h1>
+        <h1 class="text-xl font-semibold tracking-tight">Movements</h1>
         <p class="text-muted-foreground text-xs">
-          {{ SHIPMENTS.length }} shipments in the ledger · {{ totals.active }} active.
+          {{ SHIPMENTS.length }} movements · WH→DC transfers + last-mile · {{ totals.active }} active.
         </p>
       </div>
       <div class="flex items-center gap-2">
@@ -202,7 +202,7 @@ function onBulkNotify(r: any[]) {
           <Download class="mr-2 size-4" />Export
         </Button>
         <Button v-if="isDispatcher" size="sm" as-child>
-          <NuxtLink to="/shipments/new"><PackagePlus class="mr-2 size-4" />New shipment</NuxtLink>
+          <NuxtLink to="/shipments/new"><PackagePlus class="mr-2 size-4" />New order</NuxtLink>
         </Button>
       </div>
     </header>

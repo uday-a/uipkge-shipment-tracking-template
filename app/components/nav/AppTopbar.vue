@@ -104,7 +104,7 @@ const paletteGroups = computed<CommandPaletteGroup[]>(() =>
             </Avatar>
             <div class="min-w-0">
               <p class="text-sm font-semibold truncate">Avery Quinn</p>
-              <p class="text-muted-foreground truncate text-xs">avery.quinn@shiptrack.dev</p>
+              <p class="text-muted-foreground truncate text-xs">avery.quinn@zepp.dev</p>
             </div>
           </div>
         </DropdownMenuLabel>

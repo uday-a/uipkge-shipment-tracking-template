@@ -34,7 +34,7 @@ import {
 } from '~/mocks/dashboard'
 import { SHIPMENTS, isActive, isException, TODAY, STATUS_LABELS, STATUS_TONE } from '~/mocks/shipments'
 
-useHead({ title: 'Dashboard · ShipTrack' })
+useHead({ title: 'Dashboard · Zepp' })
 
 const { current: persona, isDispatcher } = usePersona()
 const ready = useDataReady(450)

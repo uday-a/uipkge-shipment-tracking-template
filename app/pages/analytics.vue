@@ -19,7 +19,7 @@ import {
 } from '~/mocks/analytics'
 
 definePageMeta({ middleware: 'require-dispatcher' })
-useHead({ title: 'Analytics · ShipTrack' })
+useHead({ title: 'Analytics · Zepp' })
 
 const ready = useDataReady(450)
 

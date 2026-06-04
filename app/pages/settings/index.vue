@@ -25,14 +25,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'vue-sonner'
 import { PERSONA_LABELS, type Persona } from '~/composables/usePersona'
 
-useHead({ title: 'Settings · ShipTrack' })
+useHead({ title: 'Settings · Zepp' })
 
 const { isAdmin, current: persona, set: setPersona } = usePersona()
 
 // ── Profile ────────────────────────────────────────────────────────
 const profile = ref({
   name: 'Avery Quinn',
-  email: 'avery.quinn@shiptrack.dev',
+  email: 'avery.quinn@zepp.dev',
   role: 'Operations Lead',
   phone: '+1 415-555-0100',
   timezone: 'America/Los_Angeles',
@@ -93,8 +93,8 @@ function toggleIntegration(id: string) {
 
 // ── Organization (admin) ───────────────────────────────────────────
 const org = ref({
-  name: 'ShipTrack Logistics',
-  domain: 'shiptrack.dev',
+  name: 'Zepp Ebikes',
+  domain: 'zepp.dev',
   hq: 'Los Angeles, CA',
   units: 'imperial',
 })
@@ -324,7 +324,7 @@ function createApiKey() {
         <Card>
           <CardHeader class="p-4 pb-2">
             <CardTitle class="text-sm">Connected services</CardTitle>
-            <CardDescription>Wire ShipTrack events into the tools your team already uses.</CardDescription>
+            <CardDescription>Wire Zepp events into the tools your team already uses.</CardDescription>
           </CardHeader>
           <CardContent class="space-y-1.5 p-4 pt-0">
             <div v-for="row in integrations" :key="row.id" class="flex flex-wrap items-center justify-between gap-3 rounded-md border p-2">

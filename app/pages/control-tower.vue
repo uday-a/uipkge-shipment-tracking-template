@@ -41,7 +41,7 @@ import {
 } from '~/mocks/shipments'
 
 definePageMeta({ middleware: 'require-dispatcher' })
-useHead({ title: 'Control tower · ShipTrack' })
+useHead({ title: 'Control tower · Zepp' })
 
 const ready = useDataReady(450)
 
