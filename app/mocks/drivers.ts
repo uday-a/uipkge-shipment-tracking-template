@@ -47,7 +47,7 @@ export const DRIVERS: Driver[] = [
   { id: 'DRV-09', name: 'Greta Lindqvist', initials: 'GL', status: 'on-route', phone: '+1 816-555-0109', homeBase: 'Kansas City, MO', vehicle: 'TRK-220', license: 'CDL-A', rating: 4.7, deliveriesToday: 3, onTimeRate: 93, yearsActive: 10 },
   { id: 'DRV-10', name: 'Isabela Cruz', initials: 'IC', status: 'on-route', phone: '+1 212-555-0110', homeBase: 'New York, NY', vehicle: 'TRK-214', license: 'CDL-A', rating: 4.6, deliveriesToday: 4, onTimeRate: 90, yearsActive: 6 },
   { id: 'DRV-11', name: 'Noah Brennan', initials: 'NB', status: 'available', phone: '+1 602-555-0111', homeBase: 'Phoenix, AZ', license: 'CDL-A', rating: 4.5, deliveriesToday: 0, onTimeRate: 92, yearsActive: 2 },
-  { id: 'DRV-12', name: 'Amara Diallo', initials: 'AD', status: 'available', phone: '+1 720-555-0112', homeBase: 'Denver, CO', license: 'CDL-B', rating: 4.8, deliveriesToday: 0, onTimeRate: 96, yearsActive: 5 },
+  { id: 'DRV-12', name: 'Amara Diallo', initials: 'AD', status: 'on-route', phone: '+1 720-555-0112', homeBase: 'Denver, CO', vehicle: 'TRK-240', license: 'CDL-A', rating: 4.8, deliveriesToday: 2, onTimeRate: 96, yearsActive: 5 },
   { id: 'DRV-13', name: 'Wesley Tran', initials: 'WT', status: 'off-duty', phone: '+1 503-555-0113', homeBase: 'Portland, OR', license: 'CDL-A', rating: 4.3, deliveriesToday: 0, onTimeRate: 85, yearsActive: 1 },
   { id: 'DRV-14', name: 'Sofia Marino', initials: 'SM', status: 'off-duty', phone: '+1 713-555-0114', homeBase: 'Houston, TX', license: 'CDL-A', rating: 4.7, deliveriesToday: 0, onTimeRate: 94, yearsActive: 7 },
 ]
