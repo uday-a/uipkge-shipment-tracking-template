@@ -99,7 +99,7 @@ const filters: FilterDefinition[] = [
       <KpiTile label="Customers" :value="totals.count" hint="D2C riders" tone="info" :icon="Users" />
       <KpiTile label="Active deliveries" :value="totals.active" hint="In the network" tone="info" :icon="Bike" />
       <KpiTile label="Delivered" :value="totals.delivered" hint="All time" tone="success" :icon="PackageCheck" />
-      <KpiTile label="Delivery spend" :value="formatMoney(totals.revenue)" hint="Last-mile cost" tone="warning" :icon="DollarSign" />
+      <KpiTile label="Order revenue" :value="formatMoney(totals.revenue)" hint="Bike sales, all time" tone="warning" :icon="DollarSign" />
     </KpiGrid>
 
     <DataTable
