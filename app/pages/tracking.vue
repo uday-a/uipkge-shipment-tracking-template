@@ -17,7 +17,7 @@ import { EmptyState } from '@/components/ui/empty-state'
 import JourneyMap from '@/components/JourneyMap.vue'
 import { toneBadge, toneDot, shortDate } from '@/lib/utils'
 
-import { findShipment, STATUS_LABELS, STATUS_TONE, SHIPMENTS } from '~/mocks/shipments'
+import { findShipment, STATUS_LABELS, STATUS_TONE, lastMile } from '~/mocks/shipments'
 import { getShipmentDetail, type EventState } from '~/mocks/shipment-detail'
 
 useHead({ title: 'Track my bike · Zepp' })
@@ -33,8 +33,9 @@ function track() {
   submitted.value = true
 }
 
-// A few real tracking numbers users can click to try the demo.
-const samples = computed(() => SHIPMENTS.slice(0, 4).map((s) => s.trackingNumber))
+// A few real consumer tracking numbers users can click to try the demo —
+// last-mile (DC → home) deliveries, the kind a bike buyer would actually look up.
+const samples = computed(() => lastMile().slice(0, 4).map((s) => s.trackingNumber))
 function useSample(ref_: string) {
   query.value = ref_
   submitted.value = true
