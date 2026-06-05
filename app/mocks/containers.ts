@@ -10,6 +10,7 @@
 import {
   manifestUnits, manifestValueUsd, manifestWeightKg, manifestSummary,
 } from './catalog'
+import { findLocation } from './network'
 
 export type ContainerStatus = 'at-sea' | 'at-port' | 'customs' | 'inland' | 'received'
 
@@ -101,4 +102,139 @@ export function inboundContainers(): BikeContainer[] {
 
 export function containersFor(warehouseId: string): BikeContainer[] {
   return CONTAINERS.filter((c) => c.destWarehouseId === warehouseId)
+}
+
+// ── Ocean tracking ──────────────────────────────────────────────────
+// Milestone timeline + a stylised geographic route, both derived from the
+// container's status + dates so the detail page can show live tracking on a
+// map (no hand-authored per-container geometry).
+
+export interface ContainerMilestone {
+  id: string
+  label: string
+  location: string
+  date: string // ISO yyyy-mm-dd
+  state: 'done' | 'current' | 'pending'
+  planned?: boolean
+  note?: string
+}
+
+// Which milestone (1-indexed) a status is currently sitting on.
+const STATUS_STEP: Record<ContainerStatus, number> = {
+  'at-sea': 3,
+  'at-port': 4,
+  customs: 5,
+  inland: 6,
+  received: 7,
+}
+
+/** Pure date math (UTC) — deterministic, SSR-safe. */
+function addDays(iso: string, days: number): string {
+  const [y, m, d] = iso.split('-').map(Number)
+  return new Date(Date.UTC(y!, m! - 1, d! + days)).toISOString().slice(0, 10)
+}
+
+/** Ocean milestone timeline: booking -> departure -> transit -> arrival ->
+ *  customs -> inland drayage -> received at the import warehouse. */
+export function containerTracking(c: BikeContainer): ContainerMilestone[] {
+  const step = STATUS_STEP[c.status]
+  const wh = findLocation(c.destWarehouseId)?.name ?? c.destWarehouseId
+  const mk = (i: number, id: string, label: string, location: string, date: string, note?: string): ContainerMilestone => {
+    const state: ContainerMilestone['state'] =
+      c.status === 'received' ? 'done' : i < step ? 'done' : i === step ? 'current' : 'pending'
+    return { id, label, location, date, state, planned: state === 'pending', note }
+  }
+  return [
+    mk(1, 'm1', 'Booking confirmed', `${c.originPort} · ${c.vessel}`, addDays(c.departedDate, -4)),
+    mk(2, 'm2', `Departed ${c.originPort}`, c.originPort, c.departedDate),
+    mk(3, 'm3', 'Pacific crossing', 'At sea', addDays(c.departedDate, 1), c.status === 'at-sea' ? c.lastLocation : undefined),
+    mk(4, 'm4', `Arrived ${c.destPort}`, c.destPort, c.etaPort, c.status === 'at-port' ? c.lastLocation : undefined),
+    mk(5, 'm5', 'Customs clearance', `${c.destPort} — CBP`, addDays(c.etaPort, 1), c.status === 'customs' ? c.lastLocation : undefined),
+    mk(6, 'm6', `Inland drayage to ${wh}`, c.destPort, addDays(c.etaPort, 2)),
+    mk(7, 'm7', `Received at ${wh}`, wh, c.receivedDate ?? addDays(c.etaPort, 3)),
+  ]
+}
+
+// [lng, lat] for the ports. Western-hemisphere longitudes are kept real here;
+// `containerGeo` offsets them by +360 so the route renders as an eastbound
+// trans-Pacific arc instead of wrapping the wrong way across the map.
+const PORT_COORDS: Record<string, [number, number]> = {
+  YTN: [114.27, 22.57], // Yantian / Shenzhen
+  SHA: [122.0, 30.9], // Shanghai
+  NGB: [121.85, 29.87], // Ningbo
+  TAO: [120.38, 36.07], // Qingdao
+  LGB: [-118.19, 33.75], // Long Beach
+  EWR: [-74.13, 40.69], // Newark
+  SAV: [-81.09, 32.08], // Savannah
+}
+
+export interface ContainerGeoMarker {
+  lngLat: [number, number]
+  type: 'origin' | 'dest' | 'warehouse'
+  label: string
+}
+export interface ContainerGeo {
+  line: [number, number][]
+  vessel: [number, number]
+  markers: ContainerGeoMarker[]
+}
+
+const offset = ([lng, lat]: [number, number]): [number, number] => [lng < 0 ? lng + 360 : lng, lat]
+
+function pointAlong(line: [number, number][], frac: number): [number, number] {
+  if (line.length < 2) return line[0] ?? [0, 0]
+  const segLen = (a: [number, number], b: [number, number]) => Math.hypot(b[0] - a[0], b[1] - a[1])
+  const total = line.slice(1).reduce((sum, p, i) => sum + segLen(line[i]!, p), 0)
+  let target = Math.min(1, Math.max(0, frac)) * total
+  for (let i = 1; i < line.length; i++) {
+    const a = line[i - 1]!, b = line[i]!
+    const len = segLen(a, b)
+    if (target <= len || i === line.length - 1) {
+      const t = len === 0 ? 0 : target / len
+      return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]
+    }
+    target -= len
+  }
+  return line[line.length - 1]!
+}
+
+// Open-water waypoints out of each Chinese load port — kept clear of
+// Taiwan / Japan / Korea so the vessel track leaves Asia over sea, not land.
+const ORIGIN_EXIT: Record<string, [number, number][]> = {
+  YTN: [[118, 19], [124, 20], [133, 24]], // Shenzhen → Bashi Channel → Philippine Sea
+  SHA: [[123.5, 30.5], [127, 29], [132, 29]], // Shanghai → East China Sea → S of Kyushu
+  NGB: [[123.5, 29.5], [127, 28], [132, 28]], // Ningbo → East China Sea → S of Kyushu
+  TAO: [[122, 35], [125.5, 33.5], [129, 33], [134, 32]], // Qingdao → Yellow Sea → Korea Strait → S of Japan
+}
+
+// Trans-ocean lane from open Pacific to each US port (longitudes carried past
+// 180 so the line runs continuously eastward). West coast = North-Pacific
+// great-circle arc approaching California from the sea; east coast = lower
+// Pacific, through the Panama Canal, then up the Atlantic seaboard staying
+// offshore — so the track threads the canal instead of striding over land.
+const DEST_ROUTE: Record<string, [number, number][]> = {
+  LGB: [[150, 34], [170, 40], [195, 43], [218, 40], [233, 36], [239, 34], [241.81, 33.75]],
+  EWR: [[150, 28], [175, 22], [200, 16], [225, 12], [250, 9], [272, 8], [281, 8.8], [280.6, 9.5], [282.5, 14], [284, 19], [285, 24], [285.5, 29], [286, 34], [286.2, 38.5], [286.1, 40.5], [285.87, 40.69]],
+  SAV: [[150, 28], [175, 22], [200, 16], [225, 12], [250, 9], [272, 8], [281, 8.8], [280.6, 9.5], [282.5, 14], [283.5, 19], [282, 25], [281, 29], [280, 31], [279.6, 31.9], [278.91, 32.08]],
+}
+
+/** Real-world-ish ocean route (origin port → Pacific lane → US port →
+ *  warehouse) + the vessel's current spot interpolated along it. */
+export function containerGeo(c: BikeContainer): ContainerGeo {
+  const origin = PORT_COORDS[c.originPortCode] ?? [120, 30]
+  const destPort = PORT_COORDS[c.destPortCode] ?? [-118, 34]
+  const whLoc = findLocation(c.destWarehouseId)
+  const wh = whLoc ? offset([whLoc.coords[1], whLoc.coords[0]]) : offset(destPort)
+  const exit = ORIGIN_EXIT[c.originPortCode] ?? []
+  const dest = DEST_ROUTE[c.destPortCode] ?? [offset(destPort)]
+  const line: [number, number][] = [origin, ...exit, ...dest, wh]
+  return {
+    line,
+    vessel: pointAlong(line, c.progress / 100),
+    markers: [
+      { lngLat: origin, type: 'origin', label: c.originPort },
+      { lngLat: offset(destPort), type: 'dest', label: c.destPort },
+      { lngLat: wh, type: 'warehouse', label: whLoc?.name ?? 'Import warehouse' },
+    ],
+  }
 }

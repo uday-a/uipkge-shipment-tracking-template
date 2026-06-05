@@ -86,12 +86,21 @@ const kpis = computed(() => ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow v-for="c in containers" :key="c.id" class="hover:bg-muted/50">
+            <TableRow
+              v-for="c in containers"
+              :key="c.id"
+              class="hover:bg-muted/50 cursor-pointer"
+              @click="navigateTo(`/containers/${c.id}`)"
+            >
               <TableCell>
-                <div class="flex flex-col leading-tight">
+                <NuxtLink
+                  :to="`/containers/${c.id}`"
+                  class="focus-visible:ring-ring flex flex-col rounded-sm leading-tight outline-none focus-visible:ring-2"
+                  @click.stop
+                >
                   <span class="font-medium">{{ c.id }}</span>
                   <span class="text-muted-foreground font-mono text-xs">{{ c.bookingRef }}</span>
-                </div>
+                </NuxtLink>
               </TableCell>
               <TableCell>
                 <span class="inline-flex items-center gap-1.5 text-sm">
