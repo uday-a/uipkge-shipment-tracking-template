@@ -146,7 +146,7 @@ export const ACTIVITY: ActivityEntry[] = [
   { id: 'a3', type: 'delayed', timeUtc: '2026-05-28T13:20:00Z', actor: { name: 'Owen Fischer', initials: 'OF' }, text: 'MOV-L4103 delayed in Tacoma, WA — Zepp Trail X for Nathan Brooks', meta: 'Last mile' },
   { id: 'a4', type: 'picked-up', timeUtc: '2026-05-28T13:48:00Z', actor: { name: 'Tasha Okafor', initials: 'TO' }, text: 'MOV-T2003 departed East Coast Import Hub for Chicago DC' },
   { id: 'a5', type: 'delivered', timeUtc: '2026-05-28T11:25:00Z', actor: { name: 'Hannah Cole', initials: 'HC' }, text: 'MOV-L4111 delivered to Mason Rivera in Miami', meta: 'Express' },
-  { id: 'a6', type: 'customs', timeUtc: '2026-05-28T09:30:00Z', actor: { name: 'System', initials: 'sys' }, text: 'CTR-88150 in customs at Long Beach — 340 bikes aboard Cosco Harmony' },
+  { id: 'a6', type: 'customs', timeUtc: '2026-05-28T09:30:00Z', actor: { name: 'System', initials: 'sys' }, text: 'CTR-88150 in customs at Long Beach — 320 bikes aboard Cosco Harmony' },
   { id: 'a7', type: 'customs', timeUtc: '2026-05-28T08:45:00Z', actor: { name: 'System', initials: 'sys' }, text: 'CTR-77226 customs hold at Port of Newark' },
   { id: 'a8', type: 'out-for-delivery', timeUtc: '2026-05-28T13:55:00Z', actor: { name: 'Tasha Okafor', initials: 'TO' }, text: 'MOV-L4116 last mile to Mia Thompson in Chicago', meta: 'Express' },
   { id: 'a9', type: 'delivered', timeUtc: '2026-05-27T19:08:00Z', actor: { name: 'Devin Walsh', initials: 'DW' }, text: 'MOV-T2010 transfer received at Boston DC' },
