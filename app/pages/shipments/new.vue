@@ -169,12 +169,12 @@ function submit() {
           </div>
           <div class="space-y-2">
             <Label for="contents">Contents <span class="text-destructive">*</span></Label>
-            <Input id="contents" v-model="form.contents" placeholder="e.g. Consumer electronics" :aria-invalid="errors.contents || undefined" :aria-describedby="errors.contents ? 'contents-error' : undefined" :class="errors.contents ? 'border-destructive' : ''" />
+            <Input id="contents" v-model="form.contents" placeholder="e.g. 12× Zepp City" :aria-invalid="errors.contents || undefined" :aria-describedby="errors.contents ? 'contents-error' : undefined" :class="errors.contents ? 'border-destructive' : ''" />
             <p v-if="errors.contents" id="contents-error" class="text-destructive text-xs">Describe the contents.</p>
           </div>
           <div class="space-y-2">
             <Label for="notes">Handling notes</Label>
-            <Textarea id="notes" v-model="form.notes" rows="2" placeholder="Fragile, keep upright, etc." />
+            <Textarea id="notes" v-model="form.notes" rows="2" placeholder="Lithium battery, keep upright, tail-lift required, etc." />
           </div>
         </CardContent>
       </Card>
