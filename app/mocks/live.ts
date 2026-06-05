@@ -141,7 +141,9 @@ export function resolvedTrips(): ResolvedTrip[] {
   const out: ResolvedTrip[] = []
   for (const t of LIVE_TRIPS) {
     const shipment = SHIPMENTS.find((s) => s.id === t.shipmentId)
-    if (!shipment) continue
+    // A live board shows only what's still moving — drop completed legs so the
+    // "active" / "Live" counts and the map stay honest (delivered ≠ on route).
+    if (!shipment || ['delivered', 'returned'].includes(shipment.status)) continue
     out.push({
       shipment,
       coords: t.coords,
