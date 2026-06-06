@@ -103,7 +103,7 @@ function saveOrg() {
 }
 const apiKeys = ref([
   { id: 'k1', name: 'Production webhook', lastUsed: '2026-05-28, 06:00' },
-  { id: 'k2', name: 'Carrier EDI bridge', lastUsed: '2026-05-27, 22:14' },
+  { id: 'k2', name: 'Warehouse WMS bridge', lastUsed: '2026-05-27, 22:14' },
   { id: 'k3', name: 'Dev test key', lastUsed: '2026-05-20, 11:08' },
 ])
 function revokeKey(name: string) {
@@ -354,7 +354,7 @@ function createApiKey() {
           <Card>
             <CardHeader class="p-4 pb-2">
               <CardTitle class="text-sm">Company info</CardTitle>
-              <CardDescription>Surfaced on labels, the customer portal, and BOL documents.</CardDescription>
+              <CardDescription>Surfaced on shipping labels, the customer portal, and packing slips.</CardDescription>
             </CardHeader>
             <CardContent class="space-y-4 p-4 pt-0">
               <div class="grid gap-3 md:grid-cols-3">
@@ -383,7 +383,7 @@ function createApiKey() {
               <div class="flex items-start justify-between gap-3">
                 <div>
                   <CardTitle class="text-sm">API keys</CardTitle>
-                  <CardDescription>Server-to-server credentials for carrier feeds and webhooks.</CardDescription>
+                  <CardDescription>Server-to-server credentials for warehouse feeds and webhooks.</CardDescription>
                 </div>
                 <Button size="sm" @click="createApiKey"><Plus class="mr-2 size-3.5" />New key</Button>
               </div>
