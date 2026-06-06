@@ -12,7 +12,7 @@ import { computed } from 'vue'
 import {
   Package, CircleCheck, Truck, TriangleAlert, PackagePlus, Search,
   ArrowRight, MapPin, AlertTriangle, Clock, PackageCheck,
-  Boxes, Plane, ChevronRight,
+  Boxes, Plane, ChevronRight, Ship,
 } from 'lucide-vue-next'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -94,7 +94,7 @@ function activityTime(iso: string): string {
   return `${hh}:${mm}`
 }
 
-const ACTION_ICON_MAP = { PackagePlus, Search, TriangleAlert, Truck } as const
+const ACTION_ICON_MAP = { PackagePlus, Search, TriangleAlert, Truck, Ship } as const
 const visibleActions = computed(() =>
   QUICK_ACTIONS.filter((a) => !a.requires || (a.requires === 'dispatcher' ? isDispatcher.value : persona.value === 'admin')),
 )

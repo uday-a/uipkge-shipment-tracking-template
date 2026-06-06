@@ -151,9 +151,11 @@ export const ACTIVITY: ActivityEntry[] = [
   { id: 'a8', type: 'out-for-delivery', timeUtc: '2026-05-28T13:55:00Z', actor: { name: 'Tasha Okafor', initials: 'TO' }, text: 'MOV-L4116 last mile to Mia Thompson in Chicago', meta: 'Express' },
   { id: 'a9', type: 'delivered', timeUtc: '2026-05-27T19:08:00Z', actor: { name: 'Devin Walsh', initials: 'DW' }, text: 'MOV-T2010 transfer received at Boston DC' },
   { id: 'a10', type: 'picked-up', timeUtc: '2026-05-28T12:30:00Z', actor: { name: 'System', initials: 'sys' }, text: 'MOV-L4108 queued for pickup at Chicago DC' },
-  { id: 'a11', type: 'delayed', timeUtc: '2026-05-28T09:05:00Z', actor: { name: 'Amara Diallo', initials: 'AD' }, text: 'MOV-L4105 address unverified in Aurora, CO', meta: 'Last mile' },
+  { id: 'a11', type: 'exception', timeUtc: '2026-05-28T09:05:00Z', actor: { name: 'Amara Diallo', initials: 'AD' }, text: 'MOV-L4105 address unverified in Aurora, CO', meta: 'Last mile' },
   { id: 'a12', type: 'delivered', timeUtc: '2026-05-28T10:05:00Z', actor: { name: 'System', initials: 'sys' }, text: 'CTR-88142 received at West Coast Import Hub — 360 bikes' },
 ]
+// Newest first — both the dashboard and control-tower feeds claim that order.
+ACTIVITY.sort((a, b) => b.timeUtc.localeCompare(a.timeUtc))
 
 export interface QuickAction {
   label: string
@@ -166,6 +168,6 @@ export interface QuickAction {
 export const QUICK_ACTIONS: QuickAction[] = [
   { label: 'New order', description: 'Book a consumer delivery', icon: 'PackagePlus', to: '/shipments/new', requires: 'dispatcher' },
   { label: 'Track my bike', description: 'Look up by tracking number', icon: 'Search', to: '/tracking' },
-  { label: 'Review exceptions', description: '18 need attention', icon: 'TriangleAlert', to: '/shipments?status=exception', requires: 'dispatcher' },
+  { label: 'Review exceptions', description: 'Open delays + holds', icon: 'TriangleAlert', to: '/shipments?status=exception', requires: 'dispatcher' },
   { label: 'Inbound containers', description: 'Ocean freight from China', icon: 'Ship', to: '/containers', requires: 'dispatcher' },
 ]
