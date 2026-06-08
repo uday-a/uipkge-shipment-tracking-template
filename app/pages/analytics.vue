@@ -55,7 +55,7 @@ const maxLane = computed(() => Math.max(...TOP_LANES.map((l) => l.shipments)))
       <KpiTile label="Shipments (12mo)" :value="totals.shipments.toLocaleString()" hint="Total handled" tone="info" :icon="Package" />
       <KpiTile label="On-time rate" :value="`${totals.onTime}%`" hint="Latest month" tone="success" :icon="Gauge" />
       <KpiTile label="Avg transit" :value="`${totals.transit}h`" hint="Door to door" tone="info" :icon="Clock" />
-      <KpiTile label="Cost / shipment" :value="`$${totals.cost}`" hint="Blended" tone="warning" :icon="DollarSign" />
+      <KpiTile label="Cost / shipment" :value="`$${totals.cost.toFixed(2)}`" hint="Latest month" tone="warning" :icon="DollarSign" />
     </KpiGrid>
 
     <div class="grid gap-3 lg:grid-cols-12">

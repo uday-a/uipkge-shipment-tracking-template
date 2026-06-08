@@ -47,13 +47,14 @@ export interface ExceptionReason {
   count: number
 }
 
+// Descending by count — the bar chart renders this order verbatim.
 export const EXCEPTION_REASONS: ExceptionReason[] = [
   { reason: 'Weather', count: 34 },
+  { reason: 'Recipient unavailable', count: 27 },
   { reason: 'Address issue', count: 22 },
   { reason: 'Customs hold', count: 18 },
   { reason: 'Mechanical', count: 14 },
   { reason: 'Damage', count: 9 },
-  { reason: 'Recipient unavailable', count: 27 },
 ]
 
 export interface LanePerf {
