@@ -31,7 +31,7 @@ import {
   Table, TableBody, TableCell, TableEmpty, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table'
 import KpiTile from '@/components/KpiTile.vue'
-import { toneBadge, toneDot } from '@/lib/utils'
+import { toneBadge, toneDot, shortDate } from '@/lib/utils'
 
 import { ACTIVITY, type ActivityEntry } from '~/mocks/dashboard'
 import {
@@ -81,8 +81,10 @@ const breakdown = computed(() => FLOW.map((status) => ({ status, n: byStatus(sta
 const breakdownMax = computed(() => Math.max(1, ...breakdown.value.map((b) => b.n)))
 
 // ── Out for delivery — last mile landing today ──────────────────────
+// Last-mile only: a transfer can be "out for delivery" to a DC, but this
+// card is the consumer-facing last-leg list.
 const lastMile = computed(() =>
-  [...SHIPMENTS.filter((s) => s.status === 'out-for-delivery')].sort((a, b) => b.progress - a.progress),
+  [...SHIPMENTS.filter((s) => s.status === 'out-for-delivery' && s.leg === 'last-mile')].sort((a, b) => b.progress - a.progress),
 )
 
 // ── Live activity feed (shared event stream) ────────────────────────
@@ -199,7 +201,7 @@ function activityTime(iso: string): string {
                     class="text-xs tabular-nums"
                     :class="isPastDue(s) ? 'text-destructive font-medium' : 'text-muted-foreground'"
                   >
-                    {{ isPastDue(s) ? 'Past due' : 'Today' }}
+                    {{ isPastDue(s) ? 'Past due' : (s.estimatedDelivery === TODAY ? 'Today' : shortDate(s.estimatedDelivery)) }}
                   </span>
                 </TableCell>
                 <TableCell>
