@@ -15,7 +15,6 @@
  * Math.random / Date.now) so server + client render identically.
  */
 import { SHIPMENTS, type Shipment, type ShipmentStatus, type Tone } from './shipments'
-import { findRoute } from './routes'
 
 export interface LivePoint { x: number; y: number }
 /** [lat, lng] waypoints tracing real roads, origin → … → destination. */
@@ -62,6 +61,23 @@ function project([lat, lng]: GeoPoint): LivePoint {
     x: ((lng - US.lngMin) / (US.lngMax - US.lngMin)) * 1000,
     y: ((US.latMax - lat) / (US.latMax - US.latMin)) * 700,
   }
+}
+
+/** Great-circle km between two [lat, lng] points (haversine). Deterministic. */
+function haversineKm([lat1, lng1]: GeoPoint, [lat2, lng2]: GeoPoint): number {
+  const R = 6371
+  const toRad = (d: number) => (d * Math.PI) / 180
+  const dLat = toRad(lat2 - lat1)
+  const dLng = toRad(lng2 - lng1)
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2
+  return 2 * R * Math.asin(Math.sqrt(a))
+}
+
+/** Road distance of a trip = sum of haversine hops along its real polyline. */
+function polylineKm(coords: GeoPoint[]): number {
+  let km = 0
+  for (let i = 1; i < coords.length; i++) km += haversineKm(coords[i - 1]!, coords[i]!)
+  return Math.round(km)
 }
 
 /**
@@ -150,7 +166,7 @@ export function resolvedTrips(): ResolvedTrip[] {
       stops: LIVE_STOPS[t.shipmentId] ?? [],
       path: t.coords.map(project),
       tone: LIVE_ROUTE_TONE[shipment.status],
-      distanceKm: (shipment.route && findRoute(shipment.route)?.distanceKm) || 0,
+      distanceKm: polylineKm(t.coords),
     })
   }
   out.sort((a, b) => URGENCY_RANK[a.shipment.status] - URGENCY_RANK[b.shipment.status])
