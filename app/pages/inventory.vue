@@ -63,7 +63,7 @@ const cellTone = (loc: { type: string }, n: number) =>
     <KpiGrid v-if="ready">
       <KpiTile label="Bikes on hand" :value="kpis.onHand.toLocaleString()" hint="Network-wide" tone="info" :icon="Boxes" />
       <KpiTile label="Models" :value="kpis.models" hint="In the catalog" tone="info" :icon="Bike" />
-      <KpiTile label="Low-stock DCs" :value="kpis.lowStock" hint="≤ 10 available on a model" tone="warning" :icon="PackageX" />
+      <KpiTile label="Low-stock DCs" :value="kpis.lowStock" hint="≤ 10 on hand on a model" tone="warning" :icon="PackageX" />
       <KpiTile label="Retail value" :value="formatMoney(kpis.value)" hint="On-hand at MSRP" tone="success" :icon="DollarSign" />
     </KpiGrid>
     <KpiGrid v-else>

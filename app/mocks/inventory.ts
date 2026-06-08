@@ -75,10 +75,14 @@ export function skuAvailable(sku: string): number {
   return stockOf(sku).reduce((sum, r) => sum + (r.onHand - r.allocated), 0)
 }
 
-/** DC rows whose available stock sits at or below `threshold` (replenish flags). */
+/**
+ * DC rows whose ON-HAND stock sits at or below `threshold` — i.e. the cells
+ * the stock table flags in warning. Keyed on on-hand (not available) so the
+ * "Low-stock DCs" KPI count equals the number of DCs showing a flagged cell.
+ */
 export function lowStock(threshold = 10): StockRow[] {
   const dcIds = new Set(NETWORK.filter((l) => l.type === 'dc').map((l) => l.id))
-  return STOCK.filter((r) => dcIds.has(r.locationId) && r.onHand - r.allocated <= threshold)
+  return STOCK.filter((r) => dcIds.has(r.locationId) && r.onHand <= threshold)
 }
 
 /** All known SKUs, in catalog order (convenience for table columns). */
