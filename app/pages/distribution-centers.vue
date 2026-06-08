@@ -54,7 +54,7 @@ const capTone = (pct: number) => (pct >= 90 ? 'text-warning' : 'text-muted-foreg
     <KpiGrid v-if="ready">
       <KpiTile label="Distribution centers" :value="kpis.count" hint="Across the network" tone="info" :icon="Store" />
       <KpiTile label="Bikes on hand" :value="kpis.onHand.toLocaleString()" hint="Available to fulfil" tone="success" :icon="Boxes" />
-      <KpiTile label="Near capacity" :value="kpis.nearCapacity" hint="≥ 90% utilised" tone="warning" :icon="TriangleAlert" />
+      <KpiTile label="Near capacity" :value="kpis.nearCapacity" hint="Flagged for replenishment" tone="warning" :icon="TriangleAlert" />
       <KpiTile label="Avg utilisation" :value="`${kpis.avgCap}%`" hint="Floor space" tone="info" :icon="Gauge" />
     </KpiGrid>
     <KpiGrid v-else>
