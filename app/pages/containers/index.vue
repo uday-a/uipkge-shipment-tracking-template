@@ -70,7 +70,7 @@ const kpis = computed(() => ({
           <CardTitle class="text-base">Container manifest</CardTitle>
           <CardDescription>Every inbound container + the bikes aboard</CardDescription>
         </div>
-        <Badge variant="info" class="tabular-nums">{{ kpis.inTransit }} at sea</Badge>
+        <Badge variant="info" class="tabular-nums">{{ kpis.inTransit }} in transit</Badge>
       </CardHeader>
       <CardContent>
         <Table v-if="ready">
