@@ -142,7 +142,7 @@ const stateClass = (s: EventState) =>
                 <div class="-mt-0.5 min-w-0 flex-1">
                   <div class="flex flex-wrap items-center justify-between gap-x-3">
                     <p :class="['text-sm font-medium', e.state === 'pending' ? 'text-muted-foreground' : '']">{{ e.label }}</p>
-                    <p class="text-muted-foreground text-xs tabular-nums">{{ fmtDateTime(e.time) }}</p>
+                    <p class="text-muted-foreground text-xs tabular-nums">{{ e.planned ? `Est. ${fmtDateTime(e.time)}` : fmtDateTime(e.time) }}</p>
                   </div>
                   <p class="text-muted-foreground flex items-center gap-1 text-xs"><MapPin class="size-3 shrink-0" />{{ e.location }}</p>
                   <p v-if="e.note" class="text-foreground/80 mt-0.5 text-xs">{{ e.note }}</p>

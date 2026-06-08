@@ -164,7 +164,7 @@ const stateClass = (s: EventState) =>
     <KpiGrid>
       <KpiTile label="Progress" :value="`${shipment.progress}%`" :hint="STATUS_LABELS[shipment.status]" tone="info" :icon="Truck" />
       <KpiTile label="ETA" :value="shortDate(shipment.estimatedDelivery)" hint="Estimated arrival" tone="success" :icon="Clock" />
-      <KpiTile label="Weight" :value="formatWeight(shipment.weightKg)" :hint="`${shipment.pieces} pieces`" tone="info" :icon="Weight" />
+      <KpiTile label="Weight" :value="formatWeight(shipment.weightKg)" :hint="`${shipment.pieces} ${shipment.pieces === 1 ? 'piece' : 'pieces'}`" tone="info" :icon="Weight" />
       <KpiTile v-if="isDispatcher" label="Declared value" :value="formatMoney(shipment.valueUsd)" :hint="`Cost ${formatMoney(shipment.costUsd)}`" tone="warning" :icon="DollarSign" />
       <KpiTile v-else label="Service" :value="SERVICE_LABELS[shipment.service]" :hint="shipment.carrier" tone="info" :icon="Package" />
     </KpiGrid>
@@ -222,7 +222,7 @@ const stateClass = (s: EventState) =>
                   </div>
                 </div>
                 <p class="text-muted-foreground pt-1 text-xs">
-                  Total {{ shipment.pieces }} pieces · {{ formatWeight(shipment.weightKg) }} · {{ shipment.contents }}
+                  Total {{ shipment.pieces }} {{ shipment.pieces === 1 ? 'piece' : 'pieces' }} · {{ formatWeight(shipment.weightKg) }} · {{ shipment.contents }}
                 </p>
               </div>
             </TabsContent>

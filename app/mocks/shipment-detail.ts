@@ -61,6 +61,29 @@ function at(date: string, hour: number, minute = 0): string {
   return `${date}T${hh}:${mm}:00Z`
 }
 
+/** Same-format ISO (UTC) `addMin` minutes after `iso`. Deterministic. */
+function isoBump(iso: string, addMin: number): string {
+  const d = new Date(Date.parse(iso) + addMin * 60_000)
+  const p = (n: number) => String(n).padStart(2, '0')
+  return `${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())}T${p(d.getUTCHours())}:${p(d.getUTCMinutes())}:00Z`
+}
+
+/**
+ * Keep a derived timeline strictly forward-moving. A borrowed live scan
+ * (lastUpdate) or a synthesised hour can land *before* the rung above it —
+ * e.g. a same-day last-mile where morning "arrived" hours predate an
+ * afternoon scan — which reads as fabricated, out-of-order history. Clamp
+ * each step to at least `gapMin` after the previous one. ISO UTC strings of
+ * equal width compare lexically == chronologically.
+ */
+function clampChrono(rows: { time?: string; eta?: string }[], key: 'time' | 'eta', gapMin = 4): void {
+  for (let i = 1; i < rows.length; i++) {
+    const prev = rows[i - 1]![key]!
+    const curr = rows[i]![key]!
+    if (curr < prev) rows[i]![key] = isoBump(prev, gapMin)
+  }
+}
+
 // How far through the milestone ladder each status sits. The ladder is:
 // 0 received · 1 picked up · 2 departed origin · 3 in transit · 4 arrived
 // destination hub · 5 out for delivery · 6 delivered.
@@ -107,8 +130,10 @@ function buildEvents(s: Shipment): TrackingEvent[] {
   const departed = reached >= 3
   const ladder: Omit<TrackingEvent, 'state'>[] = [
     { id: 'e0', label: 'Order received', location: lastMile ? s.origin : `${s.origin} — ${s.originCode} hub`, time: at(s.createdDate, 9, 12), note: `Label ${s.trackingNumber} generated` },
-    { id: 'e1', label: 'Picked up', location: lastMile ? s.origin : `${s.origin} origin DC`, time: at(s.shipDate, 12, 30) },
-    { id: 'e2', label: lastMile ? 'Departed distribution center' : 'Departed origin facility', location: lastMile ? s.origin : `${s.origin} — ${s.originCode}`, time: at(s.shipDate, 16, 5) },
+    // Last-mile loads + leaves the DC in the morning (delivery run that day);
+    // a transfer / line-haul departs midday for an overnight haul.
+    { id: 'e1', label: 'Picked up', location: lastMile ? s.origin : `${s.origin} origin DC`, time: at(s.shipDate, lastMile ? 7 : 12, 30) },
+    { id: 'e2', label: lastMile ? 'Departed distribution center' : 'Departed origin facility', location: lastMile ? s.origin : `${s.origin} — ${s.originCode}`, time: at(s.shipDate, lastMile ? 8 : 16, lastMile ? 15 : 5) },
     { id: 'e3', label: 'In transit', location: departed ? s.lastLocation : (lastMile ? `${s.destinationCode} delivery route` : `${s.destinationCode} line-haul`), time: departed ? s.lastUpdate : at(s.shipDate, 18, 0) },
     { id: 'e4', label: lastMile ? 'Arrived in delivery area' : 'Arrived at destination hub', location: lastMile ? consumer?.city ?? s.destination : `${s.destination} — ${s.destinationCode} hub`, time: at(delivered, 6, 40) },
     { id: 'e5', label: 'Out for delivery', location: lastMile ? destPlace : `${s.destination} delivery zone`, time: at(delivered, 8, 15) },
@@ -140,13 +165,16 @@ function buildEvents(s: Shipment): TrackingEvent[] {
     events[6]!.note = 'Recipient unavailable'
   }
 
+  clampChrono(events, 'time')
   return events
 }
 
 function buildPackages(s: Shipment): PackageLine[] {
   const count = Math.min(s.pieces, 4)
   const per = Math.max(1, Math.round(s.weightKg / s.pieces))
-  const dims = s.weightKg > 2000 ? '120 × 100 × 110 cm' : s.weightKg > 300 ? '80 × 60 × 70 cm' : '40 × 30 × 25 cm'
+  // A boxed ebike ships in a long flat carton (~bike length), not a parcel;
+  // multi-bike transfers move on pallets / in cages.
+  const dims = s.weightKg > 2000 ? '120 × 100 × 110 cm' : s.weightKg > 300 ? '80 × 60 × 70 cm' : '147 × 30 × 80 cm'
   const lines: PackageLine[] = []
   for (let i = 0; i < count; i++) {
     lines.push({
@@ -191,7 +219,7 @@ function buildStops(s: Shipment): RouteStop[] {
   // warehouse → sortation → hub → destination lane.
   const stops: { name: string; eta: string; ladder: number }[] = lastMile
     ? [
-        { name: s.origin, eta: at(s.shipDate, 12, 30), ladder: 2 },
+        { name: s.origin, eta: at(s.shipDate, 8, 15), ladder: 2 },
         { name: transitName, eta: transitEta, ladder: 3 },
         { name: consumer ? `${consumer.name} — ${consumer.address}` : s.destination, eta: at(delivered, 11, 25), ladder: 6 },
       ]
@@ -211,6 +239,7 @@ function buildStops(s: Shipment): RouteStop[] {
     const firstPending = base.findIndex((x) => x.state === 'pending')
     if (firstPending !== -1) base[firstPending]!.state = 'current'
   }
+  clampChrono(base, 'eta')
   return base
 }
 
