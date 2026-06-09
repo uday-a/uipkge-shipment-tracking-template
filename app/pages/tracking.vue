@@ -6,7 +6,7 @@
  */
 import { ref, computed, watch } from 'vue'
 import {
-  Search, MapPin, ArrowRight, CheckCircle2, Circle, CircleDot, PackageSearch,
+  Search, MapPin, ArrowRight, PackageSearch,
 } from 'lucide-vue-next'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -14,11 +14,17 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { EmptyState } from '@/components/ui/empty-state'
+import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Timeline, TimelineItem, TimelineMedia, TimelineContent, TimelineTitle, TimelineDate, TimelineDescription,
+} from '@/components/ui/timeline'
 import JourneyMap from '@/components/JourneyMap.vue'
+import JourneyMapMapbox from '@/components/JourneyMapMapbox.vue'
 import { toneBadge, toneDot, shortDate } from '@/lib/utils'
 
 import { findShipment, STATUS_LABELS, STATUS_TONE, lastMile } from '~/mocks/shipments'
 import { getShipmentDetail, type EventState } from '~/mocks/shipment-detail'
+import { liveGeometry } from '~/mocks/live'
 
 useHead({ title: 'Track my bike · Zepp' })
 
@@ -28,6 +34,7 @@ const submitted = ref(Boolean(route.query.ref))
 
 const shipment = computed(() => (submitted.value && query.value ? findShipment(query.value.trim()) : undefined))
 const detail = computed(() => (shipment.value ? getShipmentDetail(shipment.value.id) : undefined))
+const liveGeo = computed(() => (shipment.value ? liveGeometry(shipment.value.id) : null))
 
 function track() {
   submitted.value = true
@@ -56,9 +63,8 @@ function fmtDateTime(iso: string): string {
   return `${months[d.getUTCMonth()]} ${d.getUTCDate()} · ${hh}:${mm}`
 }
 
-const stateIcon = (s: EventState) => (s === 'done' ? CheckCircle2 : s === 'current' ? CircleDot : Circle)
-const stateClass = (s: EventState) =>
-  s === 'done' ? 'text-success' : s === 'current' ? 'text-primary' : 'text-muted-foreground/40'
+const esStatus = (s: EventState): 'success' | 'default' | 'muted' =>
+  s === 'done' ? 'success' : s === 'current' ? 'default' : 'muted'
 </script>
 
 <template>
@@ -116,9 +122,22 @@ const stateClass = (s: EventState) =>
             </div>
           </div>
 
-          <!-- Live journey -->
+          <!-- Live journey — real road map when geometry exists, stylised arc otherwise -->
+          <div v-if="liveGeo" class="relative h-[260px] w-full overflow-hidden rounded-xl border">
+            <ClientOnly>
+              <JourneyMapMapbox
+                :coords="liveGeo.coords"
+                :stops="liveGeo.stops"
+                :progress="shipment.progress"
+                :origin-label="shipment.origin"
+                :destination-label="shipment.destination"
+                :delivered="shipment.status === 'delivered'"
+              />
+              <template #fallback><Skeleton class="size-full rounded-none" /></template>
+            </ClientOnly>
+          </div>
           <JourneyMap
-            v-if="detail"
+            v-else-if="detail"
             :stops="detail.stops"
             :progress="shipment.progress"
             :origin-label="shipment.origin"
@@ -130,25 +149,19 @@ const stateClass = (s: EventState) =>
           <!-- Timeline -->
           <div>
             <p class="mb-3 text-sm font-semibold">Tracking history</p>
-            <ol class="space-y-0">
-              <li v-for="(e, i) in detail?.events" :key="e.id" class="flex gap-3 pb-5 last:pb-0">
-                <div class="flex flex-col items-center">
-                  <component :is="stateIcon(e.state)" :class="['size-5 shrink-0', stateClass(e.state)]" />
-                  <span
-                    v-if="i < (detail?.events.length ?? 0) - 1"
-                    :class="['mt-1 w-px flex-1', e.state === 'done' ? 'bg-success/40' : 'bg-border']"
-                  />
-                </div>
-                <div class="-mt-0.5 min-w-0 flex-1">
+            <Timeline density="default">
+              <TimelineItem v-for="e in detail?.events" :key="e.id" :status="esStatus(e.state)">
+                <TimelineMedia variant="dot" colored-connector />
+                <TimelineContent>
                   <div class="flex flex-wrap items-center justify-between gap-x-3">
-                    <p :class="['text-sm font-medium', e.state === 'pending' ? 'text-muted-foreground' : '']">{{ e.label }}</p>
-                    <p class="text-muted-foreground text-xs tabular-nums">{{ e.planned ? `Est. ${fmtDateTime(e.time)}` : fmtDateTime(e.time) }}</p>
+                    <TimelineTitle :class="e.state === 'pending' ? 'text-muted-foreground' : ''">{{ e.label }}</TimelineTitle>
+                    <TimelineDate class="tabular-nums">{{ e.planned ? `Est. ${fmtDateTime(e.time)}` : fmtDateTime(e.time) }}</TimelineDate>
                   </div>
-                  <p class="text-muted-foreground flex items-center gap-1 text-xs"><MapPin class="size-3 shrink-0" />{{ e.location }}</p>
-                  <p v-if="e.note" class="text-foreground/80 mt-0.5 text-xs">{{ e.note }}</p>
-                </div>
-              </li>
-            </ol>
+                  <TimelineDescription class="flex items-center gap-1 text-xs"><MapPin class="size-3 shrink-0" />{{ e.location }}</TimelineDescription>
+                  <p v-if="e.note" class="text-foreground/80 text-xs">{{ e.note }}</p>
+                </TimelineContent>
+              </TimelineItem>
+            </Timeline>
           </div>
         </CardContent>
       </Card>

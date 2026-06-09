@@ -7,7 +7,7 @@
  */
 import { computed } from 'vue'
 import {
-  ArrowLeft, Boxes, DollarSign, Anchor, MapPin, Ship, CheckCircle2, CircleDot, Circle, Calendar,
+  ArrowLeft, Boxes, DollarSign, Anchor, MapPin, Ship, Calendar,
 } from 'lucide-vue-next'
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -16,6 +16,9 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { EmptyState } from '@/components/ui/empty-state'
 import { KpiGrid } from '@/components/ui/kpi-grid'
+import {
+  Timeline, TimelineItem, TimelineMedia, TimelineContent, TimelineTitle, TimelineDate, TimelineDescription,
+} from '@/components/ui/timeline'
 import KpiTile from '@/components/KpiTile.vue'
 import ContainerMap from '@/components/ContainerMap.vue'
 import { toneBadge, toneDot, shortDate } from '@/lib/utils'
@@ -41,9 +44,10 @@ const manifest = computed(() =>
     : [],
 )
 
-const stateIcon = (s: ContainerMilestone['state']) => (s === 'done' ? CheckCircle2 : s === 'current' ? CircleDot : Circle)
-const stateClass = (s: ContainerMilestone['state']) =>
-  s === 'done' ? 'text-success' : s === 'current' ? 'text-primary' : 'text-muted-foreground/40'
+// Milestone lifecycle state → Timeline status (drives the marker + connector
+// colour: done = green thread, current = primary, pending = muted).
+const msStatus = (s: ContainerMilestone['state']): 'success' | 'default' | 'muted' =>
+  s === 'done' ? 'success' : s === 'current' ? 'default' : 'muted'
 </script>
 
 <template>
@@ -119,27 +123,19 @@ const stateClass = (s: ContainerMilestone['state']) =>
             <CardDescription>Ocean milestones · factory to import warehouse</CardDescription>
           </CardHeader>
           <CardContent>
-            <ol class="relative space-y-0">
-              <li v-for="(m, i) in milestones" :key="m.id" class="flex gap-3 pb-5 last:pb-0">
-                <div class="flex flex-col items-center">
-                  <component :is="stateIcon(m.state)" :class="['size-5 shrink-0', stateClass(m.state)]" />
-                  <span
-                    v-if="i < milestones.length - 1"
-                    :class="['mt-1 w-px flex-1', m.state === 'done' ? 'bg-success/40' : 'bg-border']"
-                  />
-                </div>
-                <div class="-mt-0.5 min-w-0 flex-1 pb-1">
+            <Timeline density="default">
+              <TimelineItem v-for="m in milestones" :key="m.id" :status="msStatus(m.state)">
+                <TimelineMedia variant="dot" colored-connector />
+                <TimelineContent>
                   <div class="flex flex-wrap items-center justify-between gap-x-3">
-                    <p :class="['text-sm font-medium', m.state === 'pending' ? 'text-muted-foreground' : '']">{{ m.label }}</p>
-                    <p class="text-muted-foreground text-xs tabular-nums">
-                      {{ m.planned ? `Scheduled · ${shortDate(m.date)}` : shortDate(m.date) }}
-                    </p>
+                    <TimelineTitle :class="m.state === 'pending' ? 'text-muted-foreground' : ''">{{ m.label }}</TimelineTitle>
+                    <TimelineDate class="tabular-nums">{{ m.planned ? `Scheduled · ${shortDate(m.date)}` : shortDate(m.date) }}</TimelineDate>
                   </div>
-                  <p class="text-muted-foreground flex items-center gap-1 text-xs"><MapPin class="size-3 shrink-0" />{{ m.location }}</p>
-                  <p v-if="m.note" class="text-foreground/80 mt-0.5 text-xs">{{ m.note }}</p>
-                </div>
-              </li>
-            </ol>
+                  <TimelineDescription class="flex items-center gap-1 text-xs"><MapPin class="size-3 shrink-0" />{{ m.location }}</TimelineDescription>
+                  <p v-if="m.note" class="text-foreground/80 text-xs">{{ m.note }}</p>
+                </TimelineContent>
+              </TimelineItem>
+            </Timeline>
           </CardContent>
         </Card>
 

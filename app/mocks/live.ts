@@ -143,6 +143,17 @@ export const LIVE_STOPS: Record<string, GeoPoint[]> = {
   'MOV-T2010': [[47.04, -122.9]],   // Olympia
 }
 
+/**
+ * Road geometry for one movement — its real road polyline + intermediate stop
+ * waypoints, if a baked live route exists. Powers the geographic "Live journey"
+ * map on the shipment-detail + tracking pages (a movement without a baked route
+ * falls back to the stylised arc). [lat, lng].
+ */
+export function liveGeometry(id: string): { coords: GeoPoint[]; stops: GeoPoint[] } | null {
+  const t = LIVE_TRIPS.find((x) => x.shipmentId === id)
+  return t ? { coords: t.coords, stops: LIVE_STOPS[id] ?? [] } : null
+}
+
 export interface ResolvedTrip {
   shipment: Shipment
   path: LivePoint[]

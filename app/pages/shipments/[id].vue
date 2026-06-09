@@ -8,8 +8,7 @@
 import { computed } from 'vue'
 import {
   ArrowLeft, ArrowRight, MapPin, Truck, Clock, Weight, DollarSign, Boxes,
-  CheckCircle2, Circle, CircleDot, FileText, Download, Copy, User, Building2,
-  Package,
+  FileText, Download, Copy, User, Building2, Package,
 } from 'lucide-vue-next'
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -18,8 +17,13 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { KpiGrid } from '@/components/ui/kpi-grid'
+import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Timeline, TimelineItem, TimelineMedia, TimelineContent, TimelineTitle, TimelineDate, TimelineDescription,
+} from '@/components/ui/timeline'
 import KpiTile from '@/components/KpiTile.vue'
 import JourneyMap from '@/components/JourneyMap.vue'
+import JourneyMapMapbox from '@/components/JourneyMapMapbox.vue'
 import { toast } from 'vue-sonner'
 import { toneBadge, toneDot, shortDate } from '@/lib/utils'
 
@@ -29,6 +33,7 @@ import {
 } from '~/mocks/shipments'
 import { getShipmentDetail, type EventState } from '~/mocks/shipment-detail'
 import { findConsumer } from '~/mocks/consumers'
+import { liveGeometry } from '~/mocks/live'
 
 const route = useRoute()
 const { isDispatcher } = usePersona()
@@ -36,6 +41,8 @@ const id = computed(() => String(route.params.id))
 
 const shipment = computed(() => findShipment(id.value))
 const detail = computed(() => (shipment.value ? getShipmentDetail(shipment.value.id) : undefined))
+// Real road geometry for the geographic journey map (null → fall back to the arc).
+const liveGeo = computed(() => (shipment.value ? liveGeometry(shipment.value.id) : null))
 // For last-mile the recipient is a real consumer (real name / address / city);
 // fall back to the destId-based lookup for any other leg.
 const consumer = computed(() =>
@@ -70,9 +77,9 @@ function copyTracking() {
   navigator.clipboard?.writeText(shipment.value.trackingNumber).then(() => toast.success('Tracking number copied'))
 }
 
-const stateIcon = (s: EventState) => (s === 'done' ? CheckCircle2 : s === 'current' ? CircleDot : Circle)
-const stateClass = (s: EventState) =>
-  s === 'done' ? 'text-success' : s === 'current' ? 'text-primary' : 'text-muted-foreground/40'
+// Event lifecycle state → Timeline status (marker + connector colour).
+const esStatus = (s: EventState): 'success' | 'default' | 'muted' =>
+  s === 'done' ? 'success' : s === 'current' ? 'default' : 'muted'
 </script>
 
 <template>
@@ -133,11 +140,25 @@ const stateClass = (s: EventState) =>
     <Card>
       <CardHeader class="pb-2">
         <CardTitle class="text-base">Live journey</CardTitle>
-        <CardDescription>Hover a stop for its scan time</CardDescription>
+        <CardDescription>{{ liveGeo ? 'Live position on the delivery route' : 'Hover a stop for its scan time' }}</CardDescription>
       </CardHeader>
       <CardContent class="space-y-3 pt-1">
+        <!-- Real road map when the movement has baked geometry; the stylised arc otherwise. -->
+        <div v-if="liveGeo" class="relative h-[280px] w-full overflow-hidden rounded-xl border">
+          <ClientOnly>
+            <JourneyMapMapbox
+              :coords="liveGeo.coords"
+              :stops="liveGeo.stops"
+              :progress="shipment.progress"
+              :origin-label="shipment.origin"
+              :destination-label="shipment.destination"
+              :delivered="shipment.status === 'delivered'"
+            />
+            <template #fallback><Skeleton class="size-full rounded-none" /></template>
+          </ClientOnly>
+        </div>
         <JourneyMap
-          v-if="detail"
+          v-else-if="detail"
           :stops="detail.stops"
           :progress="shipment.progress"
           :origin-label="shipment.origin"
@@ -182,27 +203,19 @@ const stateClass = (s: EventState) =>
 
             <!-- Tracking timeline -->
             <TabsContent value="tracking">
-              <ol class="relative space-y-0">
-                <li v-for="(e, i) in detail?.events" :key="e.id" class="flex gap-3 pb-5 last:pb-0">
-                  <div class="flex flex-col items-center">
-                    <component :is="stateIcon(e.state)" :class="['size-5 shrink-0', stateClass(e.state)]" />
-                    <span
-                      v-if="i < (detail?.events.length ?? 0) - 1"
-                      :class="['mt-1 w-px flex-1', e.state === 'done' ? 'bg-success/40' : 'bg-border']"
-                    />
-                  </div>
-                  <div class="-mt-0.5 min-w-0 flex-1 pb-1">
+              <Timeline density="default">
+                <TimelineItem v-for="e in detail?.events" :key="e.id" :status="esStatus(e.state)">
+                  <TimelineMedia variant="dot" colored-connector />
+                  <TimelineContent>
                     <div class="flex flex-wrap items-center justify-between gap-x-3">
-                      <p :class="['text-sm font-medium', e.state === 'pending' ? 'text-muted-foreground' : '']">{{ e.label }}</p>
-                      <p class="text-muted-foreground text-xs tabular-nums">{{ fmtStamp(e.time, e.planned) }}</p>
+                      <TimelineTitle :class="e.state === 'pending' ? 'text-muted-foreground' : ''">{{ e.label }}</TimelineTitle>
+                      <TimelineDate class="tabular-nums">{{ fmtStamp(e.time, e.planned) }}</TimelineDate>
                     </div>
-                    <p class="text-muted-foreground flex items-center gap-1 text-xs">
-                      <MapPin class="size-3 shrink-0" />{{ e.location }}
-                    </p>
-                    <p v-if="e.note" class="text-foreground/80 mt-0.5 text-xs">{{ e.note }}</p>
-                  </div>
-                </li>
-              </ol>
+                    <TimelineDescription class="flex items-center gap-1 text-xs"><MapPin class="size-3 shrink-0" />{{ e.location }}</TimelineDescription>
+                    <p v-if="e.note" class="text-foreground/80 text-xs">{{ e.note }}</p>
+                  </TimelineContent>
+                </TimelineItem>
+              </Timeline>
             </TabsContent>
 
             <!-- Packages -->
@@ -300,21 +313,15 @@ const stateClass = (s: EventState) =>
             <CardDescription>{{ shipment.route ?? (shipment.leg === 'last-mile' ? `${shipment.origin} → ${consumer?.name ?? shipment.destination}` : 'Direct lane') }}</CardDescription>
           </CardHeader>
           <CardContent>
-            <ol class="space-y-0">
-              <li v-for="(st, i) in detail?.stops" :key="i" class="flex gap-3 pb-4 last:pb-0">
-                <div class="flex flex-col items-center">
-                  <component :is="stateIcon(st.state)" :class="['size-4 shrink-0', stateClass(st.state)]" />
-                  <span
-                    v-if="i < (detail?.stops.length ?? 0) - 1"
-                    :class="['mt-1 w-px flex-1', st.state === 'done' ? 'bg-success/40' : 'bg-border']"
-                  />
-                </div>
-                <div class="-mt-0.5 min-w-0 flex-1">
-                  <p :class="['text-sm', st.state === 'pending' ? 'text-muted-foreground' : 'font-medium']">{{ st.name }}</p>
-                  <p class="text-muted-foreground text-xs tabular-nums">{{ fmtStamp(st.eta, st.planned) }}</p>
-                </div>
-              </li>
-            </ol>
+            <Timeline density="compact">
+              <TimelineItem v-for="(st, i) in detail?.stops" :key="i" :status="esStatus(st.state)">
+                <TimelineMedia variant="dot" colored-connector />
+                <TimelineContent>
+                  <TimelineTitle :class="st.state === 'pending' ? 'text-muted-foreground font-normal' : ''">{{ st.name }}</TimelineTitle>
+                  <TimelineDate class="tabular-nums">{{ fmtStamp(st.eta, st.planned) }}</TimelineDate>
+                </TimelineContent>
+              </TimelineItem>
+            </Timeline>
           </CardContent>
         </Card>
       </div>
