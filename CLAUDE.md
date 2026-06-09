@@ -21,7 +21,7 @@ npx shadcn-vue@latest add @uipkge/<name> -y   # pull a registry primitive/block
 
 - **Nuxt 4** with `components: [{ path: '~/components', pathPrefix: false }]` — `<AppTopbar />` works without folder prefix. Don't add prefixes.
 - **Tailwind v4** OKLCH tokens. Use semantic tokens (`text-success`, `bg-warning`), not hardcoded hex (chart series colours are the one exception).
-- **shadcn-vue** registry config in `components.json`; `@uipkge` resolves to `https://uipkge.dev/r/{name}.json`.
+- **shadcn-vue** registry config in `components.json`; `@uipkge` resolves to `https://uipkge.dev/r/nuxt/{name}.json`.
 - **State**: Pinia is **not** wired. Use `useState` + composables.
 
 ## SSR-sensitive patterns

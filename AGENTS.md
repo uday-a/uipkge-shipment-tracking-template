@@ -3,7 +3,7 @@
 ## Stack quirks
 
 - **Nuxt 4**: `components: [{ path: '~/components', pathPrefix: false }]` — import `<AppTopbar />` without folder prefix. Pattern `**/*.vue` prevents duplicate auto-imports from index.ts re-exports.
-- **shadcn-vue registry**: `@uipkge` resolves to `https://uipkge.dev/r/{name}.json`. Use `npx shadcn-vue@latest add @uipkge/<name> -y`.
+- **shadcn-vue registry**: `@uipkge` resolves to `https://uipkge.dev/r/nuxt/{name}.json`. Use `npx shadcn-vue@latest add @uipkge/<name> -y`.
 - **Tailwind v4**: OKLCH tokens. Use semantic classes (`text-success`, `bg-warning`). Charts are the only exception for hardcoded colors.
 - **No Pinia**: Use `useState` + composables. State is SSR-safe.
 
