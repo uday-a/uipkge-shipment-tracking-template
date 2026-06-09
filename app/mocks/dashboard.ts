@@ -142,16 +142,16 @@ export interface ActivityEntry {
 
 export const ACTIVITY: ActivityEntry[] = [
   { id: 'a1', type: 'out-for-delivery', timeUtc: '2026-05-28T14:05:00Z', actor: { name: 'Marcus Bell', initials: 'MB' }, text: 'MOV-L4101 out for delivery to Daniel Reyes in Los Angeles', meta: 'ETA today' },
-  { id: 'a2', type: 'exception', timeUtc: '2026-05-28T08:15:00Z', actor: { name: 'Hannah Cole', initials: 'HC' }, text: 'MOV-T2006 transfer to Miami DC — damaged carton flagged in Jacksonville', meta: 'Needs action' },
-  { id: 'a3', type: 'delayed', timeUtc: '2026-05-28T13:20:00Z', actor: { name: 'Owen Fischer', initials: 'OF' }, text: 'MOV-L4103 delayed in Tacoma, WA — Zepp Trail X for Nathan Brooks', meta: 'Last mile' },
-  { id: 'a4', type: 'picked-up', timeUtc: '2026-05-28T13:48:00Z', actor: { name: 'Tasha Okafor', initials: 'TO' }, text: 'MOV-T2003 departed East Coast Import Hub for Chicago DC' },
+  { id: 'a2', type: 'exception', timeUtc: '2026-05-28T08:15:00Z', actor: { name: 'Greta Lindqvist', initials: 'GL' }, text: 'MOV-T2006 transfer to Miami DC — damaged carton flagged in Jacksonville', meta: 'Needs action' },
+  { id: 'a3', type: 'delayed', timeUtc: '2026-05-28T13:20:00Z', actor: { name: 'Ruby Vance', initials: 'RV' }, text: 'MOV-L4103 delayed in Tacoma, WA — Zepp Trail X for Nathan Brooks', meta: 'Last mile' },
+  { id: 'a4', type: 'picked-up', timeUtc: '2026-05-28T13:48:00Z', actor: { name: 'Carlos Mendez', initials: 'CM' }, text: 'MOV-T2003 departed East Coast Import Hub for Chicago DC' },
   { id: 'a5', type: 'delivered', timeUtc: '2026-05-28T11:25:00Z', actor: { name: 'Hannah Cole', initials: 'HC' }, text: 'MOV-L4111 delivered to Mason Rivera in Miami', meta: 'Express' },
   { id: 'a6', type: 'customs', timeUtc: '2026-05-28T09:30:00Z', actor: { name: 'System', initials: 'sys' }, text: 'CTR-88150 in customs at Long Beach — 320 bikes aboard Cosco Harmony' },
   { id: 'a7', type: 'customs', timeUtc: '2026-05-28T08:45:00Z', actor: { name: 'System', initials: 'sys' }, text: 'CTR-77226 customs hold at Port of Newark' },
-  { id: 'a8', type: 'out-for-delivery', timeUtc: '2026-05-28T13:55:00Z', actor: { name: 'Tasha Okafor', initials: 'TO' }, text: 'MOV-L4116 last mile to Mia Thompson in Chicago', meta: 'Express' },
-  { id: 'a9', type: 'delivered', timeUtc: '2026-05-27T19:08:00Z', actor: { name: 'Devin Walsh', initials: 'DW' }, text: 'MOV-T2010 transfer received at Boston DC' },
+  { id: 'a8', type: 'out-for-delivery', timeUtc: '2026-05-28T13:55:00Z', actor: { name: 'Noah Brennan', initials: 'NB' }, text: 'MOV-L4116 last mile to Mia Thompson in Chicago', meta: 'Express' },
+  { id: 'a9', type: 'delivered', timeUtc: '2026-05-27T19:08:00Z', actor: { name: 'Carlos Mendez', initials: 'CM' }, text: 'MOV-T2010 transfer received at Boston DC' },
   { id: 'a10', type: 'picked-up', timeUtc: '2026-05-28T12:30:00Z', actor: { name: 'System', initials: 'sys' }, text: 'MOV-L4108 queued for pickup at Chicago DC' },
-  { id: 'a11', type: 'exception', timeUtc: '2026-05-28T09:05:00Z', actor: { name: 'Amara Diallo', initials: 'AD' }, text: 'MOV-L4105 address unverified in Aurora, CO', meta: 'Last mile' },
+  { id: 'a11', type: 'exception', timeUtc: '2026-05-28T09:05:00Z', actor: { name: 'Eli Donovan', initials: 'ED' }, text: 'MOV-L4105 address unverified in Aurora, CO', meta: 'Last mile' },
   { id: 'a12', type: 'delivered', timeUtc: '2026-05-28T10:05:00Z', actor: { name: 'System', initials: 'sys' }, text: 'CTR-88142 received at West Coast Import Hub — 360 bikes' },
 ]
 // Newest first — both the dashboard and control-tower feeds claim that order.
