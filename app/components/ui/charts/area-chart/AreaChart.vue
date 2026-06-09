@@ -60,7 +60,7 @@ const mergedOption = computed(() => {
 
   return {
     color: chartColors.value,
-    grid: mergeOptionBlock({ left: 4, right: 4, top: 8, bottom: 4, containLabel: true }, userGrid),
+    grid: mergeOptionBlock({ left: 4, right: 4, top: 8, bottom: fields.length > 1 ? 24 : 4, containLabel: true }, userGrid),
     tooltip: mergeOptionBlock({
       trigger: 'axis',
       backgroundColor: chartTooltipBg.value,
