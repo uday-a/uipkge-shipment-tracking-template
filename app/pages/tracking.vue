@@ -88,7 +88,7 @@ const esStatus = (s: EventState): 'success' | 'default' | 'muted' =>
           <button
             v-for="s in samples"
             :key="s"
-            class="bg-muted hover:bg-muted/70 rounded-full px-2 py-0.5 font-mono text-xs transition-colors"
+            class="bg-muted hover:bg-muted/70 focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none rounded-full px-2 py-0.5 font-mono text-xs transition-colors"
             @click="useSample(s)"
           >{{ s }}</button>
         </div>

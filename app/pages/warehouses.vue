@@ -41,7 +41,7 @@ const totals = computed(() => ({
     </KpiGrid>
 
     <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-      <Card v-for="w in WAREHOUSES" :key="w.id" class="hover:border-foreground/20 transition-colors">
+      <Card v-for="w in WAREHOUSES" :key="w.id">
         <CardHeader class="pb-2">
           <div class="flex items-start justify-between gap-2">
             <div class="min-w-0">

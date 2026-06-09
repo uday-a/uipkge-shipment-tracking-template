@@ -80,7 +80,7 @@ const cellTone = (loc: { type: string }, n: number) =>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead class="sticky left-0">Location</TableHead>
+                <TableHead class="sticky left-0 z-10 bg-background">Location</TableHead>
                 <TableHead v-for="m in CATALOG" :key="m.sku" class="text-right">{{ shortName(m.name) }}</TableHead>
                 <TableHead class="text-right">Total</TableHead>
               </TableRow>

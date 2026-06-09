@@ -44,10 +44,8 @@ const KPI_ICON_MAP = { Package, CircleCheck, Truck, TriangleAlert } as const
 // ── Live "today" highlights, derived from the shipment ledger ──────────
 const live = computed(() => {
   const active = SHIPMENTS.filter(isActive).length
-  const inTransit = SHIPMENTS.filter((s) => ['in-transit', 'out-for-delivery', 'picked-up'].includes(s.status)).length
   const exceptions = SHIPMENTS.filter(isException).length
-  const deliveredToday = SHIPMENTS.filter((s) => s.status === 'delivered' && s.actualDelivery === TODAY).length
-  return { active, inTransit, exceptions, deliveredToday }
+  return { active, exceptions }
 })
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -175,7 +173,7 @@ const exceptionRows = computed(() => SHIPMENTS.filter(isException).slice(0, 5))
       <Card class="lg:col-span-4 flex flex-col">
         <CardHeader class="pb-2">
           <CardTitle class="text-base">Status mix</CardTitle>
-          <CardDescription>Across the active network</CardDescription>
+          <CardDescription>Network status · today</CardDescription>
         </CardHeader>
         <CardContent class="flex-1">
           <div class="relative">

@@ -260,7 +260,7 @@ function createApiKey() {
           </CardHeader>
           <CardContent class="space-y-4 p-4 pt-0">
             <div class="space-y-3">
-              <p class="text-muted-foreground text-xs font-semibold uppercase tracking-wide">Shipment events</p>
+              <p class="text-muted-foreground text-xs font-medium uppercase tracking-wide">Shipment events</p>
               <label v-for="row in [
                   { key: 'exceptionRaised', label: 'Exception raised', desc: 'A shipment hits a hold, damage, or address issue.' },
                   { key: 'shipmentDelayed', label: 'Shipment delayed', desc: 'ETA slips past the committed window.' },

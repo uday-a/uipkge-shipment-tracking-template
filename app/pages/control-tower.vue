@@ -57,7 +57,9 @@ const kpis = computed(() => ({
   active: SHIPMENTS.filter(isActive).length,
   attention: SHIPMENTS.filter(isException).length,
   exceptions: byStatus('exception'),
-  lastMile: byStatus('out-for-delivery'),
+  // Last-mile only — a WH→DC transfer can be out-for-delivery but isn't a
+  // consumer delivery "landing today"; keeps the KPI equal to the card below.
+  lastMile: SHIPMENTS.filter((s) => s.status === 'out-for-delivery' && s.leg === 'last-mile').length,
 }))
 
 // ── Exceptions triage: the delayed / exception rows, worst first ────
@@ -167,14 +169,12 @@ function activityTime(iso: string): string {
               <TableRow
                 v-for="s in triage"
                 :key="s.id"
-                class="hover:bg-muted/50 cursor-pointer"
-                @click="navigateTo(`/shipments/${s.id}`)"
+                class="hover:bg-muted/50"
               >
                 <TableCell>
                   <NuxtLink
                     :to="`/shipments/${s.id}`"
                     class="focus-visible:ring-ring flex flex-col rounded-sm leading-tight outline-none focus-visible:ring-2"
-                    @click.stop
                   >
                     <span class="font-medium">{{ s.id }}</span>
                     <span class="text-muted-foreground font-mono text-xs">{{ s.customer }}</span>

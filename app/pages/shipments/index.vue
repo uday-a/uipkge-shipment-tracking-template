@@ -198,7 +198,7 @@ function onBulkNotify(r: any[]) {
         </p>
       </div>
       <div class="flex items-center gap-2">
-        <Button variant="outline" size="sm" @click="onBulkExport(SHIPMENTS)">
+        <Button variant="outline" size="sm" @click="onBulkExport(rows)">
           <Download class="mr-2 size-4" />Export
         </Button>
         <Button v-if="isDispatcher" size="sm" as-child>

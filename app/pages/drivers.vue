@@ -4,13 +4,13 @@
  * Dispatcher-gated.
  */
 import { ref, computed } from 'vue'
-import { Star, Phone, MapPin, Truck, Users, CircleCheck, Package, Search } from 'lucide-vue-next'
+import { Star, Phone, MapPin, Truck, Users, CircleCheck, Package, Search, SearchX } from 'lucide-vue-next'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { EmptyState } from '@/components/ui/empty-state'
 import { KpiGrid } from '@/components/ui/kpi-grid'
 import KpiTile from '@/components/KpiTile.vue'
 import { toneBadge } from '@/lib/utils'
@@ -44,7 +44,7 @@ const totals = computed(() => ({
       </div>
       <div class="relative w-full sm:w-64">
         <Search class="text-muted-foreground absolute left-3 top-1/2 size-4 -translate-y-1/2" />
-        <Input v-model="search" placeholder="Search drivers…" class="pl-9" />
+        <Input v-model="search" aria-label="Search drivers" placeholder="Search drivers…" class="pl-9" />
       </div>
     </header>
 
@@ -55,7 +55,7 @@ const totals = computed(() => ({
       <KpiTile label="Avg rating" :value="totals.avgRating" hint="Out of 5.0" tone="success" :icon="Star" />
     </KpiGrid>
 
-    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div v-if="filtered.length" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       <Card v-for="d in filtered" :key="d.id" class="hover:border-foreground/20 transition-colors">
         <CardContent class="space-y-3 p-4">
           <div class="flex items-start gap-3">
@@ -95,5 +95,12 @@ const totals = computed(() => ({
         </CardContent>
       </Card>
     </div>
+    <EmptyState
+      v-else
+      :icon="SearchX"
+      title="No drivers match"
+      :description="`No drivers match “${search}”.`"
+      class="py-10"
+    />
   </div>
 </template>

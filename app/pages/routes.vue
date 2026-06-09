@@ -56,7 +56,7 @@ const totals = computed(() => ({
             <span class="font-medium">{{ r.origin }}</span>
             <div class="relative flex-1">
               <div class="bg-border h-px w-full" />
-              <span class="bg-background text-muted-foreground absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-1 text-xs">
+              <span class="bg-background text-muted-foreground absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-1 text-xs tabular-nums">
                 {{ r.stops }} stops
               </span>
             </div>
@@ -65,8 +65,8 @@ const totals = computed(() => ({
           </div>
 
           <div class="text-muted-foreground grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs">
-            <p class="flex items-center gap-1.5"><MapPin class="size-3" />{{ r.distanceKm }} km</p>
-            <p class="flex items-center gap-1.5"><Clock class="size-3" />~{{ r.avgHours }}h transit</p>
+            <p class="flex items-center gap-1.5 tabular-nums"><MapPin class="size-3" />{{ r.distanceKm }} km</p>
+            <p class="flex items-center gap-1.5 tabular-nums"><Clock class="size-3" />~{{ r.avgHours }}h transit</p>
             <p class="flex items-center gap-1.5"><User class="size-3" />{{ r.driver ?? 'Unassigned' }}</p>
             <p class="flex items-center gap-1.5"><Truck class="size-3" />{{ r.vehicle ?? '—' }}</p>
           </div>

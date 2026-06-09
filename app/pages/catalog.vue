@@ -52,8 +52,7 @@ const kpis = computed(() => ({
     </KpiGrid>
 
     <div v-if="ready" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      <Card v-for="m in models" :key="m.sku" class="hover:border-foreground/20 overflow-hidden transition-colors">
-        <div class="h-1.5 w-full" :style="{ backgroundColor: m.color }" aria-hidden="true" />
+      <Card v-for="m in models" :key="m.sku">
         <CardHeader class="pb-2">
           <div class="flex items-start justify-between gap-2">
             <div class="space-y-0.5">

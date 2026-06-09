@@ -36,6 +36,11 @@ const form = ref({
 })
 
 const errors = ref<Record<string, boolean>>({})
+const submitting = ref(false)
+
+function clearError(field: string) {
+  if (errors.value[field]) errors.value = { ...errors.value, [field]: false }
+}
 
 function validate() {
   const e: Record<string, boolean> = {}

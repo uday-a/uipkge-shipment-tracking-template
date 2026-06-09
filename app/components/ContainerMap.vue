@@ -82,7 +82,7 @@ const vessel = {
     </MapboxMarker>
 
     <MapboxMarker :lng-lat="geo.vessel">
-      <span :style="vessel" :title="container.vessel"><Ship :size="16" /></span>
+      <span :style="vessel" :title="container.vessel" :aria-label="container.vessel"><Ship :size="16" /></span>
     </MapboxMarker>
   </MapboxMap>
 </template>

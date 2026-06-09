@@ -6,7 +6,7 @@
  * layout so the centred card owns the viewport.
  */
 import { ref } from 'vue'
-import { Mail, Lock, ArrowRight, Sparkles } from 'lucide-vue-next'
+import { Mail, Lock, ArrowRight } from 'lucide-vue-next'
 import Logo from '@/components/ui/Logo.vue'
 
 import { Card, CardContent } from '@/components/ui/card'
@@ -131,17 +131,14 @@ const personas: Array<{ key: Persona; label: string; tagline: string }> = [
           </div>
 
           <div class="space-y-2">
-            <div class="flex items-center gap-1.5">
-              <Sparkles class="text-primary size-3.5" />
-              <p class="text-xs font-semibold">Continue as</p>
-            </div>
+            <p class="text-xs font-semibold">Continue as</p>
             <p class="text-muted-foreground text-xs">Skip auth and jump straight in — this is a mock template.</p>
             <div class="flex divide-x rounded-lg border overflow-hidden">
               <button
                 v-for="p in personas"
                 :key="p.key"
                 type="button"
-                class="hover:bg-muted/60 group flex flex-1 flex-col items-center gap-0.5 px-2 py-2.5 text-center transition-colors"
+                class="hover:bg-muted/60 focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:ring-inset focus-visible:outline-none group flex flex-1 flex-col items-center gap-0.5 px-2 py-2.5 text-center transition-colors"
                 @click="continueAs(p.key, p.label)"
               >
                 <span class="text-sm font-medium">{{ p.label }}</span>

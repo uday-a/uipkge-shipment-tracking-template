@@ -15,6 +15,7 @@
  * Math.random / Date.now) so server + client render identically.
  */
 import { SHIPMENTS, type Shipment, type ShipmentStatus, type Tone } from './shipments'
+import { findLocation } from './network'
 
 export interface LivePoint { x: number; y: number }
 /** [lat, lng] waypoints tracing real roads, origin → … → destination. */
@@ -150,8 +151,33 @@ export const LIVE_STOPS: Record<string, GeoPoint[]> = {
  * falls back to the stylised arc). [lat, lng].
  */
 export function liveGeometry(id: string): { coords: GeoPoint[]; stops: GeoPoint[] } | null {
-  const t = LIVE_TRIPS.find((x) => x.shipmentId === id)
-  return t ? { coords: t.coords, stops: LIVE_STOPS[id] ?? [] } : null
+  const trip = LIVE_TRIPS.find((x) => x.shipmentId === id)
+  const m = SHIPMENTS.find((s) => s.id === id)
+  // Transfers ride real inter-city corridors — use the baked road geometry.
+  if (!m || m.leg !== 'last-mile') {
+    return trip ? { coords: trip.coords, stops: LIVE_STOPS[id] ?? [] } : null
+  }
+  // Last-mile is a LOCAL hop inside one metro. Keep the baked polyline only if
+  // it is genuinely local; otherwise (a leftover inter-city corridor from the
+  // fleet-map geometry) synthesise a short DC → neighbourhood route from the
+  // distribution center's own coords so the map shows the real delivery metro,
+  // not a cross-country line. Deterministic (no randomness) so SSR/client agree.
+  if (trip) {
+    const lats = trip.coords.map((c) => c[0])
+    const lngs = trip.coords.map((c) => c[1])
+    const span = Math.max(Math.max(...lats) - Math.min(...lats), Math.max(...lngs) - Math.min(...lngs))
+    if (span <= 0.6) return { coords: trip.coords, stops: LIVE_STOPS[id] ?? [] }
+  }
+  const dc = findLocation(m.originId)
+  if (!dc) return trip ? { coords: trip.coords, stops: LIVE_STOPS[id] ?? [] } : null
+  const [lat, lng] = dc.coords
+  const h = id.split('').reduce((a, ch) => a + ch.charCodeAt(0), 0)
+  const r = 0.05 + (h % 3) * 0.018 // ~5–9 km from the DC
+  const dLat = Math.cos(h % 8) * r
+  const dLng = Math.sin(h % 8) * r * 1.25
+  const home: GeoPoint = [lat + dLat, lng + dLng]
+  const mid: GeoPoint = [lat + dLat * 0.45, lng + dLng * 0.5]
+  return { coords: [dc.coords, mid, home], stops: [mid] }
 }
 
 export interface ResolvedTrip {

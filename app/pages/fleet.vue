@@ -25,11 +25,7 @@ const totals = computed(() => {
   const onRoute = VEHICLES.filter((v) => v.status === 'active').length
   const idle = VEHICLES.filter((v) => v.status === 'idle' || v.status === 'loading').length
   const maint = VEHICLES.filter((v) => v.status === 'maintenance').length
-  const active = VEHICLES.filter((v) => v.loadKg > 0)
-  const util = active.length
-    ? Math.round(active.reduce((a, v) => a + (v.loadKg / v.capacityKg) * 100, 0) / active.length)
-    : 0
-  return { total: VEHICLES.length, onRoute, idle, maint, util }
+  return { total: VEHICLES.length, onRoute, idle, maint }
 })
 
 function colHeader(column: Column<Vehicle, unknown>, label: string) {

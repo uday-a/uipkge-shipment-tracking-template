@@ -72,6 +72,10 @@ export const VEHICLES: Vehicle[] = [
   { id: 'TRK-211', plate: 'TX-3367', type: 'semi', status: 'active', driver: 'Carlos Mendez', capacityKg: 20000, loadKg: 1800, location: 'Newark, NJ', odometerKm: 312700, fuelPct: 47, nextServiceKm: 316000 },
   { id: 'TRK-118B', plate: 'UT-1147', type: 'box-truck', status: 'active', driver: 'Roy Schaefer', capacityKg: 6000, loadKg: 1360, location: 'Green River, UT', odometerKm: 60100, fuelPct: 88, nextServiceKm: 64000 },
 
+  // ── Spares — idle at the yard / being loaded, awaiting a driver ─────
+  { id: 'VAN-160', plate: 'CA-7012', type: 'van', status: 'idle', capacityKg: 1000, loadKg: 0, location: 'Long Beach yard', odometerKm: 9100, fuelPct: 84, nextServiceKm: 12000 },
+  { id: 'VAN-165', plate: 'NJ-4458', type: 'van', status: 'loading', capacityKg: 1000, loadKg: 160, location: 'Newark City DC dock', odometerKm: 14300, fuelPct: 77, nextServiceKm: 18000 },
+
   // ── In for service ──────────────────────────────────────────────────
   { id: 'TRK-305', plate: 'MI-6634', type: 'semi', status: 'maintenance', driver: 'Priya Nair', capacityKg: 20000, loadKg: 0, location: 'Nashville, TN depot', odometerKm: 330800, fuelPct: 28, nextServiceKm: 331000 },
   { id: 'TRK-309', plate: 'WA-8890', type: 'box-truck', status: 'maintenance', capacityKg: 8000, loadKg: 0, location: 'Seattle service center', odometerKm: 176200, fuelPct: 15, nextServiceKm: 176500 },

@@ -38,6 +38,7 @@ const volumeData = computed(() => MONTHLY.map((m) => ({ month: m.month, Shipment
 const onTimeData = computed(() => MONTHLY.map((m) => ({ month: m.month, 'On-time %': m.onTime })))
 const onTimeOption = { yAxis: { min: 88, max: 96 } }
 const exceptionData = computed(() => EXCEPTION_REASONS.map((e) => ({ reason: e.reason, Count: e.count })))
+const exceptionOption = { xAxis: { axisLabel: { rotate: 30 } } }
 const weeklyData = computed(() => WEEKLY_VOLUME.map((d) => ({ day: d.day, Inbound: d.inbound, Outbound: d.outbound })))
 const serviceOption = computed(() => ({ color: SERVICE_MIX.map((s) => s.color), legend: { show: false } }))
 
@@ -76,7 +77,7 @@ const maxLane = computed(() => Math.max(...TOP_LANES.map((l) => l.shipments)))
       <Card class="lg:col-span-4 flex flex-col">
         <CardHeader class="pb-2">
           <CardTitle class="text-base">Service mix</CardTitle>
-          <CardDescription>By volume</CardDescription>
+          <CardDescription>By volume · latest month</CardDescription>
         </CardHeader>
         <CardContent class="flex-1">
           <ClientOnly>

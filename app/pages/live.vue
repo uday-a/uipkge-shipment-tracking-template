@@ -108,7 +108,9 @@ const legend = computed(() => {
 
 const selected = computed(() => trips.find((t) => t.shipment.id === selectedId.value) ?? null)
 
-const drivers = computed(() => [...DRIVERS].sort((a, b) => (a.status === 'on-route' ? -1 : 1)))
+const drivers = computed(() =>
+  [...DRIVERS].sort((a, b) => (a.status === 'on-route' ? 0 : 1) - (b.status === 'on-route' ? 0 : 1)),
+)
 const vehicles = computed(() => VEHICLES.filter((v) => v.status === 'active'))
 </script>
 

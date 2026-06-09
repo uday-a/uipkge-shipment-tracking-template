@@ -69,7 +69,7 @@ function backToDashboard() {
     <div class="w-full max-w-xl space-y-8 text-center">
       <!-- Big status number sets the page apart from inline empty-states.
            tabular-nums keeps 404/500/etc. visually aligned at this scale. -->
-      <p class="text-muted-foreground/40 text-7xl font-bold tabular-nums leading-none sm:text-8xl">
+      <p class="text-muted-foreground/50 font-display text-7xl font-semibold tabular-nums leading-none sm:text-8xl">
         {{ status }}
       </p>
 
